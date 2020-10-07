@@ -5,6 +5,11 @@
 using namespace std;
 
 int main(int argc, char const *argv[]) {
+    int test;
+    int test5;
+    int test4;
+    int test3;
+    int test2;
 
     LshCmdVariables *lshCmdVariables = setLshArguments(argc, argv);
     bool termination;
