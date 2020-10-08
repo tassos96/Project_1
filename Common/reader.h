@@ -14,7 +14,7 @@ using namespace std;
 
 class Reader {
 private:
-    vector<Image> * data;
+    vector<Image *> * data;
     void readData(string &);
 
 public:

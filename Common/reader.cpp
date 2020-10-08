@@ -2,21 +2,23 @@
 // Created by sysgod on 07/10/2020.
 //
 
+#include <zconf.h>
 #include "reader.h"
 
 Reader::Reader(string &fileName) {
-    this->data = new vector<Image>();
+    this->data = new vector<Image *>();
 
     this->readData(fileName);
 
 };
 
 Reader::~Reader(){
-    vector<Image>::iterator it;
-//    for (it = this->data->begin(); it <= this->data->end(); it++) {
-//        delete &it;
-//    }
-    this->data->clear();
+    vector<Image *>::iterator it;
+    for (it = this->data->begin(); it < this->data->end() ; ++it) { /* free all Images */
+        delete *it;
+    }
+    this->data->clear(); /* clear vector */
+    delete this->data; /* delete ptr to vector */
 
     cout << "Destructor of reader" << endl;
 };
@@ -46,17 +48,14 @@ void Reader::readData(string &fileName) {
     cout << "Number of columns:" << columns << endl;
 
     for (int i = 0; i < imgNum; ++i) {
-        Image *img = new Image(i);
-        this->data->push_back(*img);
-        for (int j = 0; j < rows * columns; ++j) {
-            unsigned char pxl;
-            pxl = inpFile.get();
-            img->setPixel(pxl);
+        Image * newImg = new Image(i);
+        for (int j = 0; j < rows*columns; ++j) {
+            newImg->setPixel(inpFile.get());
         }
-        if(i%1000 == 0) {
-            img->printPixels();
-        }
+        this->data->push_back(newImg);
     }
+
+    cout << "Nobody should have died till now" << endl;
 
     inpFile.close();
 }

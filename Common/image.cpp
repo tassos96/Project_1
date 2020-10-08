@@ -14,24 +14,11 @@ int Image::getId() {
 }
 
 Image::~Image() {
-//    delete pixels;
     this->pixels->clear();
-    cout << "Destructor of image" << endl;
+    delete pixels;
+//    cout << "Destructor of image" << endl;
 }
 
 void Image::setPixel(unsigned char pxl) {
     this->pixels->push_back(pxl);
-}
-
-void Image::printPixels() {
-    vector<unsigned char>::iterator it;
-    cout << "*******" << endl;
-    int x = 1;
-    for (int i = 0; i < this->pixels->size(); i++) {
-        cout << this->pixels->at(i) << " ";
-        if(x % 100 == 0)
-            cout << endl;
-        x++;
-    }
-    cout << "*******" << endl;
 }
