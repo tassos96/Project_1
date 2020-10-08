@@ -1,11 +1,11 @@
 cmake_minimum_required(VERSION 3.17)
-project(Proj1_emiris)
+project(Project-Task1)
 
 set(CMAKE_CXX_STANDARD 11)
 
 include_directories(Common)
 
-add_executable(Proj1_emiris
+add_executable(Project-Task1
         Common/CmdArgumentsReader.cpp
         Common/CmdArgumentsReader.h
         lsh_main.cpp Common/image.cpp Common/image.h Common/reader.cpp Common/reader.h)

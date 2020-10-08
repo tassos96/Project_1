@@ -1,5 +1,5 @@
-#ifndef PROJECT_1_CMDARGUMENTSREADER_H
-#define PROJECT_1_CMDARGUMENTSREADER_H
+#ifndef PROJECT_TASK1_CMDARGUMENTSREADER_H
+#define PROJECT_TASK1_CMDARGUMENTSREADER_H
 
 #include <iostream>
 #include <fstream>
@@ -58,4 +58,4 @@ CubeCmdVariables* setCubeArguments(int argc, char const *argv[]);
 ClusterCmdVariables* setClusterArguments(int argc, char const *argv[]);
 
 
-#endif //PROJECT_1_CMDARGUMENTSREADER_H
+#endif //PROJECT_TASK1_CMDARGUMENTSREADER_H

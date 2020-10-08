@@ -2,8 +2,8 @@
 // Created by sysgod on 07/10/2020.
 //
 
-#ifndef PROJ1_EMIRIS_IMAGE_H
-#define PROJ1_EMIRIS_IMAGE_H
+#ifndef PROJECT_TASK1_IMAGE_H
+#define PROJECT_TASK1_IMAGE_H
 
 #include <iostream>
 #include <vector>
@@ -22,8 +22,7 @@ public:
 
     int getId();
     void setPixel(unsigned char);
-    void printPixels();
 };
 
 
-#endif //PROJ1_EMIRIS_IMAGE_H
+#endif //PROJECT_TASK1_IMAGE_H

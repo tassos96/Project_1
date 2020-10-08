@@ -2,8 +2,8 @@
 // Created by sysgod on 07/10/2020.
 //
 
-#ifndef PROJ1_EMIRIS_READER_H
-#define PROJ1_EMIRIS_READER_H
+#ifndef PROJECT_TASK1_READER_H
+#define PROJECT_TASK1_READER_H
 
 #include <vector>
 #include <fstream>
@@ -24,4 +24,4 @@ public:
 };
 
 
-#endif //PROJ1_EMIRIS_READER_H
+#endif //PROJECT_TASK1_READER_H
