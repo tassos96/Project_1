@@ -1,4 +1,4 @@
-//
+///
 // Created by sysgod on 07/10/2020.
 //
 
@@ -20,6 +20,8 @@ private:
 public:
     Reader(string &);
     virtual ~Reader();
+
+    vector<Image *> *getData() const;
 
 };
 

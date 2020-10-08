@@ -14,7 +14,7 @@ using namespace std;
 class Image {
 private:
     int id;
-    vector<unsigned char> * pixels;
+    vector<unsigned char> *pixels;
 
 public:
     Image(int);
@@ -22,6 +22,8 @@ public:
 
     int getId();
     void setPixel(unsigned char);
+
+    vector<unsigned char> *getPixels() const;
 };
 
 

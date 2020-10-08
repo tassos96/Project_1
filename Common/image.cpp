@@ -22,3 +22,7 @@ Image::~Image() {
 void Image::setPixel(unsigned char pxl) {
     this->pixels->push_back(pxl);
 }
+
+vector<unsigned char> *Image::getPixels() const {
+    return pixels;
+}
