@@ -1,7 +1,3 @@
-//
-// Created by sysgod on 08/10/2020.
-//
-
 #include "hashFuncs.h"
 
 SimpleHash::SimpleHash(int dim, double w, int nBuckts) {

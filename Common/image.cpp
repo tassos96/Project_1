@@ -1,7 +1,3 @@
-//
-// Created by sysgod on 07/10/2020.
-//
-
 #include "image.h"
 
 Image::Image(int id) {
@@ -20,4 +16,8 @@ Image::~Image() {
 
 void Image::setPixel(unsigned char pxl) {
     this->pixels->push_back(pxl);
+}
+
+vector<unsigned char> *Image::getPixels() const {
+    return pixels;
 }

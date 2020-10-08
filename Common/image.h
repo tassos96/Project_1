@@ -1,7 +1,3 @@
-//
-// Created by sysgod on 07/10/2020.
-//
-
 #ifndef PROJECT_TASK1_IMAGE_H
 #define PROJECT_TASK1_IMAGE_H
 
@@ -14,13 +10,15 @@ using namespace std;
 class Image {
 private:
     int id;
-    vector<unsigned char> * pixels;
+    vector<unsigned char> *pixels;
 
 public:
     Image(int);
     ~Image();
     int getId();
     void setPixel(unsigned char);
+
+    vector<unsigned char> *getPixels() const;
 };
 
 

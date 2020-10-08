@@ -1,7 +1,3 @@
-//
-// Created by sysgod on 07/10/2020.
-//
-
 #include "reader.h"
 
 Reader::Reader(string &fileName) {
@@ -9,7 +5,7 @@ Reader::Reader(string &fileName) {
 
     this->readData(fileName);
 
-};
+}
 
 Reader::~Reader(){
     vector<Image *>::iterator it;
@@ -19,7 +15,7 @@ Reader::~Reader(){
     delete this->data; /* delete ptr to vector */
 
     cout << "Destructor of reader" << endl;
-};
+}
 
 void Reader::readData(string &fileName) {
     ifstream inpFile(fileName, ios_base::binary);
@@ -45,7 +41,10 @@ void Reader::readData(string &fileName) {
     cout << "Number of rows:" << rows << endl;
     cout << "Number of columns:" << columns << endl;
 
-    for (int i = 0; i < imgNum; ++i) {
+
+    int testPurpose = 30;
+    for (int i = 0; i < testPurpose; ++i) {
+    //for (int i = 0; i < imgNum; ++i) {
         Image * newImg = new Image(i);
         for (int j = 0; j < rows*columns; ++j) {
             newImg->setPixel(inpFile.get());
@@ -54,4 +53,8 @@ void Reader::readData(string &fileName) {
     }
 
     inpFile.close();
+}
+
+vector<Image *> *Reader::getData() const {
+    return data;
 }
