@@ -19,7 +19,6 @@ private:
 public:
     Image(int);
     ~Image();
-
     int getId();
     void setPixel(unsigned char);
 };

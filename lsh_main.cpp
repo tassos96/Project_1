@@ -1,13 +1,21 @@
 #include <iostream>
-
+#include <cstdlib>
 #include "Common/CmdArgumentsReader.h"
 #include "Common/reader.h"
+#include "Common/hashFuncs.h"
 
 using namespace std;
 
 int main(int argc, char const *argv[]) {
+    srand(time(NULL));
     string x(argv[2]);
     Reader tmp(x);
+
+    cout << "-21 mod 4 : " << SimpleHash::mod(-21,4) << endl;
+    cout << "3^200 mod 50 : " << SimpleHash::modularExp(3,200,50) << endl;
+
+    SimpleHash hi(10,2.3,5);
+    hi.outShifts();
 
 //    LshCmdVariables *lshCmdVariables = setLshArguments(argc, argv);
 //    bool termination;
