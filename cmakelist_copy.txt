@@ -8,4 +8,4 @@ include_directories(Common)
 add_executable(Project-Task1
         Common/CmdArgumentsReader.cpp
         Common/CmdArgumentsReader.h
-        lsh_main.cpp Common/image.cpp Common/image.h Common/reader.cpp Common/reader.h)
+        lsh_main.cpp Common/image.cpp Common/image.h Common/reader.cpp Common/reader.h Common/hashFuncs.cpp Common/hashFuncs.h)
