@@ -5,7 +5,8 @@ set(CMAKE_CXX_STANDARD 11)
 
 include_directories(Common)
 
-add_executable(Project-Task1
-        Common/CmdArgumentsReader.cpp
-        Common/CmdArgumentsReader.h
-        lsh_main.cpp Common/image.cpp Common/image.h Common/reader.cpp Common/reader.h)
+add_executable(Project-Task1 lsh_main.cpp
+        Common/CmdArgumentsReader.cpp Common/CmdArgumentsReader.h
+        Common/image.cpp Common/image.h
+        Common/reader.cpp Common/reader.h
+        Common/Distance.cpp Common/Distance.h Algorithms/ExactNN.cpp Algorithms/ExactNN.h)
