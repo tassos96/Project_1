@@ -10,6 +10,8 @@ using namespace std;
 
 class Reader {
 private:
+    int rows;
+    int columns;
     vector<Image *> * data;
     void readData(string &);
 
