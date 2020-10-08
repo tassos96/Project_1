@@ -55,7 +55,5 @@ void Reader::readData(string &fileName) {
         this->data->push_back(newImg);
     }
 
-    cout << "Nobody should have died till now" << endl;
-
     inpFile.close();
 }
