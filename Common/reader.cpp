@@ -1,8 +1,3 @@
-//
-// Created by sysgod on 07/10/2020.
-//
-
-//#include <zconf.h>
 #include "reader.h"
 
 Reader::Reader(string &fileName) {

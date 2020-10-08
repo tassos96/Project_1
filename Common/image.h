@@ -1,7 +1,3 @@
-//
-// Created by sysgod on 07/10/2020.
-//
-
 #ifndef PROJECT_TASK1_IMAGE_H
 #define PROJECT_TASK1_IMAGE_H
 
