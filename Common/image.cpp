@@ -14,7 +14,6 @@ int Image::getId() {
 }
 
 Image::~Image() {
-    this->pixels->clear();
     delete pixels;
 //    cout << "Destructor of image" << endl;
 }

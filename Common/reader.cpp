@@ -16,7 +16,6 @@ Reader::~Reader(){
     for (it = this->data->begin(); it < this->data->end() ; ++it) { /* free all Images */
         delete *it;
     }
-    this->data->clear(); /* clear vector */
     delete this->data; /* delete ptr to vector */
 
     cout << "Destructor of reader" << endl;

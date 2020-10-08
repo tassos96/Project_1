@@ -47,7 +47,7 @@ int SimpleHash::mod(int divident,int divisor) {
 int SimpleHash::modularExp(int base, unsigned int exp, int div) {
     vector<unsigned int> results;
     unsigned int prevRes;
-    for (unsigned int i = 1; i < exp; i*=2) {
+    for (unsigned int i = 1; i <= exp; i*=2) {
         unsigned int nextRes;
         if(i == 1)
             nextRes = SimpleHash::mod(base,div);
