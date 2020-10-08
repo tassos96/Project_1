@@ -1,8 +1,8 @@
 #include "ExactNN.h"
 
-tuple<Image*, double, microseconds> exactNN(Image* queryImage, vector<Image *> *datasetImages){
+tuple<Image*, int, microseconds> exactNN(Image* queryImage, vector<Image *> *datasetImages){
     //First set minimum distance to a very high value
-    double minDistance = numeric_limits<double>::infinity();    //Nearest distance to return
+    int minDistance = numeric_limits<double>::infinity();    //Nearest distance to return
     Image* exactNearestImage = nullptr; //Nearest Image to return
     high_resolution_clock::time_point startTimer = high_resolution_clock::now(); //Start timer
     high_resolution_clock::time_point stopTimer; //Stop timer
@@ -11,7 +11,7 @@ tuple<Image*, double, microseconds> exactNN(Image* queryImage, vector<Image *> *
     for(int i = 0; i < datasetImages->size(); i++)
     {
         //Calculate current distance of query image with an image from dataset
-        double currentDistance = manhattanDistance(queryImage->getPixels(), datasetImages->at(i)->getPixels());
+        int currentDistance = manhattanDistance(queryImage->getPixels(), datasetImages->at(i)->getPixels());
         //If current distance is smaller than minimum distance then update values to return
         if(currentDistance < minDistance)
         {

@@ -1,5 +1,4 @@
 #include <iostream>
-#include <cstdlib>
 #include <tuple>
 #include <chrono>
 
@@ -15,10 +14,6 @@ using namespace std::chrono;
 
 
 int main(int argc, char const *argv[]) {
-    srand(time(NULL));
-    string x(argv[2]);
-    Reader tmp(x);
-
     cout << "-21 mod 4 : " << SimpleHash::mod(-21,4) << endl;
     cout << "3^200 mod 50 : " << SimpleHash::modularExp(3,200,50) << endl;
 
@@ -75,7 +70,7 @@ int main(int argc, char const *argv[]) {
         }
 
         //Nearest image tuple -> contains imagePtr, distance and total time of calculation
-        tuple<Image*, double, microseconds> nearestImage;
+        tuple<Image*, int, microseconds> nearestImage;
         for(int i = 0; i < queryFile.getData()->size(); i++) {
             nearestImage = exactNN(queryFile.getData()->at(i), inputFile.getData());
 

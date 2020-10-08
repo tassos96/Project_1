@@ -5,11 +5,13 @@
 #ifndef PROJECT_TASK1_HASHFUNCS_H
 #define PROJECT_TASK1_HASHFUNCS_H
 
-#include <cstdlib>
 #include "image.h"
 #include <cmath>
+#include <random>
+#include <chrono>
 
 using namespace std;
+using namespace std::chrono;
 
 class SimpleHash {
 private:
@@ -23,7 +25,7 @@ public:
     ~SimpleHash();
     void randShifts();
     void outShifts();
-    double generateDcml();
+    double generateDcml() const;
     static int mod(int,int);
     static int modularExp(int,unsigned int,int);
 };

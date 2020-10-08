@@ -1,5 +1,6 @@
 #include "hashFuncs.h"
 
+
 SimpleHash::SimpleHash(int dim, double w, int nBuckts) {
     this->dimension = dim;
     this->gridW = w;
@@ -28,9 +29,11 @@ void SimpleHash::outShifts() {
     }
 }
 
-double SimpleHash::generateDcml() {
-    double num = (double)rand() / RAND_MAX;
-    return this->gridW*num;
+double SimpleHash::generateDcml() const{
+    unsigned seed = system_clock::now().time_since_epoch().count();
+    default_random_engine generator(seed);
+    uniform_real_distribution<double> distribution(0.0, this->gridW);
+    return distribution(generator);
 }
 
 int SimpleHash::mod(int divident,int divisor) {
