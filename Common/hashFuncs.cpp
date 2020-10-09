@@ -66,3 +66,25 @@ int SimpleHash::modularExp(int base, unsigned int exp, int div) {
     }
     return SimpleHash::mod(factor,div);
 }
+
+int SimpleHash::hashResult(vector<unsigned char> *pixels) {
+    vector<int> a;
+    /* calculate projections */
+    for (int i = 0; i < this->dimension; ++i) {
+        int a_i = floor(((int)pixels->at(i) - (double)this->shifts->at(i)) / this->gridW);
+        a.push_back(a_i);
+    }
+
+    /* calculate hash result */
+    int sum= 0;
+    int m = pow(2,32) - 5;
+    for (int i= this->dimension-1; i >= 0; --i) {
+        int a_i = a.at(i);
+        int factor_1 = SimpleHash::modularExp(m,
+                                              this->dimension-1-i,
+                                              this->numBuckets);
+        int factor_2 = SimpleHash::mod(a_i, this->numBuckets);
+        sum+= SimpleHash::mod(factor_1 * factor_2, this->numBuckets);
+    }
+    return mod(sum, this->numBuckets);
+}

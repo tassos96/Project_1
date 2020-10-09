@@ -14,11 +14,6 @@ using namespace std::chrono;
 
 
 int main(int argc, char const *argv[]) {
-    cout << "-21 mod 4 : " << SimpleHash::mod(-21,4) << endl;
-    cout << "3^200 mod 50 : " << SimpleHash::modularExp(3,200,50) << endl;
-
-    SimpleHash hi(10,2.3,5);
-    hi.outShifts();
 
     LshCmdVariables *lshCmdVariables = setLshArguments(argc, argv);
     bool termination;

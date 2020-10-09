@@ -7,8 +7,8 @@
 #include <chrono>
 
 
-#include "image.h"
-#include "Distance.h"
+#include "../Common/image.h"
+#include "../Common/Distance.h"
 
 using namespace std;
 using namespace std::chrono;

@@ -19,15 +19,15 @@ private:
     double gridW;
     int numBuckets;
     vector<double> *shifts;
-
+    void randShifts();
+    static int mod(int,int);
+    static int modularExp(int,unsigned int,int);
 public:
     SimpleHash(int,double,int);
     ~SimpleHash();
-    void randShifts();
     void outShifts();
     double generateDcml() const;
-    static int mod(int,int);
-    static int modularExp(int,unsigned int,int);
+    int hashResult(vector<unsigned char>*);
 };
 
 class AmplifiedHash {
