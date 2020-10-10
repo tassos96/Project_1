@@ -1,10 +1,10 @@
 #include "hashFuncs.h"
 
 
-SimpleHash::SimpleHash(int dim, double w, int nBuckts) {
+SimpleHash::SimpleHash(int dim, double w, int tableSize) {
     this->dimension = dim;
     this->gridW = w;
-    this->numBuckets = nBuckts;
+    this->tableSize = tableSize;
     this->shifts = new vector<double>();
     this->randShifts();
 }
@@ -89,19 +89,19 @@ int SimpleHash::hashResult(vector<unsigned char> *pixels) {
         int a_i = a.at(i);
         int factor_1 = SimpleHash::modularExp(m,
                                               this->dimension-1-i,
-                                              this->numBuckets);
-        int factor_2 = SimpleHash::mod(a_i, this->numBuckets);
-        sum+= SimpleHash::mod(factor_1 * factor_2, this->numBuckets);
+                                              this->tableSize);
+        int factor_2 = SimpleHash::mod(a_i, this->tableSize);
+        sum+= SimpleHash::mod(factor_1 * factor_2, this->tableSize);
     }
-    return mod(sum, this->numBuckets);
+    return mod(sum, this->tableSize);
 }
 
-AmplifiedHash::AmplifiedHash(int dim, double w, int nBuckts, int numHashes) {
+AmplifiedHash::AmplifiedHash(int dim, double w, int tableSize, int numHashes) {
     subhashes = new vector<SimpleHash *>;
     this->numHashes = numHashes;
-    this->numBuckets = nBuckts;
+    this->tableSize = tableSize;
     for (int i = 0; i < numHashes; ++i) {
-        subhashes->push_back(new SimpleHash(dim, w, nBuckts));
+        subhashes->push_back(new SimpleHash(dim, w, tableSize));
     }
 }
 
@@ -113,12 +113,13 @@ AmplifiedHash::~AmplifiedHash() {
     delete this->subhashes;
 }
 
-int AmplifiedHash::hashResult(vector<unsigned char>* pixels){
+int AmplifiedHash::hashResult(Image * img){
     unsigned int retVal = 0;
     for (int i = 0; i < this->numHashes; ++i) {
         /* get every subhash result */
-        unsigned int h_i = subhashes->at(i)->hashResult(pixels);
+        unsigned int h_i = subhashes->at(i)->hashResult(img->getPixels());
         retVal |= h_i << (this->numHashes-1-i) * (sizeof(int)/this->numHashes);
     }
-    return (int)SimpleHash::mod(retVal,this->numBuckets);
+    img->keepHashResult(retVal);
+    return (int)SimpleHash::mod(retVal,this->tableSize);
 };

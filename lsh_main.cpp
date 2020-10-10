@@ -8,6 +8,7 @@
 #include "Common/hashFuncs.h"
 #include "Common/Distance.h"
 #include "Algorithms/ExactNN.h"
+#include "Classifiers/lsh.h"
 
 using namespace std;
 using namespace std::chrono;
@@ -36,10 +37,8 @@ int main(int argc, char const *argv[]) {
         Dataset inputFile(lshCmdVariables->inputFileName);
         //Structures creation here
         //.....
-        AmplifiedHash hashFunction(784, 1000, lshCmdVariables->L, lshCmdVariables->K);
-        for(int i = 0; i < inputFile.getData()->size(); i++) {
-            hashFunction.hashResult(inputFile.getData()->at(i)->getPixels());
-        }
+        Lsh lsh(lshCmdVariables->L, inputFile.getImageNum(), inputFile.getImages(),
+                inputFile.getDimensions(), 50, lshCmdVariables->K);
         //.....
         //.....
         //.....
@@ -70,12 +69,12 @@ int main(int argc, char const *argv[]) {
 
         //Nearest image tuple -> contains imagePtr, distance and total time of calculation
         tuple<Image*, int, microseconds> nearestImage;
-        for(int i = 0; i < queryFile.getData()->size(); i++) {
-            nearestImage = exactNN(queryFile.getData()->at(i), inputFile.getData());
+        for(int i = 0; i < queryFile.getImages()->size(); i++) {
+            nearestImage = exactNN(queryFile.getImages()->at(i), inputFile.getImages());
 
 
             //Print some results
-            cout << "Query_ID: " << queryFile.getData()->at(i)->getId() << endl;
+            cout << "Query_ID: " << queryFile.getImages()->at(i)->getId() << endl;
             cout << "Nearest_ID: " << get<0>(nearestImage)->getId() << endl;
             cout << "distanceTrue: " << get<1>(nearestImage) << endl;
             cout << "tTrue: " << get<2>(nearestImage).count() << "μs" << endl;

@@ -10,6 +10,7 @@ using namespace std;
 class Image {
 private:
     int id;
+    vector<unsigned int> *g_results; //keep hash results
     vector<unsigned char> *pixels;
 
 public:
@@ -19,6 +20,7 @@ public:
     void setPixel(unsigned char);
 
     vector<unsigned char> *getPixels() const;
+    void keepHashResult(unsigned int);
 };
 
 

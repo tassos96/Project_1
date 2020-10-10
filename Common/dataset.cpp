@@ -24,8 +24,7 @@ void Dataset::readData(string &fileName) {
 
     inpFile.seekg(sizeof(int)); /* skip magical number */
 
-    int imgNum;
-    char * p = (char *)&imgNum;
+    char * p = (char *)&this->imgNum;
     for (int i = 0; i < sizeof(int) * 3; ++i) { /* read 3 ints */
         if(i == sizeof(int)) /* done reading bytes of image # */
             p = (char *)&this->rows;
@@ -37,12 +36,12 @@ void Dataset::readData(string &fileName) {
         inpFile.get(*p--);
     }
 
-    cout << "Number of images:" << imgNum << endl;
+    cout << "Number of images:" << this->imgNum << endl;
     cout << "Number of rows:" << this->rows << endl;
     cout << "Number of columns:" << this->columns << endl;
 
 
-    for (int i = 0; i < imgNum; ++i) {
+    for (int i = 0; i < this->imgNum; ++i) {
         Image * newImg = new Image(i);
         for (int j = 0; j < this->rows*this->columns; ++j) {
             newImg->setPixel(inpFile.get());
@@ -53,6 +52,14 @@ void Dataset::readData(string &fileName) {
     inpFile.close();
 }
 
-vector<Image *> *Dataset::getData() const {
-    return data;
+vector<Image *> *Dataset::getImages() const {
+    return this->data;
+}
+
+int Dataset::getImageNum() const {
+    return this->imgNum;
+}
+
+int Dataset::getDimensions() const {
+    return this->rows * this->columns;
 }

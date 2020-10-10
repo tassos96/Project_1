@@ -2,7 +2,8 @@
 
 Image::Image(int id) {
     this->id = id;
-    this->pixels = new vector<unsigned char>();
+    this->pixels = new vector<unsigned char>;
+    this->g_results = new vector<unsigned int>;
 }
 
 int Image::getId() {
@@ -10,7 +11,8 @@ int Image::getId() {
 }
 
 Image::~Image() {
-    delete pixels;
+    delete this->pixels;
+    delete this->g_results;
 //    cout << "Destructor of image" << endl;
 }
 
@@ -19,5 +21,9 @@ void Image::setPixel(unsigned char pxl) {
 }
 
 vector<unsigned char> *Image::getPixels() const {
-    return pixels;
+    return this->pixels;
+}
+
+void Image::keepHashResult(unsigned int toKeep) {
+    this->g_results->push_back(toKeep);
 }

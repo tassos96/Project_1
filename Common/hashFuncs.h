@@ -17,7 +17,7 @@ class SimpleHash {
 private:
     int dimension;
     double gridW;
-    int numBuckets; // the hash table size
+    int tableSize; // the hash table size
     vector<double> *shifts;
     void randShifts();
     static int mod(int,int);
@@ -33,14 +33,14 @@ public:
 
 class AmplifiedHash {
 private:
-    int numBuckets;
+    int tableSize;
     int numHashes; // # of h_i functions
     vector<SimpleHash *> *subhashes;
 
 public:
     AmplifiedHash(int, double, int, int);
     virtual ~AmplifiedHash();
-    int hashResult(vector<unsigned char>*);
+    int hashResult(Image *);
 };
 
 #endif //PROJECT_TASK1_HASHFUNCS_H
