@@ -13,7 +13,7 @@ LshTable::LshTable(int imgNum,
     this->tableSize = imgNum / TABLE_SIZE_DIV;
     this->table = new vector<Bucket *>;
     for (int i = 0; i < this->tableSize; ++i) {
-        this->table->push_back(new Bucket());
+        this->table->push_back(nullptr);
     }
     this->splitIntoBuckets(imgNum, imgs);
 }
@@ -29,6 +29,8 @@ LshTable::~LshTable() {
 void LshTable::splitIntoBuckets(int imgNum, vector<Image *> * imgs) {
     for (int i = 0; i < imgNum; ++i) {
         int index = this->gHash.hashResult(imgs->at(i));
+        if(this->table->at(index) == nullptr)
+            this->table->at(index) = new Bucket();
         this->table->at(index)->insertImage(imgs->at(i));
     }
 }
