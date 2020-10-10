@@ -1,13 +1,13 @@
-#include "reader.h"
+#include "dataset.h"
 
-Reader::Reader(string &fileName) {
+Dataset::Dataset(string &fileName) {
     this->data = new vector<Image *>();
 
     this->readData(fileName);
 
 }
 
-Reader::~Reader(){
+Dataset::~Dataset(){
     vector<Image *>::iterator it;
     for (it = this->data->begin(); it < this->data->end() ; ++it) { /* free all Images */
         delete *it;
@@ -17,20 +17,20 @@ Reader::~Reader(){
     cout << "Destructor of reader" << endl;
 }
 
-void Reader::readData(string &fileName) {
+void Dataset::readData(string &fileName) {
     ifstream inpFile(fileName, ios_base::binary);
     if(!inpFile.is_open())
         throw runtime_error("File " + fileName + " cannot be opened.");
 
     inpFile.seekg(sizeof(int)); /* skip magical number */
 
-    int imgNum, rows, columns;
+    int imgNum;
     char * p = (char *)&imgNum;
     for (int i = 0; i < sizeof(int) * 3; ++i) { /* read 3 ints */
         if(i == sizeof(int)) /* done reading bytes of image # */
-            p = (char *)&rows;
+            p = (char *)&this->rows;
         else if(i == sizeof(int)*2) /* done reading bytes of rows */
-            p = (char *)&columns;
+            p = (char *)&this->columns;
         if(i == sizeof(int) || i == sizeof(int)*2 || i == 0)
             p += sizeof(int) - 1; /* set pointer at the mst byte of integers */
 
@@ -38,15 +38,13 @@ void Reader::readData(string &fileName) {
     }
 
     cout << "Number of images:" << imgNum << endl;
-    cout << "Number of rows:" << rows << endl;
-    cout << "Number of columns:" << columns << endl;
+    cout << "Number of rows:" << this->rows << endl;
+    cout << "Number of columns:" << this->columns << endl;
 
 
-    int testPurpose = 30;
-    for (int i = 0; i < testPurpose; ++i) {
-    //for (int i = 0; i < imgNum; ++i) {
+    for (int i = 0; i < imgNum; ++i) {
         Image * newImg = new Image(i);
-        for (int j = 0; j < rows*columns; ++j) {
+        for (int j = 0; j < this->rows*this->columns; ++j) {
             newImg->setPixel(inpFile.get());
         }
         this->data->push_back(newImg);
@@ -55,6 +53,6 @@ void Reader::readData(string &fileName) {
     inpFile.close();
 }
 
-vector<Image *> *Reader::getData() const {
+vector<Image *> *Dataset::getData() const {
     return data;
 }

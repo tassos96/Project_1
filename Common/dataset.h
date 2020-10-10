@@ -1,5 +1,5 @@
-#ifndef PROJECT_TASK1_READER_H
-#define PROJECT_TASK1_READER_H
+#ifndef PROJECT_TASK1_DATASET_H
+#define PROJECT_TASK1_DATASET_H
 
 #include <vector>
 #include <fstream>
@@ -8,7 +8,7 @@
 
 using namespace std;
 
-class Reader {
+class Dataset {
 private:
     int rows;
     int columns;
@@ -16,12 +16,12 @@ private:
     void readData(string &);
 
 public:
-    Reader(string &);
-    virtual ~Reader();
+    Dataset(string &);
+    virtual ~Dataset();
 
     vector<Image *> *getData() const;
 
 };
 
 
-#endif //PROJECT_TASK1_READER_H
+#endif //PROJECT_TASK1_DATASET_H

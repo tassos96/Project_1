@@ -43,7 +43,14 @@ int SimpleHash::mod(int divident,int divisor) {
     return divident % divisor + divisor;
 }
 
-int SimpleHash::modularExp(int base, unsigned int exp, int div) {
+unsigned int SimpleHash::mod(unsigned int divident,int divisor) {
+    if(divident >= 0) {
+        return divident % divisor;
+    }
+    return divident % divisor + divisor;
+}
+
+int SimpleHash::modularExp(unsigned int base, unsigned int exp, int div) {
     vector<unsigned int> results;
     unsigned int prevRes;
     for (unsigned int i = 1; i <= exp; i*=2) {
@@ -51,7 +58,7 @@ int SimpleHash::modularExp(int base, unsigned int exp, int div) {
         if(i == 1)
             nextRes = SimpleHash::mod(base,div);
         else
-            nextRes = SimpleHash::mod(pow(prevRes,2),div);
+            nextRes = SimpleHash::mod((unsigned int)pow(prevRes,2),div);
 
         if((i & exp) != 0)
             results.push_back(nextRes);
@@ -77,7 +84,7 @@ int SimpleHash::hashResult(vector<unsigned char> *pixels) {
 
     /* calculate hash result */
     int sum= 0;
-    int m = pow(2,32) - 5;
+    unsigned int m = (long)pow(2,32) - 5;
     for (int i= this->dimension-1; i >= 0; --i) {
         int a_i = a.at(i);
         int factor_1 = SimpleHash::modularExp(m,
@@ -88,3 +95,30 @@ int SimpleHash::hashResult(vector<unsigned char> *pixels) {
     }
     return mod(sum, this->numBuckets);
 }
+
+AmplifiedHash::AmplifiedHash(int dim, double w, int nBuckts, int numHashes) {
+    subhashes = new vector<SimpleHash *>;
+    this->numHashes = numHashes;
+    this->numBuckets = nBuckts;
+    for (int i = 0; i < numHashes; ++i) {
+        subhashes->push_back(new SimpleHash(dim, w, nBuckts));
+    }
+}
+
+AmplifiedHash::~AmplifiedHash() {
+    vector<SimpleHash *>::iterator it;
+    for (it = this->subhashes->begin(); it < this->subhashes->end() ; ++it) {
+        delete *it;
+    }
+    delete this->subhashes;
+}
+
+int AmplifiedHash::hashResult(vector<unsigned char>* pixels){
+    unsigned int retVal = 0;
+    for (int i = 0; i < this->numHashes; ++i) {
+        /* get every subhash result */
+        unsigned int h_i = subhashes->at(i)->hashResult(pixels);
+        retVal |= h_i << (this->numHashes-1-i) * (sizeof(int)/this->numHashes);
+    }
+    return (int)SimpleHash::mod(retVal,this->numBuckets);
+};

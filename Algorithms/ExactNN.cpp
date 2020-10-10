@@ -2,7 +2,7 @@
 
 tuple<Image*, int, microseconds> exactNN(Image* queryImage, vector<Image *> *datasetImages){
     //First set minimum distance to a very high value
-    int minDistance = numeric_limits<double>::infinity();    //Nearest distance to return
+    int minDistance = numeric_limits<int>::max();    //Nearest distance to return
     Image* exactNearestImage = nullptr; //Nearest Image to return
     high_resolution_clock::time_point startTimer = high_resolution_clock::now(); //Start timer
     high_resolution_clock::time_point stopTimer; //Stop timer

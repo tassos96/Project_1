@@ -17,21 +17,30 @@ class SimpleHash {
 private:
     int dimension;
     double gridW;
-    int numBuckets;
+    int numBuckets; // the hash table size
     vector<double> *shifts;
     void randShifts();
     static int mod(int,int);
-    static int modularExp(int,unsigned int,int);
+    static int modularExp(unsigned int,unsigned int,int);
 public:
     SimpleHash(int,double,int);
     ~SimpleHash();
     void outShifts();
     double generateDcml() const;
     int hashResult(vector<unsigned char>*);
+    static unsigned int mod(unsigned int,int);
 };
 
 class AmplifiedHash {
+private:
+    int numBuckets;
+    int numHashes; // # of h_i functions
+    vector<SimpleHash *> *subhashes;
 
+public:
+    AmplifiedHash(int, double, int, int);
+    virtual ~AmplifiedHash();
+    int hashResult(vector<unsigned char>*);
 };
 
 #endif //PROJECT_TASK1_HASHFUNCS_H

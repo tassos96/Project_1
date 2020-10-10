@@ -4,7 +4,7 @@
 
 
 #include "Common/CmdArgumentsReader.h"
-#include "Common/reader.h"
+#include "Common/dataset.h"
 #include "Common/hashFuncs.h"
 #include "Common/Distance.h"
 #include "Algorithms/ExactNN.h"
@@ -33,9 +33,13 @@ int main(int argc, char const *argv[]) {
         cout << lshCmdVariables->N << endl;
         cout << lshCmdVariables->R << endl;
 
-        Reader inputFile(lshCmdVariables->inputFileName);
+        Dataset inputFile(lshCmdVariables->inputFileName);
         //Structures creation here
         //.....
+        AmplifiedHash hashFunction(784, 1000, lshCmdVariables->L, lshCmdVariables->K);
+        for(int i = 0; i < inputFile.getData()->size(); i++) {
+            hashFunction.hashResult(inputFile.getData()->at(i)->getPixels());
+        }
         //.....
         //.....
         //.....
@@ -48,7 +52,7 @@ int main(int argc, char const *argv[]) {
             cout << endl;
         }
 
-        Reader queryFile(lshCmdVariables->queryFileName);
+        Dataset queryFile(lshCmdVariables->queryFileName);
 
         //Ask from user the path of output file
         if (lshCmdVariables->outputFileName.empty()) {
