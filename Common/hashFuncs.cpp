@@ -38,16 +38,13 @@ double SimpleHash::generateDcml() const{
 
 int SimpleHash::mod(int divident,int divisor) {
     if(divident >= 0) {
-        return divident % divisor;
+        return divident & (divisor - 1);
     }
     return divident % divisor + divisor;
 }
 
 unsigned int SimpleHash::mod(unsigned int divident,int divisor) {
-    if(divident >= 0) {
-        return divident % divisor;
-    }
-    return divident % divisor + divisor;
+    return divident & (divisor - 1);
 }
 
 int SimpleHash::modularExp(unsigned int base, unsigned int exp, int div) {

@@ -15,7 +15,6 @@ using namespace std::chrono;
 
 
 int main(int argc, char const *argv[]) {
-
     LshCmdVariables *lshCmdVariables = setLshArguments(argc, argv);
     bool termination;
 
