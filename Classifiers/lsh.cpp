@@ -1,6 +1,6 @@
 #include "lsh.h"
 
-#define TABLE_SIZE_DIV 16
+//#define TABLE_SIZE_DIV 16
 
 LshTable::LshTable(int imgNum,
                    vector<Image *> *imgs,
@@ -8,13 +8,13 @@ LshTable::LshTable(int imgNum,
                    double w,
                    int numHashes): gHash(dim,
                                          w,
-                                         imgNum / TABLE_SIZE_DIV,
+                                         pow(2,32/numHashes),
+//                                         imgNum / TABLE_SIZE_DIV,
                                          numHashes){
-    this->tableSize = imgNum / TABLE_SIZE_DIV;
+//    this->tableSize = imgNum / TABLE_SIZE_DIV;
+    this->tableSize = pow(2,32/numHashes);
     this->table = new vector<Bucket *>;
-    for (int i = 0; i < this->tableSize; ++i) {
-        this->table->push_back(nullptr);
-    }
+    this->table->insert(this->table->begin(),this->tableSize, nullptr);
     this->splitIntoBuckets(imgNum, imgs);
 }
 
