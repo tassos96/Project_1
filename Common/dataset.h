@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <fstream>
+#include <unordered_map>
 
 #include "image.h"
 
@@ -13,14 +14,14 @@ private:
     int rows;
     int columns;
     int imgNum;
-    vector<Image *> * data;
+    unordered_map<int, Image *> * data;
     void readData(string &);
 
 public:
     Dataset(string &);
     virtual ~Dataset();
 
-    vector<Image *> *getImages() const;
+    unordered_map<int, Image *> *getImages() const;
     int getImageNum() const;
     int getDimensions() const;
 };

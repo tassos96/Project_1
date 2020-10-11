@@ -1,6 +1,7 @@
 #include "ExactNN.h"
 
-tuple<Image*, int, microseconds> exactNN(Image* queryImage, vector<Image *> *datasetImages){
+tuple<Image*, int, microseconds> exactNN(Image* queryImage,
+                                         unordered_map<int, Image *> *datasetImages){
     //First set minimum distance to a very high value
     int minDistance = numeric_limits<int>::max();    //Nearest distance to return
     Image* exactNearestImage = nullptr; //Nearest Image to return

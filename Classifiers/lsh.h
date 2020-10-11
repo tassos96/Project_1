@@ -14,9 +14,9 @@ private:
     int tableSize;
     AmplifiedHash gHash;
     unordered_map<int, Bucket *> *table;
-    void splitIntoBuckets(int, vector<Image *> *);
+    void splitIntoBuckets(int, unordered_map<int, Image *> *);
 public:
-    LshTable(int, vector<Image *> *, int, double, int );
+    LshTable(int, unordered_map<int, Image *> *, int, double, int );
     virtual ~LshTable();
 };
 
@@ -24,9 +24,9 @@ class Lsh {
 private:
     int numTables;
     vector<LshTable *> *tables;
-    void buildTables(int, vector<Image *> *, int, double, int);
+    void buildTables(int, unordered_map<int, Image *> *, int, double, int);
 public:
-    Lsh(int,int, vector<Image *> *, int, double, int);
+    Lsh(int,int, unordered_map<int, Image *> *, int, double, int);
     virtual ~Lsh();
 };
 

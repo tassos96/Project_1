@@ -1,16 +1,15 @@
 #include "dataset.h"
 
 Dataset::Dataset(string &fileName) {
-    this->data = new vector<Image *>();
+    this->data = new unordered_map<int, Image *>;
 
     this->readData(fileName);
 
 }
 
 Dataset::~Dataset(){
-    vector<Image *>::iterator it;
-    for (it = this->data->begin(); it < this->data->end() ; ++it) { /* free all Images */
-        delete *it;
+    for (int i = 0; i < this->imgNum; ++i) {
+        delete this->data->at(i);
     }
     delete this->data; /* delete ptr to vector */
 
@@ -46,13 +45,14 @@ void Dataset::readData(string &fileName) {
         for (int j = 0; j < this->rows*this->columns; ++j) {
             newImg->setPixel(inpFile.get());
         }
-        this->data->push_back(newImg);
+        pair<int, Image *> newPair(i, newImg);
+        this->data->insert(newPair);
     }
 
     inpFile.close();
 }
 
-vector<Image *> *Dataset::getImages() const {
+unordered_map<int, Image *> *Dataset::getImages() const {
     return this->data;
 }
 

@@ -3,7 +3,7 @@
 //#define TABLE_SIZE_DIV 16
 
 LshTable::LshTable(int imgNum,
-                   vector<Image *> *imgs,
+                   unordered_map<int, Image *> *imgs,
                    int dim,
                    double w,
                    int numHashes): gHash(dim,
@@ -29,7 +29,7 @@ LshTable::~LshTable() {
     delete this->table;
 }
 
-void LshTable::splitIntoBuckets(int imgNum, vector<Image *> * imgs) {
+void LshTable::splitIntoBuckets(int imgNum, unordered_map<int, Image *> * imgs) {
     for (int i = 0; i < imgNum; ++i) {
         Image * imgPtr = imgs->at(i);
         int index = this->gHash.hashResult(imgPtr);
@@ -48,7 +48,7 @@ void LshTable::splitIntoBuckets(int imgNum, vector<Image *> * imgs) {
 
 Lsh::Lsh(int numTables,
          int imgNum,
-         vector<Image *> *imgs,
+         unordered_map<int, Image *> *imgs,
          int dim,
          double w,
          int numHashes){
@@ -66,7 +66,7 @@ Lsh::~Lsh() {
 }
 
 void Lsh::buildTables(int imgNum,
-                      vector<Image *> *imgs,
+                      unordered_map<int, Image *> *imgs,
                       int dim,
                       double w,
                       int numHashes) {
