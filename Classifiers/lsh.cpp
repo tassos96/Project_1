@@ -13,25 +13,36 @@ LshTable::LshTable(int imgNum,
                                          numHashes){
 //    this->tableSize = imgNum / TABLE_SIZE_DIV;
     this->tableSize = pow(2,32/numHashes);
-    this->table = new vector<Bucket *>;
-    this->table->insert(this->table->begin(),this->tableSize, nullptr);
+    this->table = new unordered_map<int,Bucket *>;
     this->splitIntoBuckets(imgNum, imgs);
 }
 
 LshTable::~LshTable() {
-    vector<Bucket *>::iterator it;
-    for (it=this->table->begin(); it<this->table->end(); ++it) {
-        delete *it;
+    for (int i = 0; i < tableSize; ++i) {
+        try { // in case not all buckets were used
+            delete this->table->at(i);
+        }
+        catch (out_of_range & ex) {
+            continue;
+        }
     }
     delete this->table;
 }
 
 void LshTable::splitIntoBuckets(int imgNum, vector<Image *> * imgs) {
     for (int i = 0; i < imgNum; ++i) {
-        int index = this->gHash.hashResult(imgs->at(i));
-        if(this->table->at(index) == nullptr)
-            this->table->at(index) = new Bucket();
-        this->table->at(index)->insertImage(imgs->at(i));
+        Image * imgPtr = imgs->at(i);
+        int index = this->gHash.hashResult(imgPtr);
+        try {
+            this->table->at(index)->insertImage(imgPtr);
+        }
+        catch (out_of_range & ex) {
+            pair<int, Bucket *> newPair(index, new Bucket());
+            this->table->insert(newPair);
+            this->table->at(index)->insertImage(imgPtr);
+        }
+        if((i+1)%5000 == 0)
+            cout << "prnt" << endl;
     }
 }
 

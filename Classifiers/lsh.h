@@ -2,6 +2,7 @@
 #define PROJECT_TASK1_LSH_H
 
 #include <vector>
+#include <unordered_map>
 #include "../Common/image.h"
 #include "../Common/hashFuncs.h"
 #include "../Common/bucket.h"
@@ -12,7 +13,7 @@ class LshTable {
 private:
     int tableSize;
     AmplifiedHash gHash;
-    vector<Bucket *> *table;
+    unordered_map<int, Bucket *> *table;
     void splitIntoBuckets(int, vector<Image *> *);
 public:
     LshTable(int, vector<Image *> *, int, double, int );
