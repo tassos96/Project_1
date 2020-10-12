@@ -26,18 +26,20 @@ int main(int argc, char const *argv[]) {
             cout << endl;
         }
 
-        cout << "----- Program arguments -----" << endl;
-        cout << lshCmdVariables->inputFileName << endl;
-        cout << lshCmdVariables->K << endl;
-        cout << lshCmdVariables->L << endl;
-        cout << lshCmdVariables->N << endl;
-        cout << lshCmdVariables->R << endl;
+//        cout << "----- Program arguments -----" << endl;
+//        cout << lshCmdVariables->inputFileName << endl;
+//        cout << lshCmdVariables->K << endl;
+//        cout << lshCmdVariables->L << endl;
+//        cout << lshCmdVariables->N << endl;
+//        cout << lshCmdVariables->R << endl;
 
         Dataset inputFile(lshCmdVariables->inputFileName);
         //Structures creation here
         //.....
+        double W = calcW(inputFile.getImages(),100,inputFile.getImageNum());
+        cout << "W: " << W << endl;
         Lsh lsh(lshCmdVariables->L, inputFile.getImageNum(), inputFile.getImages(),
-                inputFile.getDimensions(), 50, lshCmdVariables->K);
+                inputFile.getDimensions(), W, lshCmdVariables->K);
         //.....
         //.....
         //.....

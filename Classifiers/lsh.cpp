@@ -33,6 +33,7 @@ void LshTable::splitIntoBuckets(int imgNum, unordered_map<int, Image *> * imgs) 
     for (int i = 0; i < imgNum; ++i) {
         Image * imgPtr = imgs->at(i);
         int index = this->gHash.hashResult(imgPtr);
+        cout << "Placing  image #" << i+1 << " at bucket #" << index+1 << endl;
         try {
             this->table->at(index)->insertImage(imgPtr);
         }

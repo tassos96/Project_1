@@ -114,7 +114,9 @@ int AmplifiedHash::hashResult(Image * img){
     for (int i = 0; i < this->numHashes; ++i) {
         /* get every subhash result */
         unsigned int h_i = subhashes->at(i)->hashResult(img->getPixels());
-        retVal |= h_i << (this->numHashes-1-i) * (sizeof(int)/this->numHashes);
+        unsigned int bitsPerHi = 32/this->numHashes;
+        unsigned int shiftAm = (this->numHashes-1-i) * bitsPerHi;
+        retVal |= (h_i << shiftAm);
     }
     img->keepHashResult(retVal);
     return (int)SimpleHash::mod(retVal,this->tableSize);
