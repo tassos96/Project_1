@@ -2,6 +2,7 @@
 
 Image::Image(int id) {
     this->id = id;
+    this->marked = false;
     this->pixels = new vector<unsigned char>;
     this->g_results = new vector<unsigned int>;
 }
@@ -26,4 +27,12 @@ vector<unsigned char> *Image::getPixels() const {
 
 void Image::keepHashResult(unsigned int toKeep) {
     this->g_results->push_back(toKeep);
+}
+
+void Image::markImage() {
+    this->marked = true;
+}
+
+bool Image::isMarked() {
+    return this->marked;
 }

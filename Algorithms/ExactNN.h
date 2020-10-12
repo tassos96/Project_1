@@ -3,6 +3,7 @@
 
 #include <unordered_map>
 #include <tuple>
+#include <queue>
 #include <limits>
 #include <chrono>
 
@@ -14,6 +15,8 @@ using namespace std;
 using namespace std::chrono;
 
 
-tuple<Image*, int, microseconds> exactNN(Image* queryImage, unordered_map<int, Image *> *datasetImages);
+tuple<vector<tuple<int,Image*>>, microseconds> exactNN(Image* queryImage,
+                                                       unordered_map<int, Image *> *datasetImages,
+                                                       int numNeighbors);
 
 #endif //PROJECT_TASK1_EXACTNN_H

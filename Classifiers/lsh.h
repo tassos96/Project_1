@@ -18,6 +18,7 @@ private:
 public:
     LshTable(int, unordered_map<int, Image *> *, int, double, int );
     virtual ~LshTable();
+    tuple<int, Bucket* > getBucket(Image*);
 };
 
 class Lsh {
@@ -28,6 +29,8 @@ private:
 public:
     Lsh(int,int, unordered_map<int, Image *> *, int, double, int);
     virtual ~Lsh();
+    LshTable* getHashTable(int);
+    int getNumTables();
 };
 
 #endif //PROJECT_TASK1_LSH_H

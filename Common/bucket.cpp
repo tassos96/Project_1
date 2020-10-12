@@ -11,3 +11,7 @@ Bucket::~Bucket() {
 void Bucket::insertImage(Image * img) {
     this->images->push_back(img);
 }
+
+vector<Image *> *Bucket::getImages() {
+    return this->images;
+}

@@ -29,11 +29,23 @@ LshTable::~LshTable() {
     delete this->table;
 }
 
+tuple<int, Bucket* > LshTable::getBucket(Image* image) {
+    int index = this->gHash.hashResult(image);
+    try {
+        return make_tuple(index, this->table->at(index));
+    }
+    catch (out_of_range & ex) {
+        //in case bucket is empty return nullptr
+        return make_tuple(index, nullptr);
+    }
+}
+
+
 void LshTable::splitIntoBuckets(int imgNum, unordered_map<int, Image *> * imgs) {
     for (int i = 0; i < imgNum; ++i) {
         Image * imgPtr = imgs->at(i);
         int index = this->gHash.hashResult(imgPtr);
-        cout << "Placing  image #" << i+1 << " at bucket #" << index+1 << endl;
+//        cout << "Placing  image #" << i << " at bucket #" << index << endl;
         try {
             this->table->at(index)->insertImage(imgPtr);
         }
@@ -74,4 +86,12 @@ void Lsh::buildTables(int imgNum,
     for (int i = 0; i < this->numTables; ++i) {
         this->tables->push_back(new LshTable(imgNum,imgs,dim,w,numHashes));
     }
+}
+
+LshTable* Lsh::getHashTable(int index) {
+    return this->tables->at(index);
+}
+
+int Lsh::getNumTables(){
+    return this->numTables;
 }

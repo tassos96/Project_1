@@ -1,5 +1,3 @@
-
-
 #ifndef PROJECT_TASK1_BUCKET_H
 #define PROJECT_TASK1_BUCKET_H
 
@@ -13,6 +11,7 @@ public:
     Bucket();
     virtual ~Bucket();
     void insertImage(Image *);
+    vector<Image *> *getImages();
 };
 
 #endif //PROJECT_TASK1_BUCKET_H

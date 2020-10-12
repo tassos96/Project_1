@@ -6,8 +6,10 @@
 #include "Common/CmdArgumentsReader.h"
 #include "Common/dataset.h"
 #include "Common/hashFuncs.h"
+#include "Common/Utils.h"
 #include "Common/Distance.h"
 #include "Algorithms/ExactNN.h"
+#include "Algorithms/AproxNN.h"
 #include "Classifiers/lsh.h"
 
 using namespace std;
@@ -36,7 +38,7 @@ int main(int argc, char const *argv[]) {
         Dataset inputFile(lshCmdVariables->inputFileName);
         //Structures creation here
         //.....
-        double W = calcW(inputFile.getImages(),100,inputFile.getImageNum());
+        double W = calcW(inputFile.getImages(),10,inputFile.getImageNum());
         cout << "W: " << W << endl;
         Lsh lsh(lshCmdVariables->L, inputFile.getImageNum(), inputFile.getImages(),
                 inputFile.getDimensions(), W, lshCmdVariables->K);
@@ -69,16 +71,18 @@ int main(int argc, char const *argv[]) {
         }
 
         //Nearest image tuple -> contains imagePtr, distance and total time of calculation
-        tuple<Image*, int, microseconds> nearestImage;
+        tuple<vector<tuple<int,Image*>>, microseconds> exactNearestImages;
+        tuple<vector<tuple<int,Image*>>, microseconds> apprNearestImages;
         for(int i = 0; i < queryFile.getImages()->size(); i++) {
-            nearestImage = exactNN(queryFile.getImages()->at(i), inputFile.getImages());
+            exactNearestImages = exactNN(queryFile.getImages()->at(i),
+                                   inputFile.getImages(),
+                                   lshCmdVariables->N);
 
+            apprNearestImages = aproxKNN(queryFile.getImages()->at(i),
+                                         &lsh,
+                                         lshCmdVariables->N);
 
-            //Print some results
-            cout << "Query_ID: " << queryFile.getImages()->at(i)->getId() << endl;
-            cout << "Nearest_ID: " << get<0>(nearestImage)->getId() << endl;
-            cout << "distanceTrue: " << get<1>(nearestImage) << endl;
-            cout << "tTrue: " << get<2>(nearestImage).count() << "μs" << endl;
+            printResults(apprNearestImages, exactNearestImages, queryFile.getImages()->at(i));
         }
 
         //Ask user if he wants to exit or do another search
