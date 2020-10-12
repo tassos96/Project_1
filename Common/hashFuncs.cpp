@@ -43,31 +43,30 @@ int SimpleHash::mod(int divident,int divisor) {
     return divident % divisor + divisor;
 }
 
-unsigned int SimpleHash::mod(unsigned int divident,int divisor) {
+int SimpleHash::mod(unsigned int divident,int divisor) {
     return divident & (divisor - 1);
 }
 
 int SimpleHash::modularExp(unsigned int base, unsigned int exp, int div) {
-    vector<unsigned int> results;
+    unsigned int factor = 1;
     unsigned int prevRes;
     for (unsigned int i = 1; i <= exp; i*=2) {
         unsigned int nextRes;
         if(i == 1)
             nextRes = SimpleHash::mod(base,div);
-        else
-            nextRes = SimpleHash::mod((unsigned int)pow(prevRes,2),div);
+        else {
+            unsigned int t = pow(SimpleHash::mod(prevRes,div),2);
+            nextRes = SimpleHash::mod(t,div);
+        }
+
 
         if((i & exp) != 0)
-            results.push_back(nextRes);
+            factor *= nextRes;
 
         prevRes = nextRes;
     }
 
-    vector<unsigned int>::iterator it;
-    int factor = 1;
-    for (it = results.begin(); it < results.end() ; ++it) {
-        factor *= *it;
-    }
+
     return SimpleHash::mod(factor,div);
 }
 

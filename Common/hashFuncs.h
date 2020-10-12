@@ -28,7 +28,7 @@ public:
     void outShifts();
     double generateDcml() const;
     int hashResult(vector<unsigned char>*);
-    static unsigned int mod(unsigned int,int);
+    static int mod(unsigned int,int);
 };
 
 class AmplifiedHash {
