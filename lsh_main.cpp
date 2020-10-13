@@ -39,7 +39,7 @@ int main(int argc, char const *argv[]) {
         Dataset inputFile(lshCmdVariables->inputFileName);
         //Structures creation here
         //.....
-        double W = calcW(inputFile.getImages(),10, inputFile.getImageNum());
+        double W = calcW(inputFile.getImages(),1, inputFile.getImageNum());
         cout << "W: " << W << endl;
         Lsh lsh(lshCmdVariables->L, inputFile.getImageNum(), inputFile.getImages(),
                 inputFile.getDimensions(), W, lshCmdVariables->K);

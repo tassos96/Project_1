@@ -1,6 +1,6 @@
 #include "lsh.h"
 
-//#define TABLE_SIZE_DIV 16
+#define TABLE_SIZE_DIV 16
 
 LshTable::LshTable(int imgNum,
                    unordered_map<int, Image *> *imgs,
@@ -8,11 +8,9 @@ LshTable::LshTable(int imgNum,
                    double w,
                    int numHashes): gHash(dim,
                                          w,
-                                         pow(2,32/numHashes),
-//                                         imgNum / TABLE_SIZE_DIV,
+                                         imgNum / TABLE_SIZE_DIV,
                                          numHashes){
-//    this->tableSize = imgNum / TABLE_SIZE_DIV;
-    this->tableSize = pow(2,32/numHashes);
+    this->tableSize = imgNum / TABLE_SIZE_DIV;
     this->table = new unordered_map<int,Bucket *>;
     this->splitIntoBuckets(imgNum, imgs);
 }

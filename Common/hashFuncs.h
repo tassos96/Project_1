@@ -9,6 +9,7 @@
 #include <cmath>
 #include <random>
 #include <chrono>
+#include "Utils.h"
 
 using namespace std;
 using namespace std::chrono;
@@ -17,7 +18,7 @@ class SimpleHash {
 private:
     int dimension;
     double gridW;
-    int tableSize; // the hash table size
+    int divisor; // M from slides [2^(32/k)]
     vector<double> *shifts;
     void randShifts();
     static int mod(int,int);
@@ -25,7 +26,6 @@ private:
 public:
     SimpleHash(int,double,int);
     ~SimpleHash();
-    void outShifts();
     double generateDcml() const;
     int hashResult(vector<unsigned char>*);
     static int mod(unsigned int,int);

@@ -1,6 +1,6 @@
 #include "RangeSearch.h"
 
-#define CHECKED_FACTOR 100
+#define CHECKED_FACTOR 50
 
 vector<tuple<int,Image*>> aproxRangeSrch(Image* queryImage,
                                         Lsh* structure,
@@ -27,13 +27,11 @@ vector<tuple<int,Image*>> aproxRangeSrch(Image* queryImage,
             if(newDist <= radius)
                 queue.insert(buckImgs->at(j), newDist);
 
-//            if(++checked > (2*CHECKED_FACTOR*numTables)){
-//                cout << "checked many images" << endl;
-//                break;
-//            }
+            if(++checked > (2*CHECKED_FACTOR*numTables))
+                break;
         }
-//        if(checked > (2*CHECKED_FACTOR*numTables))
-//            break;
+        if(checked > (2*CHECKED_FACTOR*numTables))
+            break;
     }
 
     //gather results

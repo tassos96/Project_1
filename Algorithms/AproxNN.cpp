@@ -1,6 +1,6 @@
 #include "AproxNN.h"
 
-#define CHECKED_FACTOR 100
+#define CHECKED_FACTOR 50
 
 tuple<vector<tuple<int,Image*>>, microseconds> aproxKNN(Image* queryImage,
                                                         Lsh* structure,
@@ -24,14 +24,11 @@ tuple<vector<tuple<int,Image*>>, microseconds> aproxKNN(Image* queryImage,
                 continue;
             buckImgs->at(j)->markImage();
             queue.tryInsert(queryImage,buckImgs->at(j),numNeighbors);
-//            if(++checked > (CHECKED_FACTOR*numTables)){
-//                cout << "checked many images" << endl;
-//                break;
-//            }
-
+            if(++checked > (CHECKED_FACTOR*numTables))
+                break;
         }
-//        if(checked > (CHECKED_FACTOR*numTables))
-//            break;
+        if(checked > (CHECKED_FACTOR*numTables))
+            break;
     }
     //stop timer
     high_resolution_clock::time_point stopTimer = high_resolution_clock::now();

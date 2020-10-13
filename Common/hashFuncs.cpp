@@ -1,10 +1,10 @@
 #include "hashFuncs.h"
 
 
-SimpleHash::SimpleHash(int dim, double w, int tableSize) {
+SimpleHash::SimpleHash(int dim, double w, int divisor) {
     this->dimension = dim;
     this->gridW = w;
-    this->tableSize = tableSize;
+    this->divisor = divisor;
     this->shifts = new vector<double>();
     this->randShifts();
 }
@@ -18,14 +18,6 @@ SimpleHash::~SimpleHash() {
 void SimpleHash::randShifts() {
     for (int i = 0; i < this->dimension; ++i) {
         this->shifts->push_back(generateDcml());
-    }
-}
-
-void SimpleHash::outShifts() {
-    vector<double>::iterator it;
-    int s = 0;
-    for (it = shifts->begin(); it < shifts->end() ; ++it) {
-        cout << "S" << s++ << " : " << *it << endl;
     }
 }
 
@@ -85,11 +77,11 @@ int SimpleHash::hashResult(vector<unsigned char> *pixels) {
         int a_i = a.at(i);
         int factor_1 = SimpleHash::modularExp(m,
                                               this->dimension-1-i,
-                                              this->tableSize);
-        int factor_2 = SimpleHash::mod(a_i, this->tableSize);
-        sum+= SimpleHash::mod(factor_1 * factor_2, this->tableSize);
+                                              this->divisor);
+        int factor_2 = SimpleHash::mod(a_i, this->divisor);
+        sum+= SimpleHash::mod(factor_1 * factor_2, this->divisor);
     }
-    return mod(sum, this->tableSize);
+    return mod(sum, this->divisor);
 }
 
 AmplifiedHash::AmplifiedHash(int dim, double w, int tableSize, int numHashes) {
@@ -97,7 +89,7 @@ AmplifiedHash::AmplifiedHash(int dim, double w, int tableSize, int numHashes) {
     this->numHashes = numHashes;
     this->tableSize = tableSize;
     for (int i = 0; i < numHashes; ++i) {
-        subhashes->push_back(new SimpleHash(dim, w, tableSize));
+        subhashes->push_back(new SimpleHash(dim, w, pow(2,32/numHashes)));
     }
 }
 
@@ -120,4 +112,4 @@ int AmplifiedHash::hashResult(Image * img){
     }
     img->keepHashResult(retVal);
     return (int)SimpleHash::mod(retVal,this->tableSize);
-};
+}
