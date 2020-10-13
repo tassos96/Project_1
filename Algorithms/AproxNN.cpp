@@ -1,5 +1,7 @@
 #include "AproxNN.h"
 
+#define M 100
+
 tuple<vector<tuple<int,Image*>>, microseconds> aproxKNN(Image* queryImage,
                                                         Lsh* structure,
                                                         int numNeighbors) {
@@ -34,13 +36,13 @@ tuple<vector<tuple<int,Image*>>, microseconds> aproxKNN(Image* queryImage,
                 queue.pop();
                 queue.push(make_tuple(newDist, buckImgs->at(j)));
             }
-//            if(++checked > (100*numTables)){
-//                cout << "checked many images" << endl;
-//                break;
-//            }
+            if(++checked > (M*numTables)){
+                cout << "checked many images" << endl;
+                break;
+            }
 
         }
-        if(checked > (100*numTables))
+        if(checked > (M*numTables))
             break;
     }
     //stop timer
@@ -79,20 +81,20 @@ tuple<vector<tuple<int,Image*>>, microseconds> aproxRangeNN(Image* queryImage,
             continue;
         vector<Image *> *buckImgs = buckPtr->getImages();
         for (int j = 0; j < buckImgs->size(); ++j) {
-            if(buckImgs->at(j)->isMarkedRange())
+            if(buckImgs->at(j)->isMarked())
                 continue;
-            buckImgs->at(j)->markImageRange();
+            buckImgs->at(j)->markImage();
 
             int newDist = manhattanDistance(queryImage->getPixels(), buckImgs->at(j)->getPixels());
             if(newDist <= radius)
                 queue.push(make_tuple(newDist, buckImgs->at(j)));
 
-//            if(++checked > (100*numTables)){
-//                cout << "checked many images" << endl;
-//                break;
-//            }
+            if(++checked > (2*M*numTables)){
+                cout << "checked many images" << endl;
+                break;
+            }
         }
-        if(checked > (100*numTables))
+        if(checked > (2*M*numTables))
             break;
     }
     //stop timer

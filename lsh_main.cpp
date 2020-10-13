@@ -75,18 +75,25 @@ int main(int argc, char const *argv[]) {
         tuple<vector<tuple<int,Image*>>, microseconds> apprNearestImages;
         tuple<vector<tuple<int,Image*>>, microseconds> apprRangeNrstImages;
         for(int i = 0; i < queryFile.getImages()->size(); i++) {
+            //Run exactNN algorithm
             exactNearestImages = exactNN(queryFile.getImages()->at(i),
                                    inputFile.getImages(),
                                    lshCmdVariables->N);
 
+            //Run approximateNN algorithm
             apprNearestImages = aproxKNN(queryFile.getImages()->at(i),
                                          &lsh,
                                          lshCmdVariables->N);
 
+            //Clear previous marked images from approximateNN
+            inputFile.unmarkAllImages();
+
+            //Run approximate range NN algorithm
             apprRangeNrstImages = aproxRangeNN(queryFile.getImages()->at(i),
                                                &lsh,
                                                lshCmdVariables->R);
 
+            //Print the algorithms results
             printResults(apprNearestImages,
                          exactNearestImages,
                          apprRangeNrstImages,

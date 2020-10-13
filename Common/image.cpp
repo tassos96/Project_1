@@ -3,7 +3,7 @@
 Image::Image(int id) {
     this->id = id;
     this->marked = false;
-    this->markedRange = false;
+//    this->markedRange = false;
     this->pixels = new vector<unsigned char>;
     this->g_results = new vector<unsigned int>;
 }
@@ -34,14 +34,19 @@ void Image::markImage() {
     this->marked = true;
 }
 
+void Image::unmarkImage() {
+    this->marked = false;
+}
+
+
 bool Image::isMarked() {
     return this->marked;
 }
 
-void Image::markImageRange() {
-    this->markedRange = true;
-}
-
-bool Image::isMarkedRange() {
-    return this->markedRange;
-}
+//void Image::markImageRange() {
+//    this->markedRange = true;
+//}
+//
+//bool Image::isMarkedRange() {
+//    return this->markedRange;
+//}
