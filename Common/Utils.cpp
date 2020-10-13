@@ -49,3 +49,19 @@ void unmarkImgs(unordered_map<int, Image*> * imgs, int imgNum) {
     for (int i = 0; i < imgNum; ++i)
         imgs->at(i)->unmarkImage();
 }
+
+//vector<string> getNearbyVertices(int hammingDist,
+//                                 string currentVertex,
+//                                 int start,
+//                                 int end) {
+//    if(start == end) {
+//        return vector<string> {"1","0"};
+//    }
+//    else if(start > end) {
+//        return vector<string>{};
+//    }
+//    int middl = floor((end + start)/ 2);
+//    vector<string>left = getNearbyVertices(hammingDist, currentVertex, start, middl-1);
+//    vector<string>right = getNearbyVertices(hammingDist, currentVertex, middl+1, end);
+//
+//}

@@ -5,6 +5,8 @@
 #include <tuple>
 #include <chrono>
 #include <unordered_map>
+#include <cmath>
+#include "Distance.h"
 
 using namespace std;
 using namespace std::chrono;

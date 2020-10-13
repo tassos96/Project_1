@@ -16,6 +16,9 @@ using namespace std;
 
 //Function that calculates the manhattan distance between two images
 int manhattanDistance(vector<unsigned char> * firstImagePixels, vector<unsigned char> * secondImagePixels);
+
 double calcW(unordered_map<int, Image *> * imgs, double samplePrcnt, int imgNum);
+
+int hammingDistance(string str1, string str2);
 
 #endif //PROJECT_TASK1_DISTANCE_H

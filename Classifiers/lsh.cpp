@@ -20,7 +20,7 @@ LshTable::~LshTable() {
         try { // in case not all buckets were used
             delete this->table->at(i);
         }
-        catch (out_of_range & ex) {
+        catch (out_of_range &) {
             continue;
         }
     }
@@ -32,7 +32,7 @@ tuple<int, Bucket* > LshTable::getBucket(Image* image) {
     try {
         return make_tuple(index, this->table->at(index));
     }
-    catch (out_of_range & ex) {
+    catch (out_of_range &) {
         //in case bucket is empty return nullptr
         return make_tuple(index, nullptr);
     }
@@ -47,7 +47,7 @@ void LshTable::splitIntoBuckets(int imgNum, unordered_map<int, Image *> * imgs) 
         try {
             this->table->at(index)->insertImage(imgPtr);
         }
-        catch (out_of_range & ex) {
+        catch (out_of_range &) {
             pair<int, Bucket *> newPair(index, new Bucket());
             this->table->insert(newPair);
             this->table->at(index)->insertImage(imgPtr);

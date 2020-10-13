@@ -35,3 +35,13 @@ double calcW(unordered_map<int, Image *> * imgs, double samplePrcnt, int imgNum)
     }
     return dstnc / numIndexes;
 }
+
+
+int hammingDistance(string str1, string str2) {
+    // strings are always of the same length since they refer to hypercube vertices
+    int toRet = 0;
+    for (int i = 0; i < str1.length(); ++i)
+        toRet += str1[i] == str2[i] ? 0 : 1;
+
+    return toRet;
+}

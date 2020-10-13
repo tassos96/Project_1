@@ -9,7 +9,7 @@ private:
     vector<Image *> *images;
 public:
     Bucket();
-    virtual ~Bucket();
+    ~Bucket();
     void insertImage(Image *);
     vector<Image *> *getImages();
 };
