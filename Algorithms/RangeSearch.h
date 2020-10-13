@@ -5,15 +5,13 @@
 #include <queue>
 #include <tuple>
 #include <limits>
-#include <chrono>
-
 
 #include "../Common/image.h"
 #include "../Common/Distance.h"
 #include "../Classifiers/lsh.h"
 
 vector<tuple<int,Image*>> aproxRangeSrch(Image* queryImage,
-                                                            Lsh* structure,
-                                                            double radius);
+                                        Lsh* structure,
+                                        double radius);
 
 #endif //PROJECT_TASK1_RANGESEARCH_H

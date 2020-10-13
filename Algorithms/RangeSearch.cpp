@@ -3,12 +3,9 @@
 #define CHECKED_FACTOR 100
 
 vector<tuple<int,Image*>> aproxRangeSrch(Image* queryImage,
-                                                                Lsh* structure,
-                                                                double radius) {
+                                        Lsh* structure,
+                                        double radius) {
     PriorityQueue<PriorityCloser> queue;
-
-    //start timer
-    high_resolution_clock::time_point startTimer = high_resolution_clock::now();
 
     // number of lsh tables
     int numTables = structure->getNumTables();
@@ -38,10 +35,6 @@ vector<tuple<int,Image*>> aproxRangeSrch(Image* queryImage,
 //        if(checked > (2*CHECKED_FACTOR*numTables))
 //            break;
     }
-
-    //stop timer
-    high_resolution_clock::time_point stopTimer = high_resolution_clock::now();
-    auto timerDuration = duration_cast<microseconds>(stopTimer - startTimer);
 
     //gather results
     vector<tuple<int, Image*>> result;
