@@ -12,27 +12,28 @@ tuple<vector<tuple<int,Image*>>, microseconds> aproxKNN(Image* queryImage,
 
     int numTables = structure->getNumTables();     // number of lsh tables
     int checked = 0; // stop when a lot of potential NNeighbours are checked
-
+    cout << "*** NEAREST NEIGHBOUR ***" << endl;
     for (int i = 0; i < numTables; ++i) {
         LshTable *tbl = structure->getHashTable(i);
         tuple<int, Bucket *>bucketTpl = tbl->getBucket(queryImage);
         Bucket * buckPtr = get<1>(bucketTpl);
         if(buckPtr == nullptr)
             continue;
+        cout << "Checking bucket #" << get<0>(bucketTpl) << " of table #" << i << endl;
         vector<Image *> *buckImgs = buckPtr->getImages();
         for (int j = 0; j < buckImgs->size(); ++j) {
             if(buckImgs->at(j)->isMarked())
                 continue;
             buckImgs->at(j)->markImage();
-            queue.tryInsertQueue(queryImage,buckImgs->at(j),numNeighbors);
-            if(++checked > (CHECKED_FACTOR*numTables)){
-                cout << "checked many images" << endl;
-                break;
-            }
+            queue.tryInsert(queryImage,buckImgs->at(j),numNeighbors);
+//            if(++checked > (CHECKED_FACTOR*numTables)){
+//                cout << "checked many images" << endl;
+//                break;
+//            }
 
         }
-        if(checked > (CHECKED_FACTOR*numTables))
-            break;
+//        if(checked > (CHECKED_FACTOR*numTables))
+//            break;
     }
     //stop timer
     high_resolution_clock::time_point stopTimer = high_resolution_clock::now();

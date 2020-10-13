@@ -10,7 +10,7 @@ tuple<vector<tuple<int,Image*>>, microseconds> exactNN(Image* queryImage,
 
     //find all NNeighbours and save them in a priority queue
     for(int i = 0; i < datasetImages->size(); ++i)
-        queue.tryInsertQueue(queryImage,datasetImages->at(i),numNeighbors);
+        queue.tryInsert(queryImage,datasetImages->at(i),numNeighbors);
 
     //stop timer
     high_resolution_clock::time_point stopTimer = high_resolution_clock::now();

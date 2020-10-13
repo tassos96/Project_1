@@ -8,23 +8,23 @@
 
 using namespace std;
 
-auto comp = [](const tuple<int, Image *>& i1,
-                const tuple<int, Image *>& i2)
-                    {return get<0>(i1) < get<0>(i2); };
+class Compare {
+public:
+    bool operator() (tuple<int, Image *> &t1, tuple<int, Image *> &t2) {
+        return get<0>(t1) < get<0>(t2);
+    }
+};
 
 class PriorityQueue {
 private:
     priority_queue<tuple<int, Image *>,
                     vector< tuple<int, Image *> >,
-                    decltype(comp)> * queue;
+                    Compare> queue;
 
 public:
-    PriorityQueue();
-    ~PriorityQueue();
-
-    void tryInsertQueue(Image *, Image *, int );
+    void tryInsert(Image *, Image *, int );
     void transferToVector(vector<tuple<int, Image*>> *);
-    void insertQueue(Image *, int);
+    void insert(Image *, int);
 
 };
 

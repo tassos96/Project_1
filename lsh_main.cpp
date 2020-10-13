@@ -39,7 +39,7 @@ int main(int argc, char const *argv[]) {
         Dataset inputFile(lshCmdVariables->inputFileName);
         //Structures creation here
         //.....
-        double W = calcW(inputFile.getImages(),10,inputFile.getImageNum());
+        double W = calcW(inputFile.getImages(),100,inputFile.getImageNum());
         cout << "W: " << W << endl;
         Lsh lsh(lshCmdVariables->L, inputFile.getImageNum(), inputFile.getImages(),
                 inputFile.getDimensions(), W, lshCmdVariables->K);
@@ -74,7 +74,7 @@ int main(int argc, char const *argv[]) {
         //Nearest image tuple -> contains imagePtr, distance and total time of calculation
         tuple<vector<tuple<int,Image*>>, microseconds> exactNearestImages;
         tuple<vector<tuple<int,Image*>>, microseconds> apprNearestImages;
-        tuple<vector<tuple<int,Image*>>, microseconds> apprRangeNrstImages;
+        tuple<vector<tuple<int,Image*>>, microseconds> apprRangeSrchImages;
         for(int i = 0; i < queryFile.getImages()->size(); i++) {
             //Run exactNN algorithm
             exactNearestImages = exactNN(queryFile.getImages()->at(i),
@@ -90,14 +90,14 @@ int main(int argc, char const *argv[]) {
             unmarkImgs(inputFile.getImages(),inputFile.getImageNum());
 
             //Run approximate range search algorithm
-            apprRangeNrstImages = aproxRangeSrch(queryFile.getImages()->at(i),
+            apprRangeSrchImages = aproxRangeSrch(queryFile.getImages()->at(i),
                                                &lsh,
                                                lshCmdVariables->R);
 
             //Print the algorithms results
             printResults(apprNearestImages,
                          exactNearestImages,
-                         apprRangeNrstImages,
+                         apprRangeSrchImages,
                          queryFile.getImages()->at(i));
         }
 

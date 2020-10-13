@@ -14,12 +14,14 @@ tuple<vector<tuple<int,Image*>>, microseconds> aproxRangeSrch(Image* queryImage,
     int numTables = structure->getNumTables();
 
     int checked = 0;
+    cout << endl << "*** RANGE SEARCH ***" << endl;
     for (int i = 0; i < numTables; ++i) {
         LshTable *tbl = structure->getHashTable(i);
         tuple<int, Bucket *> bucketTpl = tbl->getBucket(queryImage);
         Bucket *buckPtr = get<1>(bucketTpl);
         if (buckPtr == nullptr)
             continue;
+        cout << "Checking bucket #" << get<0>(bucketTpl) << " of table #" << i << endl;
         vector<Image *> *buckImgs = buckPtr->getImages();
         for (int j = 0; j < buckImgs->size(); ++j) {
             if(buckImgs->at(j)->isMarked())
@@ -28,15 +30,15 @@ tuple<vector<tuple<int,Image*>>, microseconds> aproxRangeSrch(Image* queryImage,
 
             int newDist = manhattanDistance(queryImage->getPixels(), buckImgs->at(j)->getPixels());
             if(newDist <= radius)
-                queue.insertQueue(buckImgs->at(j), newDist);
+                queue.insert(buckImgs->at(j), newDist);
 
-            if(++checked > (2*CHECKED_FACTOR*numTables)){
-                cout << "checked many images" << endl;
-                break;
-            }
+//            if(++checked > (2*CHECKED_FACTOR*numTables)){
+//                cout << "checked many images" << endl;
+//                break;
+//            }
         }
-        if(checked > (2*CHECKED_FACTOR*numTables))
-            break;
+//        if(checked > (2*CHECKED_FACTOR*numTables))
+//            break;
     }
 
     //stop timer
