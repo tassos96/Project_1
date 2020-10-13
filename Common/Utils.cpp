@@ -50,18 +50,19 @@ void unmarkImgs(unordered_map<int, Image*> * imgs, int imgNum) {
         imgs->at(i)->unmarkImage();
 }
 
-//vector<string> getNearbyVertices(int hammingDist,
-//                                 string currentVertex,
-//                                 int start,
-//                                 int end) {
-//    if(start == end) {
-//        return vector<string> {"1","0"};
-//    }
-//    else if(start > end) {
-//        return vector<string>{};
-//    }
-//    int middl = floor((end + start)/ 2);
-//    vector<string>left = getNearbyVertices(hammingDist, currentVertex, start, middl-1);
-//    vector<string>right = getNearbyVertices(hammingDist, currentVertex, middl+1, end);
-//
-//}
+void getNearbyVertices(string currentVertex,
+                       int i,
+                       int changesLeft) {
+    if(changesLeft == 0) {
+        cout << currentVertex << endl;
+        return;
+    }
+    if(i < 0)
+        return;
+    //flip current bit
+    currentVertex[i] = currentVertex[i] == '0' ? '1' : '0';
+    getNearbyVertices(currentVertex, i - 1, changesLeft - 1);
+    //or dont flip it (flip it again to undo)
+    currentVertex[i] = currentVertex[i] == '0' ? '1' : '0';
+    getNearbyVertices(currentVertex, i - 1, changesLeft);
+}

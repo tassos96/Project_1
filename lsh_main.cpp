@@ -18,6 +18,15 @@ using namespace std::chrono;
 
 
 int main(int argc, char const *argv[]) {
+
+    string test = "0110111";
+    int maxDistance = test.length();
+    for(int i = 0; i <= maxDistance; ++i) {
+        cout << "Computing for distance " << i << endl;
+        getNearbyVertices(test, maxDistance - 1, i);
+        cout << "----------" << endl;
+    }
+
     LshCmdVariables *lshCmdVariables = setLshArguments(argc, argv);
     bool termination;
 
