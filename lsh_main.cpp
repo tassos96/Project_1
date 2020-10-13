@@ -73,6 +73,7 @@ int main(int argc, char const *argv[]) {
         //Nearest image tuple -> contains imagePtr, distance and total time of calculation
         tuple<vector<tuple<int,Image*>>, microseconds> exactNearestImages;
         tuple<vector<tuple<int,Image*>>, microseconds> apprNearestImages;
+        tuple<vector<tuple<int,Image*>>, microseconds> apprRangeNrstImages;
         for(int i = 0; i < queryFile.getImages()->size(); i++) {
             exactNearestImages = exactNN(queryFile.getImages()->at(i),
                                    inputFile.getImages(),
@@ -82,7 +83,14 @@ int main(int argc, char const *argv[]) {
                                          &lsh,
                                          lshCmdVariables->N);
 
-            printResults(apprNearestImages, exactNearestImages, queryFile.getImages()->at(i));
+            apprRangeNrstImages = aproxRangeNN(queryFile.getImages()->at(i),
+                                               &lsh,
+                                               lshCmdVariables->R);
+
+            printResults(apprNearestImages,
+                         exactNearestImages,
+                         apprRangeNrstImages,
+                         queryFile.getImages()->at(i));
         }
 
         //Ask user if he wants to exit or do another search

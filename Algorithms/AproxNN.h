@@ -19,5 +19,8 @@ tuple<vector<tuple<int,Image*>>, microseconds> aproxKNN(Image* queryImage,
                                                         Lsh* structure,
                                                         int numNeighbors = 1);
 
+tuple<vector<tuple<int,Image*>>, microseconds> aproxRangeNN(Image* queryImage,
+                                                            Lsh* structure,
+                                                            double radius);
 
 #endif //PROJECT_TASK1_APROXNN_H

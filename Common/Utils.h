@@ -11,6 +11,9 @@ using namespace std::chrono;
 
 void printResults(tuple<vector<tuple<int,Image*>>, microseconds> &apprNearestImages,
                   tuple<vector<tuple<int,Image*>>, microseconds> &exactNearestImages,
+                  tuple<vector<tuple<int,Image*>>, microseconds> &apprRangeNrstImages,
                   Image * queryImg);
+
+void printRangeNrstImages(tuple<vector<tuple<int,Image*>>, microseconds> &apprRangeNrstImages);
 
 #endif //PROJECT_TASK1_UTILS_H
