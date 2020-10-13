@@ -3,7 +3,7 @@
 tuple<vector<tuple<int,Image*>>, microseconds> exactNN(Image* queryImage,
                                                        unordered_map<int, Image *> *datasetImages,
                                                        int numNeighbors){
-    PriorityQueue queue;
+    PriorityQueue<PriorityFurther> queue;
 
     //Start timer
     high_resolution_clock::time_point startTimer = high_resolution_clock::now();

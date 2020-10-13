@@ -8,18 +8,26 @@
 
 using namespace std;
 
-class Compare {
+class PriorityFurther {
 public:
     bool operator() (tuple<int, Image *> &t1, tuple<int, Image *> &t2) {
         return get<0>(t1) < get<0>(t2);
     }
 };
 
+class PriorityCloser {
+public:
+    bool operator() (tuple<int, Image *> &t1, tuple<int, Image *> &t2) {
+        return get<0>(t1) > get<0>(t2);
+    }
+};
+
+template<class comp>
 class PriorityQueue {
 private:
     priority_queue<tuple<int, Image *>,
                     vector< tuple<int, Image *> >,
-                    Compare> queue;
+                    comp> queue;
 
 public:
     void tryInsert(Image *, Image *, int );
@@ -27,6 +35,5 @@ public:
     void insert(Image *, int);
 
 };
-
 
 #endif //PROJECT_TASK1_PRIORITYQUEUE_H

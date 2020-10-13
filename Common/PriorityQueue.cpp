@@ -1,6 +1,7 @@
 #include "PriorityQueue.h"
 
-void PriorityQueue::tryInsert(Image *queryImg, Image *newImg, int numNeighbors) {
+template<class comp>
+void PriorityQueue<comp>::tryInsert(Image *queryImg, Image *newImg, int numNeighbors) {
     int newDist = manhattanDistance(queryImg->getPixels(), newImg->getPixels());
     if(this->queue.size() < numNeighbors)
         this->queue.push(make_tuple(newDist, newImg));
@@ -10,13 +11,18 @@ void PriorityQueue::tryInsert(Image *queryImg, Image *newImg, int numNeighbors) 
     }
 }
 
-void PriorityQueue::insert(Image *newImg, int newDist) {
+template<class comp>
+void PriorityQueue<comp>::insert(Image *newImg, int newDist) {
     this->queue.push(make_tuple(newDist, newImg));
 }
 
-void PriorityQueue::transferToVector(vector<tuple<int, Image *>> * vec) {
+template<class comp>
+void PriorityQueue<comp>::transferToVector(vector<tuple<int, Image *>> * vec) {
     while(!queue.empty()) {
         vec->push_back(queue.top());
         queue.pop();
     }
 }
+
+template class PriorityQueue<PriorityFurther>;
+template class PriorityQueue<PriorityCloser>;

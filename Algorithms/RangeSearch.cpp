@@ -2,10 +2,10 @@
 
 #define CHECKED_FACTOR 100
 
-tuple<vector<tuple<int,Image*>>, microseconds> aproxRangeSrch(Image* queryImage,
+vector<tuple<int,Image*>> aproxRangeSrch(Image* queryImage,
                                                                 Lsh* structure,
                                                                 double radius) {
-    PriorityQueue queue;
+    PriorityQueue<PriorityCloser> queue;
 
     //start timer
     high_resolution_clock::time_point startTimer = high_resolution_clock::now();
@@ -46,5 +46,5 @@ tuple<vector<tuple<int,Image*>>, microseconds> aproxRangeSrch(Image* queryImage,
     //gather results
     vector<tuple<int, Image*>> result;
     queue.transferToVector(&result);
-    return make_tuple(result, timerDuration);
+    return result;
 }

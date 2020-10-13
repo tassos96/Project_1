@@ -3,12 +3,13 @@
 
 #include <vector>
 #include <unordered_map>
-#include "image.h"
 #include <numeric>
 #include <algorithm>
 #include <random>
 #include <chrono>
 #include <cmath>
+
+#include "image.h"
 #include "../Algorithms/ExactNN.h"
 
 using namespace std;

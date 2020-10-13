@@ -12,7 +12,7 @@
 #include "../Common/Distance.h"
 #include "../Classifiers/lsh.h"
 
-tuple<vector<tuple<int,Image*>>, microseconds> aproxRangeSrch(Image* queryImage,
+vector<tuple<int,Image*>> aproxRangeSrch(Image* queryImage,
                                                             Lsh* structure,
                                                             double radius);
 

@@ -5,7 +5,7 @@
 tuple<vector<tuple<int,Image*>>, microseconds> aproxKNN(Image* queryImage,
                                                         Lsh* structure,
                                                         int numNeighbors) {
-    PriorityQueue queue;
+    PriorityQueue<PriorityFurther> queue;
 
     //start timer
     high_resolution_clock::time_point startTimer = high_resolution_clock::now();

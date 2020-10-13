@@ -39,7 +39,7 @@ int main(int argc, char const *argv[]) {
         Dataset inputFile(lshCmdVariables->inputFileName);
         //Structures creation here
         //.....
-        double W = calcW(inputFile.getImages(),100,inputFile.getImageNum());
+        double W = calcW(inputFile.getImages(),10, inputFile.getImageNum());
         cout << "W: " << W << endl;
         Lsh lsh(lshCmdVariables->L, inputFile.getImageNum(), inputFile.getImages(),
                 inputFile.getDimensions(), W, lshCmdVariables->K);
@@ -74,7 +74,7 @@ int main(int argc, char const *argv[]) {
         //Nearest image tuple -> contains imagePtr, distance and total time of calculation
         tuple<vector<tuple<int,Image*>>, microseconds> exactNearestImages;
         tuple<vector<tuple<int,Image*>>, microseconds> apprNearestImages;
-        tuple<vector<tuple<int,Image*>>, microseconds> apprRangeSrchImages;
+        vector<tuple<int,Image*>> apprRangeSrchImages;
         for(int i = 0; i < queryFile.getImages()->size(); i++) {
             //Run exactNN algorithm
             exactNearestImages = exactNN(queryFile.getImages()->at(i),
