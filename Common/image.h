@@ -11,7 +11,6 @@ class Image {
 private:
     int id;
     bool marked;
-    //bool markedRange;
     vector<unsigned int> *g_results; //keep hash results
     vector<unsigned char> *pixels;
 
@@ -24,10 +23,8 @@ public:
     vector<unsigned char> *getPixels() const;
     void keepHashResult(unsigned int);
 
-    void markImage();
-    //void markImageRange();
     bool isMarked();
-    //bool isMarkedRange();
+    void markImage();
     void unmarkImage();
 };
 

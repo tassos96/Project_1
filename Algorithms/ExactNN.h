@@ -10,6 +10,7 @@
 
 #include "../Common/image.h"
 #include "../Common/Distance.h"
+#include "../Common/PriorityQueue.h"
 
 using namespace std;
 using namespace std::chrono;

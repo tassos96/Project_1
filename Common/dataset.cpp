@@ -63,8 +63,3 @@ int Dataset::getImageNum() const {
 int Dataset::getDimensions() const {
     return this->rows * this->columns;
 }
-
-void Dataset::unmarkAllImages() {
-    for(int i = 0; i < this->data->size(); ++i)
-        this->data->at(i)->unmarkImage();
-}

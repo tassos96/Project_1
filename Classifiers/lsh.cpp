@@ -54,8 +54,6 @@ void LshTable::splitIntoBuckets(int imgNum, unordered_map<int, Image *> * imgs) 
             this->table->insert(newPair);
             this->table->at(index)->insertImage(imgPtr);
         }
-        if((i+1)%5000 == 0)
-            cout << "prnt" << endl;
     }
 }
 

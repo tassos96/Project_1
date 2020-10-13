@@ -24,7 +24,6 @@ public:
     unordered_map<int, Image *> *getImages() const;
     int getImageNum() const;
     int getDimensions() const;
-    void unmarkAllImages();
 };
 
 

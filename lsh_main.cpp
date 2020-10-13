@@ -10,6 +10,7 @@
 #include "Common/Distance.h"
 #include "Algorithms/ExactNN.h"
 #include "Algorithms/AproxNN.h"
+#include "Algorithms/RangeSearch.h"
 #include "Classifiers/lsh.h"
 
 using namespace std;
@@ -77,8 +78,8 @@ int main(int argc, char const *argv[]) {
         for(int i = 0; i < queryFile.getImages()->size(); i++) {
             //Run exactNN algorithm
             exactNearestImages = exactNN(queryFile.getImages()->at(i),
-                                   inputFile.getImages(),
-                                   lshCmdVariables->N);
+                                        inputFile.getImages(),
+                                        lshCmdVariables->N);
 
             //Run approximateNN algorithm
             apprNearestImages = aproxKNN(queryFile.getImages()->at(i),
@@ -86,10 +87,10 @@ int main(int argc, char const *argv[]) {
                                          lshCmdVariables->N);
 
             //Clear previous marked images from approximateNN
-            inputFile.unmarkAllImages();
+            unmarkImgs(inputFile.getImages(),inputFile.getImageNum());
 
-            //Run approximate range NN algorithm
-            apprRangeNrstImages = aproxRangeNN(queryFile.getImages()->at(i),
+            //Run approximate range search algorithm
+            apprRangeNrstImages = aproxRangeSrch(queryFile.getImages()->at(i),
                                                &lsh,
                                                lshCmdVariables->R);
 

@@ -2,7 +2,7 @@
 
 void printResults(tuple<vector<tuple<int,Image*>>, microseconds> &apprNearestImages,
                   tuple<vector<tuple<int,Image*>>, microseconds> &exactNearestImages,
-                  tuple<vector<tuple<int,Image*>>, microseconds> &apprRangeNrstImages,
+                  tuple<vector<tuple<int,Image*>>, microseconds> &apprRangeSrchImages,
                   Image * queryImg) {
     vector<tuple<int,Image*>> &vAppr = get<0>(apprNearestImages);
     vector<tuple<int,Image*>> &vExact = get<0>(exactNearestImages);
@@ -33,15 +33,19 @@ void printResults(tuple<vector<tuple<int,Image*>>, microseconds> &apprNearestIma
     cout << "tLSH: " << get<1>(apprNearestImages).count() / 1000000.0 << "s" << endl;
     cout << "tTrue: " << get<1>(exactNearestImages).count() / 1000000.0 << "s" << endl;
 
-    printRangeNrstImages(apprRangeNrstImages);
-
-    cout << "~~~~~~~~~~~" << endl;
+    printRangeNrstImages(apprRangeSrchImages);
 }
 
-void printRangeNrstImages(tuple<vector<tuple<int,Image*>>, microseconds> &apprRangeNrstImages) {
-    vector<tuple<int,Image*>> &vRangeAppr = get<0>(apprRangeNrstImages);
+void printRangeNrstImages(tuple<vector<tuple<int,Image*>>, microseconds> &apprRangeSrchImages) {
+    vector<tuple<int,Image*>> &vec = get<0>(apprRangeSrchImages);
     cout << "R-near neighbors: " << endl;
-    for(int i = vRangeAppr.size()-1; i >= 0; --i) {
-        cout << "Image_" << get<1>(vRangeAppr.at(i))->getId() << endl;
+    for(int i = vec.size()-1; i >= 0; --i) {
+        cout << "\tImage_" << get<1>(vec.at(i))->getId() << " Distance: " << get<0>(vec.at(i)) << endl;
     }
+    cout << "~~~~~~~~~~~" << endl << endl;
+}
+
+void unmarkImgs(unordered_map<int, Image*> * imgs, int imgNum) {
+    for (int i = 0; i < imgNum; ++i)
+        imgs->at(i)->unmarkImage();
 }

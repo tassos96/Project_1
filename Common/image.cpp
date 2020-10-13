@@ -42,11 +42,3 @@ void Image::unmarkImage() {
 bool Image::isMarked() {
     return this->marked;
 }
-
-//void Image::markImageRange() {
-//    this->markedRange = true;
-//}
-//
-//bool Image::isMarkedRange() {
-//    return this->markedRange;
-//}
