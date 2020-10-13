@@ -86,13 +86,16 @@ int main(int argc, char const *argv[]) {
                                          &lsh,
                                          lshCmdVariables->N);
 
-            //Clear previous marked images from approximateNN
+            //Clear previously marked images from approximateNN
             unmarkImgs(inputFile.getImages(),inputFile.getImageNum());
 
             //Run approximate range search algorithm
             apprRangeSrchImages = aproxRangeSrch(queryFile.getImages()->at(i),
                                                &lsh,
                                                lshCmdVariables->R);
+
+            //Clear previously marked images for next query
+            unmarkImgs(inputFile.getImages(),inputFile.getImageNum());
 
             //Print the algorithms results
             printResults(apprNearestImages,
