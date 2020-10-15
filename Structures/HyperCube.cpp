@@ -1,5 +1,3 @@
-
-
 #include "HyperCube.h"
 
 F::F(int imgDimension, double h_W, int h_div):h(imgDimension, h_W, h_div) {}
@@ -37,7 +35,7 @@ HyperCube::~HyperCube(){
         delete element.second;
 }
 
-string HyperCube::getVerticeIdx(Image * img) {
+string HyperCube::getVertexIdx(Image * img) {
     string toRet;
     for (int i = 0; i < this->cubeDimension; ++i)
         toRet += this->projectors.at(i)->rollTheDice(img->getPixels());
@@ -45,8 +43,8 @@ string HyperCube::getVerticeIdx(Image * img) {
     return toRet;
 }
 
-Bucket * HyperCube::getVertice(Image * img) {
-    string idx = getVerticeIdx(img);
+Bucket * HyperCube::getVertex(Image * img) {
+    string idx = getVertexIdx(img);
     try {
         return this->vertices.at(idx);
     }
@@ -57,7 +55,7 @@ Bucket * HyperCube::getVertice(Image * img) {
 
 void HyperCube::splitIntoVertices(int imgNum, unordered_map<int, Image *> * imgs) {
     for (int i = 0; i < imgNum; ++i) {
-        string vertex = this->getVerticeIdx(imgs->at(i));
+        string vertex = this->getVertexIdx(imgs->at(i));
         try {
             this->vertices.at(vertex)->insertImage(imgs->at(i));
         }
@@ -66,4 +64,8 @@ void HyperCube::splitIntoVertices(int imgNum, unordered_map<int, Image *> * imgs
             this->vertices.at(vertex)->insertImage(imgs->at(i));
         }
     }
+}
+
+unordered_map<string, Bucket *> HyperCube::getVertices() {
+    return this->vertices;
 }

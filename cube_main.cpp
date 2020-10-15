@@ -2,7 +2,6 @@
 #include <tuple>
 #include <chrono>
 
-
 #include "Common/CmdArgumentsReader.h"
 #include "Common/dataset.h"
 #include "Common/hashFuncs.h"
@@ -11,69 +10,52 @@
 #include "Algorithms/ExactNN.h"
 #include "Algorithms/AproxNN.h"
 #include "Algorithms/RangeSearch.h"
-#include "Structures/lsh.h"
+#include "Structures/HyperCube.h"
 
 using namespace std;
 using namespace std::chrono;
 
+int main(int argc, char const * argv[]) {
 
-int main(int argc, char const *argv[]) {
-
-//    string test = "011";
-//    vector<string> nearbyVertices;
-//    getVerticesToCheck(nearbyVertices, test, 2);
-
-    LshCmdVariables *lshCmdVariables = setLshArguments(argc, argv);
+    CubeCmdVariables *cubeCmdVariables = setCubeArguments(argc, argv);
     bool termination;
 
-    do {
+    do{
         //Ask from user the path of dataset
-        if (lshCmdVariables->inputFileName.empty()) {
+        if (cubeCmdVariables->inputFileName.empty()) {
             cout << "Insert path of dataset file: ";
-            cin >> lshCmdVariables->inputFileName;
+            cin >> cubeCmdVariables->inputFileName;
             cout << endl;
         }
 
-//        cout << "----- Program arguments -----" << endl;
-//        cout << lshCmdVariables->inputFileName << endl;
-//        cout << lshCmdVariables->K << endl;
-//        cout << lshCmdVariables->L << endl;
-//        cout << lshCmdVariables->N << endl;
-//        cout << lshCmdVariables->R << endl;
-
-        Dataset inputFile(lshCmdVariables->inputFileName);
-        //Structures creation here
-        //.....
+        Dataset inputFile(cubeCmdVariables->inputFileName);
+        //Structures creation
         double W = calcW(inputFile.getImages(),1, inputFile.getImageNum());
         cout << "W: " << W << endl;
-        Lsh lsh(lshCmdVariables->L, inputFile.getImageNum(), inputFile.getImages(),
-                inputFile.getDimensions(), W, lshCmdVariables->K);
-        //.....
-        //.....
-        //.....
-        //End of structures creation
+        HyperCube hyperCube(inputFile.getDimensions(), W, cubeCmdVariables->K, cubeCmdVariables->K);
+        hyperCube.splitIntoVertices(inputFile.getImageNum(), inputFile.getImages());
 
         //Ask from user the path of query file
-        if (lshCmdVariables->queryFileName.empty()) {
+        if (cubeCmdVariables->queryFileName.empty()) {
             cout << "Insert path of query file: ";
-            cin >> lshCmdVariables->queryFileName;
+            cin >> cubeCmdVariables->queryFileName;
             cout << endl;
         }
 
-        Dataset queryFile(lshCmdVariables->queryFileName);
+        Dataset queryFile(cubeCmdVariables->queryFileName);
 
         //Ask from user the path of output file
-        if (lshCmdVariables->outputFileName.empty()) {
+        if (cubeCmdVariables->outputFileName.empty()) {
             cout << "Insert path of output file: ";
-            cin >> lshCmdVariables->outputFileName;
+            cin >> cubeCmdVariables->outputFileName;
             cout << endl;
         }
 
         //Open output file
         ofstream outputFile;
-        outputFile.open(lshCmdVariables->outputFileName);
+        outputFile.open(cubeCmdVariables->outputFileName);
         if (!outputFile.is_open()) {
-            throw runtime_error("File " + string(lshCmdVariables->outputFileName) + " cannot be opened.");
+            throw runtime_error("File " + string(cubeCmdVariables->outputFileName) + " cannot be opened.");
         }
 
         //Nearest image tuple -> contains imagePtr, distance and total time of calculation
@@ -83,21 +65,25 @@ int main(int argc, char const *argv[]) {
         for(int i = 0; i < queryFile.getImages()->size(); i++) {
             //Run exactNN algorithm
             exactNearestImages = exactNN(queryFile.getImages()->at(i),
-                                        inputFile.getImages(),
-                                        lshCmdVariables->N);
+                                         inputFile.getImages(),
+                                         cubeCmdVariables->N);
 
             //Run approximateNN algorithm
             apprNearestImages = aproxKNN(queryFile.getImages()->at(i),
-                                         &lsh,
-                                         lshCmdVariables->N);
+                                         &hyperCube,
+                                         cubeCmdVariables->M,
+                                         cubeCmdVariables->probes,
+                                         cubeCmdVariables->N);
 
             //Clear previously marked images from approximateNN
             unmarkImgs(inputFile.getImages(),inputFile.getImageNum());
 
             //Run approximate range search algorithm
             apprRangeSrchImages = aproxRangeSrch(queryFile.getImages()->at(i),
-                                               &lsh,
-                                               lshCmdVariables->R);
+                                                 &hyperCube,
+                                                 cubeCmdVariables->M,
+                                                 cubeCmdVariables->probes,
+                                                 cubeCmdVariables->R);
 
             //Clear previously marked images for next query
             unmarkImgs(inputFile.getImages(),inputFile.getImageNum());
@@ -116,15 +102,15 @@ int main(int argc, char const *argv[]) {
         int choice;
         cin >> choice;
         if(choice == 1) {
-            lshCmdVariables->inputFileName = "";
-            lshCmdVariables->queryFileName = "";
-            lshCmdVariables->outputFileName = "";
+            cubeCmdVariables->inputFileName = "";
+            cubeCmdVariables->queryFileName = "";
+            cubeCmdVariables->outputFileName = "";
             termination = false;
         }
         else
             termination = true;
-    } while (!termination);
+    }while (!termination);
 
-    delete lshCmdVariables;     //Free allocated memory
+    delete cubeCmdVariables;
     return 0;
 }

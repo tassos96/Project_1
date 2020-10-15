@@ -50,10 +50,12 @@ void unmarkImgs(unordered_map<int, Image*> * imgs, int imgNum) {
         imgs->at(i)->unmarkImage();
 }
 
-void getNearbyVertices(string currentVertex,
+void getNearbyVertices(vector<string> &vec,
+                       string currentVertex,
                        int i,
                        int changesLeft) {
     if(changesLeft == 0) {
+        vec.push_back(currentVertex);
         cout << currentVertex << endl;
         return;
     }
@@ -61,8 +63,19 @@ void getNearbyVertices(string currentVertex,
         return;
     //flip current bit
     currentVertex[i] = currentVertex[i] == '0' ? '1' : '0';
-    getNearbyVertices(currentVertex, i - 1, changesLeft - 1);
+    getNearbyVertices(vec, currentVertex, i - 1, changesLeft - 1);
     //or dont flip it (flip it again to undo)
     currentVertex[i] = currentVertex[i] == '0' ? '1' : '0';
-    getNearbyVertices(currentVertex, i - 1, changesLeft);
+    getNearbyVertices(vec, currentVertex, i - 1, changesLeft);
+}
+
+void getVerticesToCheck(vector<string> &vec,
+                        string &currentVertex,
+                        int maxDistance) {
+    for(int curDist = 0; curDist <= maxDistance; ++curDist) {
+        cout << "Computing for distance " << curDist << endl;
+        getNearbyVertices(vec, currentVertex, currentVertex.length() - 1, curDist);
+        cout << "----------" << endl;
+    }
+
 }

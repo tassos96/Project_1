@@ -11,13 +11,20 @@
 #include "../Common/image.h"
 #include "../Common/PriorityQueue.h"
 #include "../Common/Distance.h"
-#include "../Classifiers/lsh.h"
+#include "../Structures/lsh.h"
+#include "../Structures/HyperCube.h"
 
 using namespace std;
 using namespace std::chrono;
 
 tuple<vector<tuple<int,Image*>>, microseconds> aproxKNN(Image* queryImage,
                                                         Lsh* structure,
+                                                        int numNeighbors = 1);
+
+tuple<vector<tuple<int,Image*>>, microseconds> aproxKNN(Image* queryImage,
+                                                        HyperCube* structure,
+                                                        int checkThrshld,
+                                                        int probes,
                                                         int numNeighbors = 1);
 
 #endif //PROJECT_TASK1_APROXNN_H

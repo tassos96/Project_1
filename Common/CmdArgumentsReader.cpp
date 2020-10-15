@@ -56,7 +56,7 @@ CubeCmdVariables* setCubeArguments(int argc, char const *argv[])
         {
             cubeCmdVariables->K = stoi(argv[i+1]);
         }
-        else if(strcmp(argv[i],"-l") == 0 || strcmp(argv[i], "-L") == 0)
+        else if(strcmp(argv[i],"-m") == 0 || strcmp(argv[i], "-M") == 0)
         {
             cubeCmdVariables->M = stoi(argv[i+1]);
         }

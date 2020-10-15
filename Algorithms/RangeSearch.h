@@ -8,10 +8,17 @@
 
 #include "../Common/image.h"
 #include "../Common/Distance.h"
-#include "../Classifiers/lsh.h"
+#include "../Structures/lsh.h"
+#include "../Structures/HyperCube.h"
 
 vector<tuple<int,Image*>> aproxRangeSrch(Image* queryImage,
                                         Lsh* structure,
                                         double radius);
+
+vector<tuple<int, Image*>> aproxRangeSrch(Image* queryImage,
+                                          HyperCube* structure,
+                                          int checkThrshld,
+                                          int probes,
+                                          double radius);
 
 #endif //PROJECT_TASK1_RANGESEARCH_H

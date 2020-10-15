@@ -18,8 +18,12 @@ void printResults(tuple<vector<tuple<int,Image*>>, microseconds> &apprNearestIma
 
 void unmarkImgs(unordered_map<int, Image*> * imgs, int imgNum);
 
-void getNearbyVertices(string currentVertex,
+void getNearbyVertices(vector<string> &vec,
+                       string currentVertex,
                        int i,
                        int changesLeft);
 
+void getVerticesToCheck(vector<string> &vec,
+                        string &currentVertex,
+                        int maxDistance);
 #endif //PROJECT_TASK1_UTILS_H

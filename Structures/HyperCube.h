@@ -1,5 +1,3 @@
-
-
 #ifndef PROJECT_TASK1_HYPERCUBE_H
 #define PROJECT_TASK1_HYPERCUBE_H
 
@@ -30,8 +28,9 @@ public:
     HyperCube(int, double, int, int);
     virtual ~HyperCube();
     void splitIntoVertices(int, unordered_map<int, Image *> *);
-    string getVerticeIdx(Image * img);
-    Bucket * getVertice(Image * img);
+    string getVertexIdx(Image * img);
+    Bucket * getVertex(Image * img);
+    unordered_map<string, Bucket *> getVertices();
 };
 
 

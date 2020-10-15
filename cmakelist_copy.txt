@@ -5,12 +5,36 @@ set(CMAKE_CXX_STANDARD 11)
 
 include_directories(Common)
 
-add_executable(Project-Task1
+add_executable(Project-Task1_LSH
         lsh_main.cpp
         Common/CmdArgumentsReader.cpp
         Common/CmdArgumentsReader.h
         Common/image.cpp Common/image.h
-        Common/reader.cpp Common/reader.h
+        Common/dataset.cpp Common/dataset.h
         Common/Distance.cpp Common/Distance.h
         Algorithms/ExactNN.cpp Algorithms/ExactNN.h
-        Common/hashFuncs.cpp Common/hashFuncs.h)
+        Common/hashFuncs.cpp Common/hashFuncs.h
+        Structures/lsh.cpp Structures/lsh.h
+        Structures/HyperCube.cpp Structures/HyperCube.h
+        Common/bucket.cpp Common/bucket.h
+        Algorithms/AproxNN.cpp Algorithms/AproxNN.h
+        Common/Utils.cpp Common/Utils.h
+        Algorithms/RangeSearch.cpp Algorithms/RangeSearch.h
+        Common/PriorityQueue.cpp Common/PriorityQueue.h)
+
+add_executable(Project-Task1_CUBE
+        cube_main.cpp
+        Common/CmdArgumentsReader.cpp
+        Common/CmdArgumentsReader.h
+        Common/image.cpp Common/image.h
+        Common/dataset.cpp Common/dataset.h
+        Common/Distance.cpp Common/Distance.h
+        Algorithms/ExactNN.cpp Algorithms/ExactNN.h
+        Common/hashFuncs.cpp Common/hashFuncs.h
+        Structures/lsh.cpp Structures/lsh.h
+        Structures/HyperCube.cpp Structures/HyperCube.h
+        Common/bucket.cpp Common/bucket.h
+        Algorithms/AproxNN.cpp Algorithms/AproxNN.h
+        Common/Utils.cpp Common/Utils.h
+        Algorithms/RangeSearch.cpp Algorithms/RangeSearch.h
+        Common/PriorityQueue.cpp Common/PriorityQueue.h)
