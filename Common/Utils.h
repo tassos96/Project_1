@@ -1,11 +1,12 @@
 #ifndef PROJECT_TASK1_UTILS_H
 #define PROJECT_TASK1_UTILS_H
 
-#include "image.h"
 #include <tuple>
 #include <chrono>
 #include <unordered_map>
 #include <cmath>
+#include <algorithm>
+#include "image.h"
 #include "Distance.h"
 
 using namespace std;
@@ -27,4 +28,7 @@ void getNearbyVertices(vector<string> &vec,
 void getVerticesToCheck(vector<string> &vec,
                         string &currentVertex,
                         int maxDistance);
+
+vector<unsigned char> *getMedian(vector<Image *> * imgs, int dimension);
+
 #endif //PROJECT_TASK1_UTILS_H

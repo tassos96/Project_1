@@ -80,3 +80,22 @@ void getVerticesToCheck(vector<string> &vec,
     for(int curDist = 0; curDist <= maxDistance; ++curDist)
         getNearbyVertices(vec, currentVertex, currentVertex.length() - 1, curDist);
 }
+
+vector<unsigned char> *getMedian(vector<Image *> * imgs, int dimension) {
+    // a vector containing median for each dimension
+    vector<unsigned char> * toRet = new vector<unsigned char>;
+
+    for (int i = 0; i < dimension; ++i) {
+        vector<unsigned char> dim_i_pixels;
+        dim_i_pixels.reserve(imgs->size());
+        for (Image * img: *imgs) { // gather all pixels for each dimension
+            dim_i_pixels.push_back(img->getPixels()->at(i));
+        }
+        // sort in order to find the median
+        sort(dim_i_pixels.begin(), dim_i_pixels.end());
+        int medianIdx = floor((dim_i_pixels.size()-1) / 2);
+        toRet->push_back(dim_i_pixels.at(medianIdx)); // keep the median of current dimension
+    }
+
+    return toRet;
+}
