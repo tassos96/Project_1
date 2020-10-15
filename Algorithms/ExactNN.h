@@ -17,7 +17,7 @@ using namespace std::chrono;
 
 
 tuple<vector<tuple<int,Image*>>, microseconds> exactNN(Image* queryImage,
-                                                       unordered_map<int, Image *> *datasetImages,
+                                                       vector<Image *> *datasetImages,
                                                        int numNeighbors);
 
 #endif //PROJECT_TASK1_EXACTNN_H

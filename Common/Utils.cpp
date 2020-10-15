@@ -51,7 +51,7 @@ void printResults(tuple<vector<tuple<int,Image*>>, microseconds> &apprNearestIma
     printRangeNrstImages(apprRangeSrchImages);
 }
 
-void unmarkImgs(unordered_map<int, Image*> * imgs, int imgNum) {
+void unmarkImgs(vector<Image*> * imgs, int imgNum) {
     for (int i = 0; i < imgNum; ++i)
         imgs->at(i)->unmarkImage();
 }

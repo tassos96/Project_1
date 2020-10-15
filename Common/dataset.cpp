@@ -1,7 +1,7 @@
 #include "dataset.h"
 
 Dataset::Dataset(string &fileName) {
-    this->data = new unordered_map<int, Image *>;
+    this->data = new vector<Image *>;
 
     this->readData(fileName);
 
@@ -44,14 +44,13 @@ void Dataset::readData(string &fileName) {
         for (int j = 0; j < this->rows*this->columns; ++j) {
             newImg->setPixel(inpFile.get());
         }
-        pair<int, Image *> newPair(i, newImg);
-        this->data->insert(newPair);
+        this->data->push_back(newImg);
     }
 
     inpFile.close();
 }
 
-unordered_map<int, Image *> *Dataset::getImages() const {
+vector<Image *> *Dataset::getImages() const {
     return this->data;
 }
 

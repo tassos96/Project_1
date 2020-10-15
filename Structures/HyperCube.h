@@ -25,9 +25,9 @@ private:
     int cubeDimension;
     unordered_map<string, Bucket *> vertices;
 
-    void splitIntoVertices(int, unordered_map<int, Image *> *);
+    void splitIntoVertices(int, vector<Image *> *);
 public:
-    HyperCube(int, double, int, int, int, unordered_map<int, Image *> *);
+    HyperCube(int, double, int, int, int, vector<Image *> *);
     virtual ~HyperCube();
     string getVertexIdx(Image *);
     Bucket * getVertexByImg(Image *);

@@ -14,14 +14,14 @@ private:
     int rows;
     int columns;
     int imgNum;
-    unordered_map<int, Image *> * data;
+    vector<Image *> * data;
     void readData(string &);
 
 public:
     Dataset(string &);
     virtual ~Dataset();
 
-    unordered_map<int, Image *> *getImages() const;
+    vector<Image *> *getImages() const;
     int getImageNum() const;
     int getDimensions() const;
 };

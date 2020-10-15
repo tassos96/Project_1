@@ -10,7 +10,7 @@ int manhattanDistance(vector<unsigned char> * firstImagePixels, vector<unsigned 
     return distance; // return distance of images
 }
 
-double calcW(unordered_map<int, Image *> * imgs, double samplePrcnt, int imgNum) {
+double calcW(vector<Image *> * imgs, double samplePrcnt, int imgNum) {
     int numIndexes = (samplePrcnt / 100.0) * imgNum;
     cout << "Sample size " << numIndexes << endl;
     vector<int> idx(imgNum); // vector with all image ids.

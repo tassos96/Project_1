@@ -1,7 +1,7 @@
 #include "ExactNN.h"
 
 tuple<vector<tuple<int,Image*>>, microseconds> exactNN(Image* queryImage,
-                                                       unordered_map<int, Image *> *datasetImages,
+                                                       vector<Image *> *datasetImages,
                                                        int numNeighbors){
     PriorityQueue<PriorityFurther> queue;
 

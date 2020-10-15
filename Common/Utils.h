@@ -18,7 +18,7 @@ void printResults(tuple<vector<tuple<int,Image*>>, microseconds> &apprNearestIma
                   Image * queryImg,
                   bool);
 
-void unmarkImgs(unordered_map<int, Image*> * imgs, int imgNum);
+void unmarkImgs(vector<Image*> * imgs, int imgNum);
 
 void getNearbyVertices(vector<string> &vec,
                        string currentVertex,

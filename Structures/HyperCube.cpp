@@ -23,7 +23,7 @@ HyperCube::HyperCube(int imgDimension,
                      int h_div,
                      int cubeDimension,
                      int imgNum,
-                     unordered_map<int, Image *> *imgs) {
+                     vector<Image *> *imgs) {
     this->cubeDimension = cubeDimension;
 
     for (int i = 0; i < this->cubeDimension; ++i) // create f functions
@@ -68,7 +68,7 @@ Bucket * HyperCube::getVertexByIdx(const string &idx) {
     }
 }
 
-void HyperCube::splitIntoVertices(int imgNum, unordered_map<int, Image *> * imgs) {
+void HyperCube::splitIntoVertices(int imgNum, vector<Image *> * imgs) {
     for (int i = 0; i < imgNum; ++i) {
         string vertex = this->getVertexIdx(imgs->at(i));
         try {
