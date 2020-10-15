@@ -24,10 +24,10 @@ tuple<vector<tuple<int,Image*>>, microseconds> aproxKNN(Image* queryImage,
                 continue;
             buckImgs->at(j)->markImage();
             queue.tryInsert(queryImage,buckImgs->at(j),numNeighbors);
-            if(++checked > (CHECKED_FACTOR*numTables))
+            if(++checked == (CHECKED_FACTOR*numTables))
                 break;
         }
-        if(checked > (CHECKED_FACTOR*numTables))
+        if(checked == (CHECKED_FACTOR*numTables))
             break;
     }
     //stop timer
@@ -43,32 +43,32 @@ tuple<vector<tuple<int,Image*>>, microseconds> aproxKNN(Image* queryImage,
 tuple<vector<tuple<int,Image*>>, microseconds> aproxKNN(Image* queryImage,
                                                         HyperCube* structure,
                                                         int checkThrshld,
-                                                        int probes,
+                                                        int maxProbes,
                                                         int numNeighbors) {
     PriorityQueue<PriorityFurther> queue;
-    vector<string> verticesToCheck;
-    string queryVrtx = structure->getVertexIdx(queryImage);
-    getVerticesToCheck(verticesToCheck, queryVrtx, queryVrtx.length());
 
     //start timer
     high_resolution_clock::time_point startTimer = high_resolution_clock::now();
 
+    vector<string> verticesToCheck;
+    string queryVrtx = structure->getVertexIdx(queryImage);
+    getVerticesToCheck(verticesToCheck, queryVrtx, queryVrtx.length());
+
     int checked = 0;    // stop when a lot of potential NNeighbours are checked
-    for(int i = 0; i < probes; ++i) {   //How many of the possible vertices to check
+    for(int i = 0; i < maxProbes; ++i) {   // start probing vertices
+        if(i >= verticesToCheck.size()) // no vertices left
+            break;
         string curVrtx = verticesToCheck.at(i);
-        Bucket * bucketPtr = structure->getVertices().at(curVrtx);
+        Bucket * bucketPtr = structure->getVertexByIdx(curVrtx);
         if(bucketPtr == nullptr)
             continue;
         vector<Image *> *buckImgs = bucketPtr->getImages();
         for(int j = 0; j < buckImgs->size(); ++j) {
-            if(buckImgs->at(j)->isMarked())
-                continue;
-            buckImgs->at(j)->markImage();
             queue.tryInsert(queryImage, buckImgs->at(j), numNeighbors);
-            if(++checked > checkThrshld)
+            if(++checked == checkThrshld)
                 break;
         }
-        if(checked > checkThrshld)
+        if(checked == checkThrshld)
             break;
     }
 

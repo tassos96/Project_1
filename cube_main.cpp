@@ -32,8 +32,12 @@ int main(int argc, char const * argv[]) {
         //Structures creation
         double W = calcW(inputFile.getImages(),1, inputFile.getImageNum());
         cout << "W: " << W << endl;
-        HyperCube hyperCube(inputFile.getDimensions(), W, cubeCmdVariables->K, cubeCmdVariables->K);
-        hyperCube.splitIntoVertices(inputFile.getImageNum(), inputFile.getImages());
+        HyperCube hyperCube(inputFile.getDimensions(),
+                            W,
+                            pow(2,32/cubeCmdVariables->K),
+                            cubeCmdVariables->K,
+                            inputFile.getImageNum(),
+                            inputFile.getImages());
 
         //Ask from user the path of query file
         if (cubeCmdVariables->queryFileName.empty()) {
@@ -75,9 +79,6 @@ int main(int argc, char const * argv[]) {
                                          cubeCmdVariables->probes,
                                          cubeCmdVariables->N);
 
-            //Clear previously marked images from approximateNN
-            unmarkImgs(inputFile.getImages(),inputFile.getImageNum());
-
             //Run approximate range search algorithm
             apprRangeSrchImages = aproxRangeSrch(queryFile.getImages()->at(i),
                                                  &hyperCube,
@@ -85,14 +86,12 @@ int main(int argc, char const * argv[]) {
                                                  cubeCmdVariables->probes,
                                                  cubeCmdVariables->R);
 
-            //Clear previously marked images for next query
-            unmarkImgs(inputFile.getImages(),inputFile.getImageNum());
-
             //Print the algorithms results
             printResults(apprNearestImages,
                          exactNearestImages,
                          apprRangeSrchImages,
-                         queryFile.getImages()->at(i));
+                         queryFile.getImages()->at(i),
+                         false); // bool affects output message
         }
 
         //Ask user if he wants to exit or do another search

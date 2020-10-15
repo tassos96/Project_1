@@ -9,10 +9,15 @@ void printRangeNrstImages(vector<tuple<int,Image*>> &apprRangeSrchImages) {
     cout << "~~~~~~~~~~~" << endl << endl;
 }
 
+string distanceOutput(bool isLsh) {
+    return isLsh ? "distanceLSH: " : "distanceHypercube: ";
+}
+
 void printResults(tuple<vector<tuple<int,Image*>>, microseconds> &apprNearestImages,
                   tuple<vector<tuple<int,Image*>>, microseconds> &exactNearestImages,
                   vector<tuple<int,Image*>> &apprRangeSrchImages,
-                  Image * queryImg) {
+                  Image * queryImg,
+                  bool isLsh) {
     vector<tuple<int,Image*>> &vAppr = get<0>(apprNearestImages);
     vector<tuple<int,Image*>> &vExact = get<0>(exactNearestImages);
 
@@ -25,7 +30,7 @@ void printResults(tuple<vector<tuple<int,Image*>>, microseconds> &apprNearestIma
             cout << "Exact Nearest neighbour-"<< vExact.size() - j
                  << ": " << get<1>(vExact.at(j))->getId() << endl;
 
-            cout << "distanceLSH: " << get<0>(vAppr.at(j - diff)) << endl;
+            cout << distanceOutput(isLsh) << get<0>(vAppr.at(j - diff)) << endl;
             cout << "distanceTrue: " << get<0>(vExact.at(j)) << endl;
         }
         else {
@@ -34,12 +39,13 @@ void printResults(tuple<vector<tuple<int,Image*>>, microseconds> &apprNearestIma
             cout << "Exact Nearest neighbour-"<< vExact.size() - j
                  << ": " << get<1>(vExact.at(j))->getId() << endl;
 
-            cout << "distanceLSH: -"<< endl;
+            cout << distanceOutput(isLsh) << "-"<< endl;
             cout << "distanceTrue: " << get<0>(vExact.at(j)) << endl;
         }
 
     }
-    cout << "tLSH: " << get<1>(apprNearestImages).count() / 1000000.0 << "s" << endl;
+    string timeMessg = isLsh ? "tLSH: " : "tHypercube: ";
+    cout << timeMessg << get<1>(apprNearestImages).count() / 1000000.0 << "s" << endl;
     cout << "tTrue: " << get<1>(exactNearestImages).count() / 1000000.0 << "s" << endl;
 
     printRangeNrstImages(apprRangeSrchImages);
@@ -56,7 +62,6 @@ void getNearbyVertices(vector<string> &vec,
                        int changesLeft) {
     if(changesLeft == 0) {
         vec.push_back(currentVertex);
-        cout << currentVertex << endl;
         return;
     }
     if(i < 0)
@@ -72,10 +77,6 @@ void getNearbyVertices(vector<string> &vec,
 void getVerticesToCheck(vector<string> &vec,
                         string &currentVertex,
                         int maxDistance) {
-    for(int curDist = 0; curDist <= maxDistance; ++curDist) {
-        cout << "Computing for distance " << curDist << endl;
+    for(int curDist = 0; curDist <= maxDistance; ++curDist)
         getNearbyVertices(vec, currentVertex, currentVertex.length() - 1, curDist);
-        cout << "----------" << endl;
-    }
-
 }

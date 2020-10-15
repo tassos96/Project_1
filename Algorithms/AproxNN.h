@@ -24,7 +24,7 @@ tuple<vector<tuple<int,Image*>>, microseconds> aproxKNN(Image* queryImage,
 tuple<vector<tuple<int,Image*>>, microseconds> aproxKNN(Image* queryImage,
                                                         HyperCube* structure,
                                                         int checkThrshld,
-                                                        int probes,
+                                                        int maxProbes,
                                                         int numNeighbors = 1);
 
 #endif //PROJECT_TASK1_APROXNN_H

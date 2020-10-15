@@ -11,11 +11,11 @@ using namespace std;
 class F {
 private:
     SimpleHash h;
-    unordered_map<int,unsigned char> diceRolls;
+    unordered_map<int, char> coinFlips;
 public:
     F(int,double,int);
 
-    unsigned char rollTheDice(vector<unsigned char> *);
+    char flipTheCoin(vector<unsigned char> *);
 
 };
 
@@ -24,13 +24,14 @@ private:
     vector<F *> projectors;
     int cubeDimension;
     unordered_map<string, Bucket *> vertices;
-public:
-    HyperCube(int, double, int, int);
-    virtual ~HyperCube();
+
     void splitIntoVertices(int, unordered_map<int, Image *> *);
-    string getVertexIdx(Image * img);
-    Bucket * getVertex(Image * img);
-    unordered_map<string, Bucket *> getVertices();
+public:
+    HyperCube(int, double, int, int, int, unordered_map<int, Image *> *);
+    virtual ~HyperCube();
+    string getVertexIdx(Image *);
+    Bucket * getVertexByImg(Image *);
+    Bucket * getVertexByIdx(const string &);
 };
 
 

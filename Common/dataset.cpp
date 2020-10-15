@@ -13,7 +13,6 @@ Dataset::~Dataset(){
     }
     delete this->data; /* delete ptr to vector */
 
-    cout << "Destructor of reader" << endl;
 }
 
 void Dataset::readData(string &fileName) {

@@ -18,7 +18,7 @@ vector<tuple<int,Image*>> aproxRangeSrch(Image* queryImage,
 vector<tuple<int, Image*>> aproxRangeSrch(Image* queryImage,
                                           HyperCube* structure,
                                           int checkThrshld,
-                                          int probes,
+                                          int maxProbes,
                                           double radius);
 
 #endif //PROJECT_TASK1_RANGESEARCH_H

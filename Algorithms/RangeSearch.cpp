@@ -27,10 +27,10 @@ vector<tuple<int,Image*>> aproxRangeSrch(Image* queryImage,
             if(newDist <= radius)
                 queue.insert(buckImgs->at(j), newDist);
 
-            if(++checked > (2*CHECKED_FACTOR*numTables))
+            if(++checked == (2*CHECKED_FACTOR*numTables))
                 break;
         }
-        if(checked > (2*CHECKED_FACTOR*numTables))
+        if(checked == (2*CHECKED_FACTOR*numTables))
             break;
     }
 
@@ -43,7 +43,7 @@ vector<tuple<int,Image*>> aproxRangeSrch(Image* queryImage,
 vector<tuple<int, Image*>> aproxRangeSrch(Image* queryImage,
                                           HyperCube* structure,
                                           int checkThrshld,
-                                          int probes,
+                                          int maxProbes,
                                           double radius) {
     PriorityQueue<PriorityCloser> queue;
 
@@ -52,24 +52,23 @@ vector<tuple<int, Image*>> aproxRangeSrch(Image* queryImage,
     getVerticesToCheck(verticesToCheck, queryVrtx, queryVrtx.length());
 
     int checked = 0;    // stop when a lot of potential NNeighbours are checked
-    for(int i = 0; i < probes; ++i) {   //How many of the possible vertices to
+    for(int i = 0; i < maxProbes; ++i) {   //start probing vertices
+        if(i >= verticesToCheck.size()) // no vertices left to check
+            break;
         string curVrtx = verticesToCheck.at(i);
-        Bucket * bucketPtr = structure->getVertices().at(curVrtx);
+        Bucket * bucketPtr = structure->getVertexByIdx(curVrtx);
         if(bucketPtr == nullptr)
             continue;
         vector<Image *> *buckImgs = bucketPtr->getImages();
         for(int j = 0; j < buckImgs->size(); ++j) {
-            if (buckImgs->at(j)->isMarked())
-                continue;
-            buckImgs->at(j)->markImage();
             int newDist = manhattanDistance(queryImage->getPixels(), buckImgs->at(j)->getPixels());
             if(newDist <= radius)
                 queue.insert(buckImgs->at(j), newDist);
 
-            if(++checked > checkThrshld)
+            if(++checked == checkThrshld)
                 break;
         }
-        if(checked > checkThrshld)
+        if(checked == checkThrshld)
             break;
     }
 

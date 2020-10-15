@@ -106,7 +106,8 @@ int main(int argc, char const *argv[]) {
             printResults(apprNearestImages,
                          exactNearestImages,
                          apprRangeSrchImages,
-                         queryFile.getImages()->at(i));
+                         queryFile.getImages()->at(i),
+                         true); // bool affects output message
         }
 
         //Ask user if he wants to exit or do another search
