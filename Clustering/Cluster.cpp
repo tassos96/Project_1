@@ -26,6 +26,7 @@ Cluster::~Cluster() {
 
 
 void Cluster::updateCentroid() {
+    int dimension = this->centroid->size();
     if(this->centrIsInDataset) { // make sure not to lose the image upon updating centroid
         this->centrIsInDataset = false;
         this->imgs_in_cluster->push_back(this->firstCentroidPtr);
@@ -33,7 +34,7 @@ void Cluster::updateCentroid() {
     } else {
         delete this->centroid;
     }
-    this->centroid = getMedian(this->imgs_in_cluster,this->centroid->size());
+    this->centroid = getMedian(this->imgs_in_cluster,dimension);
 }
 
 vector<Image *> * Cluster::getClusterImgs() {
@@ -44,10 +45,8 @@ vector<unsigned char> * Cluster::getCentroid() {
     return this->centroid;
 }
 
-Image * Cluster::removeImg(int idx) {
-    Image * toRet =this->imgs_in_cluster->at(idx);
-    this->imgs_in_cluster->erase(this->imgs_in_cluster->begin() + idx);
-    return toRet;
+vector<Image *>::iterator Cluster::removeImg(vector<Image *>::iterator it) {
+    return this->imgs_in_cluster->erase(it);
 }
 
 void Cluster::addImg(Image * newImg) {

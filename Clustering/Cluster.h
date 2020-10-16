@@ -16,8 +16,8 @@ public:
     void updateCentroid();
     vector<Image *> * getClusterImgs();
     vector<unsigned char> * getCentroid();
-    Image * removeImg(int idx);
-    void addImg(Image * newImg);
+    vector<Image *>::iterator removeImg(vector<Image *>::iterator);
+    void addImg(Image *);
 };
 
 vector<Cluster *> * makeClusters(vector<Image *> *centroids, int numClusters);

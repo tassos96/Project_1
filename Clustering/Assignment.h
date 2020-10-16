@@ -5,7 +5,7 @@
 #include "UtilsCluster.h"
 #include "Cluster.h"
 
-void lloydAssign(const vector<Cluster *> & clusters);
+void lloydAssign(const vector<Cluster *> & clusters, int & assignmentsNum);
 void lloydAssign(const vector<Cluster *> & clusters, vector<Image *> *imgs); // first assignment
 
 #endif //PROJECT_TASK1_ASSIGNMENT_H
