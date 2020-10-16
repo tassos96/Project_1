@@ -29,6 +29,4 @@ void getVerticesToCheck(vector<string> &vec,
                         string &currentVertex,
                         int maxDistance);
 
-vector<unsigned char> *getMedian(vector<Image *> * imgs, int dimension);
-
 #endif //PROJECT_TASK1_UTILS_H
