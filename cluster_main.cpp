@@ -19,10 +19,9 @@ using namespace std::chrono;
 int main(int argc, char *argv[]) {
     string inputFileName(argv[1]);
     Dataset inputFile(inputFileName);
-
+    vector<Image *> imgs(*inputFile.getImages());
 //    vector<unsigned char> * ptr = getMedian(inputFile.getImages(),inputFile.getDimensions()); // update step
-
-
-    vector<Image *> centroid = kMeansPPlus(*inputFile.getImages(), 4);
-    cout << "end" <<endl;
+    cout << "size before" << imgs.size() << endl;
+    vector<Image *> centroids = kMeansPPlus(&imgs, 5);
+    cout << "size after" << imgs.size() << endl;
 }

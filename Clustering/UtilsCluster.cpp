@@ -29,6 +29,20 @@ double minDistance(Image * img, vector<Image *> *centroids) {
     return minDistance;
 }
 
+int closestClusterIdx(Image * img, vector<vector<unsigned char> *> *centroids) {
+    int minDistance = numeric_limits<int>::max();
+    int clustIdx;
+    for (int i = 0; i < centroids->size(); ++i) {
+        int newDist = manhattanDistance(img->getPixels(), centroids->at(i));
+        if(minDistance > newDist) {
+            minDistance = newDist;
+            clustIdx = i;
+        }
+    }
+    return clustIdx;
+}
+
+
 vector<double> calcMinDistances(vector<Image *> *imgs, vector<Image *> *centroids) {
     vector<double> toRet;
     toRet.push_back(0.0); // P(0) = 0
@@ -55,7 +69,7 @@ vector<double> getPropabilities(vector<Image *> *centroids, vector<Image *> *img
 }
 
 int binSearch(const vector<double> &probs, int start, int end, const double &val) {
-    if(start == end) { // reached last element of tree path
+    if(start == end) { // reached last element
         if(val <= probs.at(start)) { // the last element is P(r)
             return start;
         }
@@ -69,41 +83,40 @@ int binSearch(const vector<double> &probs, int start, int end, const double &val
     }
 
     int midl = floor((start + end) / 2);
-    if(val > probs.at(midl)) // P(r) is in the right subtree
+    if(val > probs.at(midl)) // P(r) is in the right array
         return binSearch(probs, midl+1, end, val);
-    else if(val < probs.at(midl)) // x is in the left subtree
+    else if(val < probs.at(midl)) // P(r) is in the left array
         return binSearch(probs, start, midl-1, val);
     else // current element is P(r)
         return midl;
 }
 
 
-vector<Image *> kMeansPPlus(vector<Image *> imgs, int numOfCentroids) {
+vector<Image *> kMeansPPlus(vector<Image *> *imgs, int numOfCentroids) {
     unsigned seed = system_clock::now().time_since_epoch().count();
     default_random_engine generator(seed);
-    uniform_int_distribution<int> distribution(0, imgs.size()-1);
+    uniform_int_distribution<int> distribution(0, imgs->size()-1);
 
     int index = distribution(generator);
 
     vector<Image *> centroids;
-    centroids.push_back(imgs.at(index));
-    vector<Image*>::iterator it = imgs.begin();
-    imgs.erase(it + index);
-
+    centroids.push_back(imgs->at(index));
+    imgs->erase(imgs->begin() + index);
+    double minDoub = numeric_limits<double>::min();
     for(int i = 1; i < numOfCentroids; ++i) {
-        vector<double> probs = getPropabilities(&centroids, &imgs);
+        vector<double> probs = getPropabilities(&centroids, imgs);
 
-        uniform_real_distribution<double> dist(0 + numeric_limits<double>::min(), probs.at(probs.size() - 1) + numeric_limits<double>::min());
+        uniform_real_distribution<double> dist(0 + minDoub, probs.at(probs.size() - 1) + minDoub);
         double rand_num = dist(generator);
 
-        std::vector<double>::iterator up;
-        up= std::upper_bound (probs.begin(), probs.end(), rand_num);
-        index = std::distance(probs.begin(), up);
-        if(index == probs.size())
-            index -= 1;
-        centroids.push_back(imgs.at(index));
-        it = imgs.begin();
-        imgs.erase(it + index);
+//        std::vector<double>::iterator up;
+//        up= std::upper_bound (probs.begin(), probs.end(), rand_num);
+//        index = std::distance(probs.begin(), up);
+        index = binSearch(probs,0, probs.size()-1, rand_num);
+//        if(index == probs.size())
+//            index -= 1;
+        centroids.push_back(imgs->at(index));
+        imgs->erase(imgs->begin() + index);
     }
 
     return centroids;
