@@ -94,7 +94,7 @@ vector<Image *> kMeansPPlus(vector<Image *> imgs, int numOfCentroids) {
         vector<double> probs = getPropabilities(&centroids, &imgs);
 
         uniform_real_distribution<double> dist(0 + numeric_limits<double>::min(), probs.at(probs.size() - 1) + numeric_limits<double>::min());
-        double rand_num = distribution(generator);
+        double rand_num = dist(generator);
 
         std::vector<double>::iterator up;
         up= std::upper_bound (probs.begin(), probs.end(), rand_num);
