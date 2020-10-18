@@ -6,6 +6,7 @@
 
 #include "dataset.h"
 #include "Clustering/algorithm.h"
+#include "Clustering/Silhouette.h"
 
 using namespace std;
 using namespace std::chrono;
@@ -52,9 +53,14 @@ int main(int argc, char const *argv[]) {
                             inputFile.getImages());
     }
 
+    //start
     vector<Cluster *> * clusters = clustering("Classic",*inputFile.getImages(),
                                               inputFile.getImages(), numClusters,
                                               100, 4, lsh, hpcb);
+    //stop
+
+    vector<double> silhouetteRes = silhouette(*clusters);
+
     for (Cluster * clst: *clusters) {
         delete clst;
     }
