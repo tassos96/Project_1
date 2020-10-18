@@ -1,14 +1,14 @@
 #include "UtilsCluster.h"
 
-vector<unsigned char> *getMedian(vector<Image *> * imgs, int dimension) {
+vector<unsigned char> *getMedian(unordered_map<int,Image *> * imgs, int dimension) {
     // a vector containing median for each dimension
     vector<unsigned char> * toRet = new vector<unsigned char>;
 
     for (int i = 0; i < dimension; ++i) {
         vector<unsigned char> dim_i_pixels;
         dim_i_pixels.reserve(imgs->size());
-        for (Image * img: *imgs) { // gather all pixels for each dimension
-            dim_i_pixels.push_back(img->getPixels()->at(i));
+        for (pair<const int,Image *> & pair: *imgs) { // gather all pixels for each dimension
+            dim_i_pixels.push_back(pair.second->getPixels()->at(i));
         }
         // sort in order to find the median
         sort(dim_i_pixels.begin(), dim_i_pixels.end());
@@ -40,6 +40,21 @@ int closestClusterIdx(Image * img, vector<vector<unsigned char> *> *centroids) {
         }
     }
     return clustIdx;
+}
+
+int minCentroidDist(vector<vector<unsigned char> *> *centroids) {
+    int minDistance = numeric_limits<int>::max();
+
+    for (int i = 0; i < centroids->size(); ++i) {
+        for (int z = i+1; z < centroids->size(); ++z) {
+            int newDist = manhattanDistance(centroids->at(z), centroids->at(i));
+            if(minDistance > newDist) {
+                minDistance = newDist;
+            }
+        }
+    }
+
+    return minDistance/2;
 }
 
 

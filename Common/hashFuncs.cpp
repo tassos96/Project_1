@@ -101,15 +101,14 @@ AmplifiedHash::~AmplifiedHash() {
     delete this->subhashes;
 }
 
-int AmplifiedHash::hashResult(Image * img){
+int AmplifiedHash::hashResult(vector<unsigned char> * img){
     unsigned int retVal = 0;
     for (int i = 0; i < this->numHashes; ++i) {
         /* get every subhash result */
-        unsigned int h_i = subhashes->at(i)->hashResult(img->getPixels());
+        unsigned int h_i = subhashes->at(i)->hashResult(img);
         unsigned int bitsPerHi = 32/this->numHashes;
         unsigned int shiftAm = (this->numHashes-1-i) * bitsPerHi;
         retVal |= (h_i << shiftAm);
     }
-    img->keepHashResult(retVal);
     return (int)SimpleHash::mod(retVal,this->tableSize);
 }

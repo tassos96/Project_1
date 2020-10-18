@@ -80,7 +80,7 @@ int main(int argc, char const * argv[]) {
                                          cubeCmdVariables->numNN);
 
             //Run approximate range search algorithm
-            apprRangeSrchImages = aproxRangeSrch(queryFile.getImages()->at(i),
+            apprRangeSrchImages = aproxRangeSrch(queryFile.getImages()->at(i)->getPixels(),
                                                  &hyperCube,
                                                  cubeCmdVariables->imgsThresh,
                                                  cubeCmdVariables->probes,

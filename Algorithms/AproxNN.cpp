@@ -14,7 +14,7 @@ tuple<vector<tuple<int,Image*>>, microseconds> aproxKNN(Image* queryImage,
     int checked = 0; // stop when a lot of potential NNeighbours are checked
     for (int i = 0; i < numTables; ++i) {
         LshTable *tbl = structure->getHashTable(i);
-        tuple<int, Bucket *>bucketTpl = tbl->getBucket(queryImage);
+        tuple<int, Bucket *>bucketTpl = tbl->getBucket(queryImage->getPixels());
         Bucket * buckPtr = get<1>(bucketTpl);
         if(buckPtr == nullptr)
             continue;
@@ -51,7 +51,7 @@ tuple<vector<tuple<int,Image*>>, microseconds> aproxKNN(Image* queryImage,
     high_resolution_clock::time_point startTimer = high_resolution_clock::now();
 
     vector<string> verticesToCheck;
-    string queryVrtx = structure->getVertexIdx(queryImage);
+    string queryVrtx = structure->getVertexIdx(queryImage->getPixels());
     getVerticesToCheck(verticesToCheck, queryVrtx, queryVrtx.length());
 
     int checked = 0;    // stop when a lot of potential NNeighbours are checked

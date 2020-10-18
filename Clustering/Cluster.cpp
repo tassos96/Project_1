@@ -10,11 +10,38 @@ vector<Cluster *> * makeClusters(vector<Image *> *centroids, int numClusters) {
     return vec;
 }
 
+void gatherCentroids(const vector<Cluster *> & clusters, vector<vector<unsigned char> *> *vec) {
+    for (int i = 0; i < clusters.size(); ++i)
+        vec->push_back(clusters.at(i)->getCentroid());
+}
+
+int getImgCluster(const vector<Cluster *> & clusters, Image * img) {
+    int toRet = -1;
+    for (int i = 0; i < clusters.size(); ++i) {
+        if(clusters.at(i)->getClusterImgs()->end() != clusters.at(i)->getClusterImgs()->find(img->getId())) {
+            toRet = i;
+            break;
+        }
+    }
+    return toRet;
+}
+
+bool imgIsCentroid(const vector<Cluster *> & clusters, Image * img) {
+    bool toRet = false;
+    for (int i = 0; i < clusters.size(); ++i) {
+        if(clusters.at(i)->centroidIsImg() && clusters.at(i)->getCentrId() == img->getId()) {
+            toRet = true;
+            break;
+        }
+    }
+    return toRet;
+}
+
 Cluster::Cluster(Image * centroidImg) {
     this->centroid = centroidImg->getPixels();
     this->centrIsInDataset = true;
     this->firstCentroidPtr = centroidImg; // keep the Image for the centroid update
-    this->imgs_in_cluster = new vector<Image *>;
+    this->imgs_in_cluster = new unordered_map<int,Image *>;
 }
 
 
@@ -29,7 +56,7 @@ void Cluster::updateCentroid() {
     int dimension = this->centroid->size();
     if(this->centrIsInDataset) { // make sure not to lose the image upon updating centroid
         this->centrIsInDataset = false;
-        this->imgs_in_cluster->push_back(this->firstCentroidPtr);
+        this->imgs_in_cluster->insert(make_pair(this->firstCentroidPtr->getId(),this->firstCentroidPtr));
         this->firstCentroidPtr = nullptr;
     } else {
         delete this->centroid;
@@ -37,18 +64,30 @@ void Cluster::updateCentroid() {
     this->centroid = getMedian(this->imgs_in_cluster,dimension);
 }
 
-vector<Image *> * Cluster::getClusterImgs() {
+unordered_map<int,Image *> * Cluster::getClusterImgs() {
     return this->imgs_in_cluster;
+}
+
+bool Cluster::centroidIsImg() const {
+    return this->centrIsInDataset;
+}
+
+int Cluster::getCentrId() const {
+    return this->firstCentroidPtr->getId();
 }
 
 vector<unsigned char> * Cluster::getCentroid() {
     return this->centroid;
 }
 
-vector<Image *>::iterator Cluster::removeImg(vector<Image *>::iterator it) {
+unordered_map<int,Image *>::iterator Cluster::removeImg(unordered_map<int,Image *>::iterator it) {
     return this->imgs_in_cluster->erase(it);
 }
 
+void Cluster::removeImg(const int & key) {
+    this->imgs_in_cluster->erase(key);
+}
+
 void Cluster::addImg(Image * newImg) {
-    this->imgs_in_cluster->push_back(newImg);
+    this->imgs_in_cluster->insert(make_pair(newImg->getId(),newImg));
 }

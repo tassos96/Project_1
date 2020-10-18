@@ -11,7 +11,7 @@ class Image {
 private:
     int id;
     bool marked;
-    vector<unsigned int> *g_results; //keep hash results
+    bool assignedToCluster;
     vector<unsigned char> *pixels;
 
 public:
@@ -21,11 +21,12 @@ public:
     void setPixel(unsigned char);
 
     vector<unsigned char> *getPixels() const;
-    void keepHashResult(unsigned int);
-
     bool isMarked();
     void markImage();
     void unmarkImage();
+    bool isAssignedToClst() const;
+    void assignImageToClst();
+    void unassignImageFromClst();
 };
 
 

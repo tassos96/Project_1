@@ -41,16 +41,16 @@ HyperCube::~HyperCube(){
         delete element.second;
 }
 
-string HyperCube::getVertexIdx(Image * img) {
+string HyperCube::getVertexIdx(vector<unsigned char> * img) {
     string toRet;
     for (int i = 0; i < this->cubeDimension; ++i)
-        toRet += this->projectors.at(i)->flipTheCoin(img->getPixels());
+        toRet += this->projectors.at(i)->flipTheCoin(img);
 
     return toRet;
 }
 
 Bucket * HyperCube::getVertexByImg(Image * img) {
-    string idx = getVertexIdx(img);
+    string idx = getVertexIdx(img->getPixels());
     try {
         return this->vertices.at(idx);
     }
@@ -70,7 +70,7 @@ Bucket * HyperCube::getVertexByIdx(const string &idx) {
 
 void HyperCube::splitIntoVertices(int imgNum, vector<Image *> * imgs) {
     for (int i = 0; i < imgNum; ++i) {
-        string vertex = this->getVertexIdx(imgs->at(i));
+        string vertex = this->getVertexIdx(imgs->at(i)->getPixels());
         try {
             this->vertices.at(vertex)->insertImage(imgs->at(i));
         }

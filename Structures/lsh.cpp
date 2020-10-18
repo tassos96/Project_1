@@ -27,7 +27,7 @@ LshTable::~LshTable() {
     delete this->table;
 }
 
-tuple<int, Bucket* > LshTable::getBucket(Image* image) {
+tuple<int, Bucket* > LshTable::getBucket(vector<unsigned char> * image) {
     int index = this->gHash.hashResult(image);
     try {
         return make_tuple(index, this->table->at(index));
@@ -42,7 +42,7 @@ tuple<int, Bucket* > LshTable::getBucket(Image* image) {
 void LshTable::splitIntoBuckets(int imgNum, vector<Image *> * imgs) {
     for (int i = 0; i < imgNum; ++i) {
         Image * imgPtr = imgs->at(i);
-        int index = this->gHash.hashResult(imgPtr);
+        int index = this->gHash.hashResult(imgPtr->getPixels());
 //        cout << "Placing  image #" << i << " at bucket #" << index << endl;
         try {
             this->table->at(index)->insertImage(imgPtr);

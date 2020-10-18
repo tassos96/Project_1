@@ -9,17 +9,23 @@ private:
     vector<unsigned char> *centroid;
     Image * firstCentroidPtr;
     bool centrIsInDataset;
-    vector<Image *> * imgs_in_cluster;
+    unordered_map<int,Image *> * imgs_in_cluster;
 public:
     Cluster(Image *);
     ~Cluster();
     void updateCentroid();
-    vector<Image *> * getClusterImgs();
+    unordered_map<int,Image *> * getClusterImgs();
     vector<unsigned char> * getCentroid();
-    vector<Image *>::iterator removeImg(vector<Image *>::iterator);
+    unordered_map<int,Image *>::iterator removeImg(unordered_map<int,Image *>::iterator);
+    void removeImg(const int & key);
     void addImg(Image *);
+    bool centroidIsImg() const;
+    int getCentrId() const;
 };
 
 vector<Cluster *> * makeClusters(vector<Image *> *centroids, int numClusters);
+void gatherCentroids(const vector<Cluster *> & clusters, vector<vector<unsigned char> *> *vec);
+int getImgCluster(const vector<Cluster *> & clusters, Image * img);
+bool imgIsCentroid(const vector<Cluster *> & clusters, Image * img);
 
 #endif //PROJECT_TASK1_CLUSTER_H

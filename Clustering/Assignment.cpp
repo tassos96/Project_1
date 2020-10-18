@@ -1,18 +1,29 @@
 #include "Assignment.h"
 
+
+void lloydAssign(const vector<Cluster *> & clusters, vector<Image *> *imgs) { // first assignment
+    vector<vector<unsigned char> *> centroids;
+    gatherCentroids(clusters,&centroids);
+
+    for (int i = 0; i < imgs->size(); ++i) {
+        int closestClust = closestClusterIdx(imgs->at(i),&centroids);
+        clusters.at(closestClust)->addImg(imgs->at(i));
+    }
+}
+
 void lloydAssign(const vector<Cluster *> & clusters, int & assignmentsNum) {
     vector<vector<unsigned char> *> centroids;
-    for (int i = 0; i < clusters.size(); ++i)
-        centroids.push_back(clusters.at(i)->getCentroid());
+    gatherCentroids(clusters,&centroids);
 
-    vector<Image *> * clustImgs;
+
+    unordered_map<int,Image *> * clustImgs;
     for (int i = 0; i < clusters.size(); ++i) {
         clustImgs = clusters.at(i)->getClusterImgs();
-        vector<Image *>::iterator it = clustImgs->begin();
+        unordered_map<int,Image *>::iterator it = clustImgs->begin();
         while(it != clustImgs->end()) {
-            int closestClust = closestClusterIdx(*it,&centroids);
+            int closestClust = closestClusterIdx(it->second,&centroids);
             if(closestClust != i) { // reassign image to new cluster
-                clusters.at(closestClust)->addImg(*it);
+                clusters.at(closestClust)->addImg(it->second);
                 it = clusters.at(i)->removeImg(it);
                 ++assignmentsNum;
             }
@@ -20,16 +31,84 @@ void lloydAssign(const vector<Cluster *> & clusters, int & assignmentsNum) {
                 ++it;
         }
     }
-
 }
 
-void lloydAssign(const vector<Cluster *> & clusters, vector<Image *> *imgs) { // first assignment
-    vector<vector<unsigned char> *> centroids;
-    for (int i = 0; i < clusters.size(); ++i)
-        centroids.push_back(clusters.at(i)->getCentroid());
+using searchResults = vector<tuple<int,Image*>>;
 
-    for (int i = 0; i < imgs->size(); ++i) {
-        int closestClust = closestClusterIdx(imgs->at(i),&centroids);
-        clusters.at(closestClust)->addImg(imgs->at(i));
+int nextIt(vector<searchResults::iterator> *iterators, vector<searchResults> * results) {
+    int minDistance = numeric_limits<int>::max();
+    int nextIt = -1;
+    for(int i = 0; i < iterators->size(); ++i) {
+        if(iterators->at(i) == results->at(i).end())
+            continue;
+        if(get<0>(*iterators->at(i)) < minDistance) {
+            minDistance =  get<0>(*iterators->at(i));
+            nextIt = i;
+        }
+    }
+    return nextIt;
+}
+
+int processResults(vector<searchResults> * results, const vector<Cluster *> & clusters) {
+    vector<searchResults::iterator> iterators;
+    iterators.reserve(results->size()); // iterators will point to the first <distance,Image> pair for each range search
+    for (int i = 0; i < results->size(); ++i) {
+        iterators.push_back(results->at(i).begin());
+    }
+    int newAssignments = 0;
+    int itIdx = nextIt(&iterators, results);
+    while(itIdx != -1) {
+        Image * imgPtr = get<1>(*iterators.at(itIdx));
+        if(imgIsCentroid(clusters, imgPtr) || imgPtr->isAssignedToClst()) {
+            ++iterators.at(itIdx);
+            continue;
+        }
+        int closestClust = itIdx;
+        int currClust = getImgCluster(clusters, imgPtr);
+        if(closestClust != currClust) {
+            clusters.at(closestClust)->addImg(imgPtr);
+            if(currClust != -1) {
+                clusters.at(currClust)->removeImg(imgPtr->getId());
+            }
+            ++newAssignments;
+        }
+        imgPtr->assignImageToClst();
+        itIdx = nextIt(&iterators, results);
+    }
+    return newAssignments;
+}
+
+void reverseAssign(const vector<Cluster *> & clusters, vector<Image *> *allImgs, Lsh* lsh, int & totalChanges) {
+    vector<vector<unsigned char> *> centroids;
+    gatherCentroids(clusters,&centroids);
+    int radius = minCentroidDist(&centroids);
+    while(true) {
+        vector<searchResults> results;
+        for (int i = 0; i < centroids.size(); ++i) {
+            results.push_back(aproxRangeSrch(centroids.at(i),lsh,radius));
+            unmarkImgs(allImgs, allImgs->size());
+        }
+        int changes = processResults(&results, clusters);
+        totalChanges += changes;
+        if(changes == 0)
+            break;
+        radius*=2;
+    }
+
+    for (int i = 0; i < allImgs->size(); ++i) {
+        Image *imgPtr = allImgs->at(i);
+        if (imgPtr->isAssignedToClst())
+            continue;
+
+        int closestClust = closestClusterIdx(imgPtr, &centroids);
+        int currClust = getImgCluster(clusters, imgPtr);
+        if (closestClust != currClust) {
+            clusters.at(closestClust)->addImg(imgPtr);
+            ++totalChanges;
+            if (currClust != -1) {
+                clusters.at(currClust)->removeImg(imgPtr->getId());
+            }
+        }
     }
 }
+

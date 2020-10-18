@@ -29,7 +29,7 @@ private:
 public:
     HyperCube(int, double, int, int, int, vector<Image *> *);
     virtual ~HyperCube();
-    string getVertexIdx(Image *);
+    string getVertexIdx(vector<unsigned char> *);
     Bucket * getVertexByImg(Image *);
     Bucket * getVertexByIdx(const string &);
 };

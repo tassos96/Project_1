@@ -4,7 +4,7 @@ vector<Cluster *> *clustering(string assignMethod, vector<Image *> imgs, int num
     int imgNum = imgs.size();
     vector<Image *> centroids = kMeansPPlus(&imgs, numClusters); // choose initial centroids
     vector<Cluster *> * clusters = makeClusters(&centroids, numClusters ); // create clusters
-    if(assignMethod == "lloyd")
+    if(assignMethod == "Classic")
         lloydAssign(*clusters, &imgs); // initial assignment of images to clusters
     int iterations = 0;
     while (iterations < imgNum) {
@@ -12,7 +12,7 @@ vector<Cluster *> *clustering(string assignMethod, vector<Image *> imgs, int num
             clst->updateCentroid();
         }
         int assignmentsPerformed = 0;
-        if(assignMethod == "lloyd") {
+        if(assignMethod == "Classic") {
             lloydAssign(*clusters, assignmentsPerformed);
         }
         if(assignmentsPerformed == 0){ // convergence witnessed

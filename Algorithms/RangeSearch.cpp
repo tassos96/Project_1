@@ -2,7 +2,7 @@
 
 #define CHECKED_FACTOR 50
 
-vector<tuple<int,Image*>> aproxRangeSrch(Image* queryImage,
+vector<tuple<int,Image*>> aproxRangeSrch(vector<unsigned char> * queryImage,
                                         Lsh* structure,
                                         double radius) {
     PriorityQueue<PriorityCloser> queue;
@@ -23,7 +23,7 @@ vector<tuple<int,Image*>> aproxRangeSrch(Image* queryImage,
                 continue;
             buckImgs->at(j)->markImage();
 
-            int newDist = manhattanDistance(queryImage->getPixels(), buckImgs->at(j)->getPixels());
+            int newDist = manhattanDistance(queryImage, buckImgs->at(j)->getPixels());
             if(newDist <= radius)
                 queue.insert(buckImgs->at(j), newDist);
 
@@ -40,7 +40,7 @@ vector<tuple<int,Image*>> aproxRangeSrch(Image* queryImage,
     return result;
 }
 
-vector<tuple<int, Image*>> aproxRangeSrch(Image* queryImage,
+vector<tuple<int, Image*>> aproxRangeSrch(vector<unsigned char> * queryImage,
                                           HyperCube* structure,
                                           int checkThrshld,
                                           int maxProbes,
@@ -61,7 +61,7 @@ vector<tuple<int, Image*>> aproxRangeSrch(Image* queryImage,
             continue;
         vector<Image *> *buckImgs = bucketPtr->getImages();
         for(int j = 0; j < buckImgs->size(); ++j) {
-            int newDist = manhattanDistance(queryImage->getPixels(), buckImgs->at(j)->getPixels());
+            int newDist = manhattanDistance(queryImage, buckImgs->at(j)->getPixels());
             if(newDist <= radius)
                 queue.insert(buckImgs->at(j), newDist);
 

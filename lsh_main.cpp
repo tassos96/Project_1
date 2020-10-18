@@ -83,7 +83,7 @@ int main(int argc, char const *argv[]) {
             unmarkImgs(inputFile.getImages(),inputFile.getImageNum());
 
             //Run approximate range search algorithm
-            apprRangeSrchImages = aproxRangeSrch(queryFile.getImages()->at(i),
+            apprRangeSrchImages = aproxRangeSrch(queryFile.getImages()->at(i)->getPixels(),
                                                &lsh,
                                                lshCmdVariables->radius);
 

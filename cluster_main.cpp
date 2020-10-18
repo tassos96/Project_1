@@ -33,7 +33,7 @@ int main(int argc, char const *argv[]) {
     string inputFileName(argv[1]);
     Dataset inputFile(inputFileName);
     int numClusters = 5;
-    vector<Cluster *> * clusters = clustering("lloyd",*inputFile.getImages(), numClusters);
+    vector<Cluster *> * clusters = clustering("Classic",*inputFile.getImages(), numClusters);
     for (Cluster * clst: *clusters) {
         delete clst;
     }
