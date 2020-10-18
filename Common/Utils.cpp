@@ -57,6 +57,11 @@ void unmarkImgs(vector<Image*> * imgs, int imgNum) {
         imgs->at(i)->unmarkImage();
 }
 
+void unassignImgs(vector<Image*> * imgs, int imgNum) {
+    for (int i = 0; i < imgNum; ++i)
+        imgs->at(i)->unassignImageFromClst();
+}
+
 void getNearbyVertices(vector<string> &vec,
                        string currentVertex,
                        int i,

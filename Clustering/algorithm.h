@@ -3,6 +3,13 @@
 
 #include "Assignment.h"
 
-vector<Cluster *> *clustering(string assignMethod, vector<Image *> imgs, int numClusters);
+vector<Cluster *> *clustering(const string & assignMethod,
+                              vector<Image *> imgs,
+                              vector<Image *> *allImgs,
+                              int numClusters,
+                              int checkThrshld,
+                              int maxProbes,
+                              Lsh * lsh,
+                              HyperCube * hpbc);
 
 #endif //PROJECT_TASK1_ALGORITHM_H

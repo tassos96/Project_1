@@ -61,6 +61,7 @@ int processResults(vector<searchResults> * results, const vector<Cluster *> & cl
         Image * imgPtr = get<1>(*iterators.at(itIdx));
         if(imgIsCentroid(clusters, imgPtr) || imgPtr->isAssignedToClst()) {
             ++iterators.at(itIdx);
+            itIdx = nextIt(&iterators, results);
             continue;
         }
         int closestClust = itIdx;
@@ -73,19 +74,30 @@ int processResults(vector<searchResults> * results, const vector<Cluster *> & cl
             ++newAssignments;
         }
         imgPtr->assignImageToClst();
+        ++iterators.at(itIdx);
         itIdx = nextIt(&iterators, results);
     }
     return newAssignments;
 }
 
-void reverseAssign(const vector<Cluster *> & clusters, vector<Image *> *allImgs, Lsh* lsh, int & totalChanges) {
+void reverseAssign(const vector<Cluster *> & clusters,
+                   vector<Image *> *allImgs,
+                   Lsh* lsh,
+                   int & totalChanges,
+                   HyperCube* hpcb,
+                   int checkThrshld,
+                   int maxProbes) {
     vector<vector<unsigned char> *> centroids;
     gatherCentroids(clusters,&centroids);
     int radius = minCentroidDist(&centroids);
     while(true) {
         vector<searchResults> results;
         for (int i = 0; i < centroids.size(); ++i) {
-            results.push_back(aproxRangeSrch(centroids.at(i),lsh,radius));
+            if(hpcb == nullptr)
+                results.push_back(aproxRangeSrch(centroids.at(i),lsh,radius));
+            else
+                results.push_back(aproxRangeSrch(centroids.at(i),hpcb,checkThrshld,maxProbes,radius));
+
             unmarkImgs(allImgs, allImgs->size());
         }
         int changes = processResults(&results, clusters);
@@ -110,5 +122,7 @@ void reverseAssign(const vector<Cluster *> & clusters, vector<Image *> *allImgs,
             }
         }
     }
+
+    unassignImgs(allImgs, allImgs->size());
 }
 

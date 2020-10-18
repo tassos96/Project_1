@@ -33,7 +33,28 @@ int main(int argc, char const *argv[]) {
     string inputFileName(argv[1]);
     Dataset inputFile(inputFileName);
     int numClusters = 5;
-    vector<Cluster *> * clusters = clustering("Classic",*inputFile.getImages(), numClusters);
+    double W = calcW(inputFile.getImages(),10, inputFile.getImageNum());
+
+    Lsh *lsh = nullptr;
+    HyperCube *hpcb = nullptr;
+
+    string method = "Hypercube";
+    if(method == "Lsh") {
+        lsh = new Lsh(3, inputFile.getImageNum(), inputFile.getImages(),
+            inputFile.getDimensions(), W, 6);
+    }
+    else if (method == "Hypercube") {
+        hpcb = new HyperCube(inputFile.getDimensions(),
+                            W,
+                            pow(2, 32 / 3),
+                            3,
+                            inputFile.getImageNum(),
+                            inputFile.getImages());
+    }
+
+    vector<Cluster *> * clusters = clustering("Classic",*inputFile.getImages(),
+                                              inputFile.getImages(), numClusters,
+                                              100, 4, lsh, hpcb);
     for (Cluster * clst: *clusters) {
         delete clst;
     }
