@@ -1,12 +1,12 @@
 #include "Utils.h"
 
-void printRangeNrstImages(vector<tuple<int,Image*>> &apprRangeSrchImages) {
+void printRangeNrstImages(vector<tuple<int,Image*>> &apprRangeSrchImages, ofstream& outputFile) {
     vector<tuple<int,Image*>> &vec = apprRangeSrchImages;
-    cout << "R-near neighbors: " << endl;
+    outputFile << "R-near neighbors: " << endl;
     for(int i = 0; i < vec.size(); ++i) {
-        printf("\t %-3d -> %-2d\n", i, get<1>(vec.at(i))->getId());
+        outputFile << "\t" << get<1>(vec.at(i))->getId() << endl;
     }
-    cout << "~~~~~~~~~~~" << endl << endl;
+    outputFile << "~~~~~~~~~~~" << endl << endl;
 }
 
 string distanceOutput(bool isLsh) {
@@ -17,38 +17,39 @@ void printResults(tuple<vector<tuple<int,Image*>>, microseconds> &apprNearestIma
                   tuple<vector<tuple<int,Image*>>, microseconds> &exactNearestImages,
                   vector<tuple<int,Image*>> &apprRangeSrchImages,
                   Image * queryImg,
-                  bool isLsh) {
+                  bool isLsh,
+                  ofstream& outputFile) {
     vector<tuple<int,Image*>> &vAppr = get<0>(apprNearestImages);
     vector<tuple<int,Image*>> &vExact = get<0>(exactNearestImages);
 
-    cout << "Query: " << queryImg->getId() << endl;
+    outputFile << "Query: " << queryImg->getId() << endl;
     int diff = (int)vExact.size() - (int)vAppr.size();
     for (int j = (int)vExact.size()-1; j >= 0; --j) {
         if(j - diff >= 0) {
-            cout << "Approximate Nearest neighbour-"<< vExact.size() - j
+            outputFile << "Approximate Nearest neighbour-"<< vExact.size() - j
                  << ": " << get<1>(vAppr.at(j - diff))->getId() << endl;
-            cout << "Exact Nearest neighbour-"<< vExact.size() - j
+            outputFile << "Exact Nearest neighbour-"<< vExact.size() - j
                  << ": " << get<1>(vExact.at(j))->getId() << endl;
 
-            cout << distanceOutput(isLsh) << get<0>(vAppr.at(j - diff)) << endl;
-            cout << "distanceTrue: " << get<0>(vExact.at(j)) << endl;
+            outputFile << distanceOutput(isLsh) << get<0>(vAppr.at(j - diff)) << endl;
+            outputFile << "distanceTrue: " << get<0>(vExact.at(j)) << endl << endl;
         }
         else {
-            cout << "Approximate Nearest neighbour-"<< vExact.size() - j
+            outputFile << "Approximate Nearest neighbour-"<< vExact.size() - j
                  << ": NOT FOUND" << endl;
-            cout << "Exact Nearest neighbour-"<< vExact.size() - j
+            outputFile << "Exact Nearest neighbour-"<< vExact.size() - j
                  << ": " << get<1>(vExact.at(j))->getId() << endl;
 
-            cout << distanceOutput(isLsh) << "-"<< endl;
-            cout << "distanceTrue: " << get<0>(vExact.at(j)) << endl;
+            outputFile << distanceOutput(isLsh) << "-"<< endl;
+            outputFile << "distanceTrue: " << get<0>(vExact.at(j)) << endl << endl;
         }
 
     }
     string timeMessg = isLsh ? "tLSH: " : "tHypercube: ";
-    cout << timeMessg << get<1>(apprNearestImages).count() / 1000000.0 << "s" << endl;
-    cout << "tTrue: " << get<1>(exactNearestImages).count() / 1000000.0 << "s" << endl;
+    outputFile << timeMessg << get<1>(apprNearestImages).count() / 1000000.0 << "s" << endl;
+    outputFile << "tTrue: " << get<1>(exactNearestImages).count() / 1000000.0 << "s" << endl << endl;
 
-    printRangeNrstImages(apprRangeSrchImages);
+    printRangeNrstImages(apprRangeSrchImages, outputFile);
 }
 
 void unmarkImgs(vector<Image*> * imgs, int imgNum) {
@@ -78,5 +79,5 @@ void getVerticesToCheck(vector<string> &vec,
                         string &currentVertex,
                         int maxDistance) {
     for(int curDist = 0; curDist <= maxDistance; ++curDist)
-        getNearbyVertices(vec, currentVertex, currentVertex.length() - 1, curDist);
+        getNearbyVertices(vec, currentVertex, (int)currentVertex.length() - 1, curDist);
 }

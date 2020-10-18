@@ -34,24 +34,12 @@ int main(int argc, char const *argv[]) {
             cout << endl;
         }
 
-//        cout << "----- Program arguments -----" << endl;
-//        cout << lshCmdVariables->inputFileName << endl;
-//        cout << lshCmdVariables->K << endl;
-//        cout << lshCmdVariables->L << endl;
-//        cout << lshCmdVariables->N << endl;
-//        cout << lshCmdVariables->R << endl;
-
         Dataset inputFile(lshCmdVariables->inputFileName);
         //Structures creation here
-        //.....
         double W = calcW(inputFile.getImages(),1, inputFile.getImageNum());
         cout << "W: " << W << endl;
-        Lsh lsh(lshCmdVariables->L, inputFile.getImageNum(), inputFile.getImages(),
-                inputFile.getDimensions(), W, lshCmdVariables->K);
-        //.....
-        //.....
-        //.....
-        //End of structures creation
+        Lsh lsh(lshCmdVariables->lshTables, inputFile.getImageNum(), inputFile.getImages(),
+                inputFile.getDimensions(), W, lshCmdVariables->numHashFuncts);
 
         //Ask from user the path of query file
         if (lshCmdVariables->queryFileName.empty()) {
@@ -84,12 +72,12 @@ int main(int argc, char const *argv[]) {
             //Run exactNN algorithm
             exactNearestImages = exactNN(queryFile.getImages()->at(i),
                                         inputFile.getImages(),
-                                        lshCmdVariables->N);
+                                        lshCmdVariables->numNN);
 
             //Run approximateNN algorithm
             apprNearestImages = aproxKNN(queryFile.getImages()->at(i),
                                          &lsh,
-                                         lshCmdVariables->N);
+                                         lshCmdVariables->numNN);
 
             //Clear previously marked images from approximateNN
             unmarkImgs(inputFile.getImages(),inputFile.getImageNum());
@@ -97,7 +85,7 @@ int main(int argc, char const *argv[]) {
             //Run approximate range search algorithm
             apprRangeSrchImages = aproxRangeSrch(queryFile.getImages()->at(i),
                                                &lsh,
-                                               lshCmdVariables->R);
+                                               lshCmdVariables->radius);
 
             //Clear previously marked images for next query
             unmarkImgs(inputFile.getImages(),inputFile.getImageNum());
@@ -107,9 +95,11 @@ int main(int argc, char const *argv[]) {
                          exactNearestImages,
                          apprRangeSrchImages,
                          queryFile.getImages()->at(i),
-                         true); // bool affects output message
+                         true,
+                         outputFile); // bool affects output message
         }
 
+        outputFile.close();
         //Ask user if he wants to exit or do another search
         cout << "1. Do another search." << endl;
         cout << "2. Terminate program." << endl;

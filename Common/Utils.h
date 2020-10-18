@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <cmath>
 #include <algorithm>
+#include <fstream>
 #include "image.h"
 #include "Distance.h"
 
@@ -16,7 +17,8 @@ void printResults(tuple<vector<tuple<int,Image*>>, microseconds> &apprNearestIma
                   tuple<vector<tuple<int,Image*>>, microseconds> &exactNearestImages,
                   vector<tuple<int,Image*>> &apprRangeSrchImages,
                   Image * queryImg,
-                  bool);
+                  bool,
+                  ofstream&);
 
 void unmarkImgs(vector<Image*> * imgs, int imgNum);
 

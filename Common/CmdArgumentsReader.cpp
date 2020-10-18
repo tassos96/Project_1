@@ -17,11 +17,11 @@ LshCmdVariables* setLshArguments(int argc, char const *argv[])
         }
         else if(strcmp(argv[i],"-k") == 0 || strcmp(argv[i], "-K") == 0)
         {
-            lshCmdVariables->K = stoi(argv[i+1]);
+            lshCmdVariables->numHashFuncts = stoi(argv[i+1]);
         }
         else if(strcmp(argv[i],"-l") == 0 || strcmp(argv[i], "-L") == 0)
         {
-            lshCmdVariables->L = stoi(argv[i+1]);
+            lshCmdVariables->lshTables = stoi(argv[i+1]);
         }
         else if(strcmp(argv[i],"-o") == 0 || strcmp(argv[i], "-O") == 0)
         {
@@ -29,11 +29,11 @@ LshCmdVariables* setLshArguments(int argc, char const *argv[])
         }
         else if(strcmp(argv[i],"-n") == 0 || strcmp(argv[i], "-N") == 0)
         {
-            lshCmdVariables->N = stoi(argv[i+1]);
+            lshCmdVariables->numNN = stoi(argv[i+1]);
         }
         else if(strcmp(argv[i],"-r") == 0 || strcmp(argv[i], "-R") == 0)
         {
-            lshCmdVariables->R = stof(argv[i+1]);
+            lshCmdVariables->radius = stof(argv[i+1]);
         }
     }
     return lshCmdVariables;
@@ -54,11 +54,11 @@ CubeCmdVariables* setCubeArguments(int argc, char const *argv[])
         }
         else if(strcmp(argv[i],"-k") == 0 || strcmp(argv[i], "-K") == 0)
         {
-            cubeCmdVariables->K = stoi(argv[i+1]);
+            cubeCmdVariables->cubeDim = stoi(argv[i+1]);
         }
         else if(strcmp(argv[i],"-m") == 0 || strcmp(argv[i], "-M") == 0)
         {
-            cubeCmdVariables->M = stoi(argv[i+1]);
+            cubeCmdVariables->imgsThresh = stoi(argv[i+1]);
         }
         else if(strcmp(argv[i],"-probes") == 0 || strcmp(argv[i], "-PROBES") == 0)
         {
@@ -70,11 +70,11 @@ CubeCmdVariables* setCubeArguments(int argc, char const *argv[])
         }
         else if(strcmp(argv[i],"-n") == 0 || strcmp(argv[i], "-N") == 0)
         {
-            cubeCmdVariables->N = stoi(argv[i+1]);
+            cubeCmdVariables->numNN = stoi(argv[i+1]);
         }
         else if(strcmp(argv[i],"-r") == 0 || strcmp(argv[i], "-R") == 0)
         {
-            cubeCmdVariables->R = stof(argv[i+1]);
+            cubeCmdVariables->radius = stof(argv[i+1]);
         }
     }
     return cubeCmdVariables;
@@ -97,9 +97,9 @@ ClusterCmdVariables* setClusterArguments(int argc, char const *argv[])
         {
             clusterCmdVariables->outputFileName = argv[i+1];
         }
-        else if(strcmp(argv[i],"-optional") == 0 || strcmp(argv[i], "-OPTIONAL") == 0)
+        else if(strcmp(argv[i],"-complete") == 0 || strcmp(argv[i], "-COMPLETE") == 0)
         {
-            clusterCmdVariables->optional = argv[i+1];
+            clusterCmdVariables->complete = true;
         }
         else if(strcmp(argv[i],"-m") == 0 || strcmp(argv[i], "-M") == 0)
         {

@@ -34,8 +34,8 @@ int main(int argc, char const * argv[]) {
         cout << "W: " << W << endl;
         HyperCube hyperCube(inputFile.getDimensions(),
                             W,
-                            pow(2,32/cubeCmdVariables->K),
-                            cubeCmdVariables->K,
+                            pow(2,32/cubeCmdVariables->cubeDim),
+                            cubeCmdVariables->cubeDim,
                             inputFile.getImageNum(),
                             inputFile.getImages());
 
@@ -70,30 +70,32 @@ int main(int argc, char const * argv[]) {
             //Run exactNN algorithm
             exactNearestImages = exactNN(queryFile.getImages()->at(i),
                                          inputFile.getImages(),
-                                         cubeCmdVariables->N);
+                                         cubeCmdVariables->numNN);
 
             //Run approximateNN algorithm
             apprNearestImages = aproxKNN(queryFile.getImages()->at(i),
                                          &hyperCube,
-                                         cubeCmdVariables->M,
+                                         cubeCmdVariables->imgsThresh,
                                          cubeCmdVariables->probes,
-                                         cubeCmdVariables->N);
+                                         cubeCmdVariables->numNN);
 
             //Run approximate range search algorithm
             apprRangeSrchImages = aproxRangeSrch(queryFile.getImages()->at(i),
                                                  &hyperCube,
-                                                 cubeCmdVariables->M,
+                                                 cubeCmdVariables->imgsThresh,
                                                  cubeCmdVariables->probes,
-                                                 cubeCmdVariables->R);
+                                                 cubeCmdVariables->radius);
 
             //Print the algorithms results
             printResults(apprNearestImages,
                          exactNearestImages,
                          apprRangeSrchImages,
                          queryFile.getImages()->at(i),
-                         false); // bool affects output message
+                         false,
+                         outputFile); // bool affects output message
         }
 
+        outputFile.close(); //close output file
         //Ask user if he wants to exit or do another search
         cout << "1. Do another search." << endl;
         cout << "2. Terminate program." << endl;
