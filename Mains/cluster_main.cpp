@@ -2,12 +2,11 @@
 #include <tuple>
 #include <chrono>
 
-#include "Common/CmdArgumentsReader.h"
-
-#include "Common/dataset.h"
-#include "Clustering/algorithm.h"
-#include "Clustering/Silhouette.h"
-#include "Clustering/Config.h"
+#include "../Common/CmdArgumentsReader.h"
+#include "../Common/dataset.h"
+#include "../Clustering/algorithm.h"
+#include "../Clustering/Silhouette.h"
+#include "../Clustering/Config.h"
 
 #define SAMPLE_PRCNT 10
 

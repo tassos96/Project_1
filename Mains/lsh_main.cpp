@@ -3,15 +3,11 @@
 #include <chrono>
 
 
-#include "Common/CmdArgumentsReader.h"
-#include "Common/dataset.h"
-#include "Common/hashFuncs.h"
-#include "Common/Utils.h"
-#include "Common/Distance.h"
-#include "Algorithms/ExactNN.h"
-#include "Algorithms/AproxNN.h"
-#include "Algorithms/RangeSearch.h"
-#include "Structures/lsh.h"
+#include "../Common/CmdArgumentsReader.h"
+#include "../Common/dataset.h"
+#include "../Common/hashFuncs.h"
+#include "../Algorithms/AproxNN.h"
+#include "../Algorithms/RangeSearch.h"
 
 #define SAMPLE_PRCNT 10
 
