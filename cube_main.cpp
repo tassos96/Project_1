@@ -12,6 +12,9 @@
 #include "Algorithms/RangeSearch.h"
 #include "Structures/HyperCube.h"
 
+#define SAMPLE_PRCNT 10
+
+
 using namespace std;
 using namespace std::chrono;
 
@@ -30,7 +33,7 @@ int main(int argc, char const * argv[]) {
 
         Dataset inputFile(cubeCmdVariables->inputFileName);
         //Structures creation
-        double W = calcW(inputFile.getImages(),1, inputFile.getImageNum());
+        double W = calcW(inputFile.getImages(),SAMPLE_PRCNT, inputFile.getImageNum());
         cout << "W: " << W << endl;
         HyperCube hyperCube(inputFile.getDimensions(),
                             W,

@@ -13,16 +13,14 @@
 #include "Algorithms/RangeSearch.h"
 #include "Structures/lsh.h"
 
+#define SAMPLE_PRCNT 10
+
+
 using namespace std;
 using namespace std::chrono;
 
 
 int main(int argc, char const *argv[]) {
-
-//    string test = "011";
-//    vector<string> nearbyVertices;
-//    getVerticesToCheck(nearbyVertices, test, 2);
-
     LshCmdVariables *lshCmdVariables = setLshArguments(argc, argv);
     bool termination;
 
@@ -36,7 +34,7 @@ int main(int argc, char const *argv[]) {
 
         Dataset inputFile(lshCmdVariables->inputFileName);
         //Structures creation here
-        double W = calcW(inputFile.getImages(),1, inputFile.getImageNum());
+        double W = calcW(inputFile.getImages(),SAMPLE_PRCNT, inputFile.getImageNum());
         cout << "W: " << W << endl;
         Lsh lsh(lshCmdVariables->lshTables, inputFile.getImageNum(), inputFile.getImages(),
                 inputFile.getDimensions(), W, lshCmdVariables->numHashFuncts);

@@ -1,6 +1,8 @@
 #ifndef PROJECT_TASK1_CLUSTER_H
 #define PROJECT_TASK1_CLUSTER_H
 
+#include <fstream>
+
 #include "../Common/image.h"
 #include "UtilsCluster.h"
 
@@ -27,5 +29,9 @@ vector<Cluster *> * makeClusters(vector<Image *> *centroids, int numClusters);
 void gatherCentroids(const vector<Cluster *> & clusters, vector<vector<unsigned char> *> *vec);
 int getImgCluster(const vector<Cluster *> & clusters, Image * img);
 bool imgIsCentroid(const vector<Cluster *> & clusters, Image * img);
+
+void printClstrRslts(string &outFilename, string &method, vector<Cluster *> * clusters,
+                     string &dur, vector<double> *silhouetteRes,
+                     bool complete);
 
 #endif //PROJECT_TASK1_CLUSTER_H

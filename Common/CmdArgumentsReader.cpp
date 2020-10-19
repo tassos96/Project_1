@@ -83,7 +83,7 @@ CubeCmdVariables* setCubeArguments(int argc, char const *argv[])
 ClusterCmdVariables* setClusterArguments(int argc, char const *argv[])
 {
     ClusterCmdVariables* clusterCmdVariables = new ClusterCmdVariables;
-    for(int i = 1; i < argc; i += 2)
+    for(int i = 1; i < argc; ++i)
     {
         if (strcmp(argv[i],"-i") == 0 || strcmp(argv[i], "-I") == 0)
         {

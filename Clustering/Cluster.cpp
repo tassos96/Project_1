@@ -91,3 +91,69 @@ void Cluster::removeImg(const int & key) {
 void Cluster::addImg(Image * newImg) {
     this->imgs_in_cluster->insert(make_pair(newImg->getId(),newImg));
 }
+
+void printClstrRslts(string &outFilename, string &method, vector<Cluster *> * clusters,
+                     string &dur, vector<double> *silhouetteRes,
+                     bool complete) {
+    //Open output file
+    ofstream outputFile;
+    outputFile.open(outFilename);
+    if (!outputFile.is_open()) {
+        throw runtime_error("File " + string(outFilename) + " cannot be opened.");
+    }
+
+    //Print algorithm
+    if(method == "Classic")
+        outputFile << "Lloyds" << endl;
+    else if(method == "LSH")
+        outputFile << "Range Search LSH" << endl;
+    else if(method == "Hypercube")
+        outputFile << "Range Search Hypercube" << endl;
+
+    outputFile << endl;
+
+    //Print Clusters size and centroid pixels
+    for(int i = 0; i < clusters->size(); ++i)
+    {
+        string clust = "CLUSTER-" + to_string(i) + " {" +
+                       to_string(clusters->at(i)->getClusterImgs()->size()) + ", ";
+        for(int px = 0; px < clusters->at(i)->getCentroid()->size(); ++px)
+        {
+            clust += to_string(clusters->at(i)->getCentroid()->at(px)) + ", ";
+        }
+        clust = clust.substr(0, clust.size()-2);
+        clust += "}";
+        outputFile << clust << endl;
+    }
+    outputFile << endl;
+
+    outputFile << "clustering_time: " << dur << endl << endl;
+
+    string silhouetteRet = "Silhouette: [";
+    for(int i = 0; i < silhouetteRes->size(); ++i)
+    {
+        silhouetteRet += to_string(silhouetteRes->at(i)) + ", ";
+    }
+    silhouetteRet = silhouetteRet.substr(0, silhouetteRet.size()-2);
+    silhouetteRet += "]";
+    outputFile << silhouetteRet << endl;
+    outputFile << endl;
+
+    if(complete) {
+        for(int i = 0; i < clusters->size(); ++i) {
+            string cmplt = "CLUSTER-" + to_string(i) + " {";
+            for(int px = 0; px < clusters->at(i)->getCentroid()->size(); ++px) {
+                cmplt += to_string(clusters->at(i)->getCentroid()->at(px)) + ", ";
+            }
+            for (pair<const int,Image *> & pair: *clusters->at(i)->getClusterImgs()) { // gather all pixels for each dimension
+                cmplt += to_string(pair.first) + ", ";
+            }
+            cmplt = cmplt.substr(0, cmplt.size() - 2);
+            cmplt += "}";
+            outputFile << cmplt << endl;
+        }
+        outputFile << endl;
+    }
+
+    outputFile.close();
+}
