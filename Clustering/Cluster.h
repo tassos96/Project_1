@@ -3,7 +3,6 @@
 
 #include <fstream>
 
-#include "../Common/image.h"
 #include "UtilsCluster.h"
 
 class Cluster {

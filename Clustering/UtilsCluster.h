@@ -1,7 +1,7 @@
 #ifndef PROJECT_TASK1_UTILSCLUSTER_H
 #define PROJECT_TASK1_UTILSCLUSTER_H
 
-#include "image.h"
+#include "../Common/image.h"
 #include "../Common/Distance.h"
 #include <cmath>
 #include <algorithm>
