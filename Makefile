@@ -1,6 +1,5 @@
 vpath %.h ./Common ./Algorithms ./Clustering/ ./Structures
 vpath %.cpp ./Common ./Algorithms ./Clustering/ ./Structures .
-vpath %.o ./Objects
 
 CC =			g++
 FLAGS = 		-c
@@ -8,11 +7,13 @@ OBJS_CLSTRNG =	algorithm.o Assignment.o Cluster.o Config.o Silhouette.o UtilsClu
 OBJS_CMMN =		bucket.o CmdArgumentsReader.o dataset.o Distance.o hashFuncs.o image.o PriorityQueue.o Utils.o
 OBJS_STRCT =	HyperCube.o lsh.o
 OBJS_ALG = 		AproxNN.o ExactNN.o RangeSearch.o
-ALL_OBJS :=		$(wildcard Objects/*.o) 
 OBJS_DIR =		./Objects
 EXECS =			lsh cube cluster
 
-all: $(EXECS)
+all: make_obj_dir $(EXECS)
+
+make_obj_dir:
+	mkdir -p $(OBJS_DIR)
 
 lsh: lsh_main.o $(OBJS_CMMN) $(OBJS_STRCT) $(OBJS_ALG)
 	$(CC) $(OBJS_DIR)/* -o $@
@@ -33,4 +34,4 @@ cluster: cluster_main.o $(OBJS_CMMN) $(OBJS_STRCT) $(OBJS_ALG) $(OBJS_CLSTRNG)
 	$(CC) $(FLAGS) $< -o $(OBJS_DIR)/$@
 
 clean:
-	rm -rf $(ALL_OBJS) $(EXECS)
+	rm -rf $(EXECS) $(OBJS_DIR)
