@@ -71,7 +71,7 @@ int main(int argc, char const *argv[]) {
     auto timerDuration = duration_cast<microseconds>(stopTimer - startTimer);
 
     //Calc duration
-    string durResult = to_string(timerDuration.count() / 1000000.0) + "s";
+    string durResult = to_string(timerDuration.count() / 1e6) + "s";
 
     //Calculate silhouette
     vector<double> silhouetteRes = silhouette(*clusters);
@@ -88,6 +88,11 @@ int main(int argc, char const *argv[]) {
     delete clusters;
     delete clusterCmdVariables;
     delete conf;
+
+    if(method == "LSH")
+        delete lsh;
+    else if(method == "Hypercube")
+        delete hpcb;
 
     return 0;
 }

@@ -46,8 +46,8 @@ void printResults(tuple<vector<tuple<int,Image*>>, microseconds> &apprNearestIma
 
     }
     string timeMessg = isLsh ? "tLSH: " : "tHypercube: ";
-    outputFile << timeMessg << get<1>(apprNearestImages).count() / 1000000.0 << "s" << endl;
-    outputFile << "tTrue: " << get<1>(exactNearestImages).count() / 1000000.0 << "s" << endl << endl;
+    outputFile << timeMessg << get<1>(apprNearestImages).count() / 1e6 << "s" << endl;
+    outputFile << "tTrue: " << get<1>(exactNearestImages).count() / 1e6 << "s" << endl << endl;
 
     printRangeNrstImages(apprRangeSrchImages, outputFile);
 }
