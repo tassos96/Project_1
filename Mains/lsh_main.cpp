@@ -9,8 +9,6 @@
 #include "../Algorithms/AproxNN.h"
 #include "../Algorithms/RangeSearch.h"
 
-#define SAMPLE_PRCNT 10
-
 
 using namespace std;
 using namespace std::chrono;
@@ -19,6 +17,9 @@ using namespace std::chrono;
 int main(int argc, char const *argv[]) {
     LshCmdVariables *lshCmdVariables = setLshArguments(argc, argv);
     bool termination;
+
+    int w_smpl_prcnt, w_factor, approx_threshold;
+    readParams(w_smpl_prcnt, w_factor, true, &approx_threshold);
 
     do {
         //Ask from user the path of dataset
@@ -30,10 +31,10 @@ int main(int argc, char const *argv[]) {
 
         Dataset inputFile(lshCmdVariables->inputFileName);
         //Structures creation here
-        double W = calcW(inputFile.getImages(),SAMPLE_PRCNT, inputFile.getImageNum());
+        double W = calcW(inputFile.getImages(),w_smpl_prcnt, inputFile.getImageNum());
         cout << "W: " << W << endl;
         Lsh lsh(lshCmdVariables->lshTables, inputFile.getImageNum(), inputFile.getImages(),
-                inputFile.getDimensions(), W, lshCmdVariables->numHashFuncts);
+                inputFile.getDimensions(), w_factor*W, lshCmdVariables->numHashFuncts);
 
         //Ask from user the path of query file
         if (lshCmdVariables->queryFileName.empty()) {
@@ -71,7 +72,7 @@ int main(int argc, char const *argv[]) {
             //Run approximateNN algorithm
             apprNearestImages = aproxKNN(queryFile.getImages()->at(i),
                                          &lsh,
-                                         lshCmdVariables->numNN);
+                                         lshCmdVariables->numNN, approx_threshold);
 
             //Clear previously marked images from approximateNN
             unmarkImgs(inputFile.getImages(),inputFile.getImageNum());
@@ -79,7 +80,7 @@ int main(int argc, char const *argv[]) {
             //Run approximate range search algorithm
             apprRangeSrchImages = aproxRangeSrch(queryFile.getImages()->at(i)->getPixels(),
                                                &lsh,
-                                               lshCmdVariables->radius);
+                                               lshCmdVariables->radius, approx_threshold);
 
             //Clear previously marked images for next query
             unmarkImgs(inputFile.getImages(),inputFile.getImageNum());

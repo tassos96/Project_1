@@ -1,10 +1,9 @@
 #include "RangeSearch.h"
 
-#define CHECKED_FACTOR 50
-
 vector<tuple<int,Image*>> aproxRangeSrch(vector<unsigned char> * queryImage,
                                         Lsh* structure,
-                                        double radius) {
+                                        double radius,
+                                        int threshold) {
     PriorityQueue<PriorityCloser> queue;
 
     // number of lsh tables
@@ -27,10 +26,10 @@ vector<tuple<int,Image*>> aproxRangeSrch(vector<unsigned char> * queryImage,
             if(newDist <= radius)
                 queue.insert(buckImgs->at(j), newDist);
 
-            if(++checked == (2*CHECKED_FACTOR*numTables))
+            if(++checked == (2*threshold*numTables))
                 break;
         }
-        if(checked == (2*CHECKED_FACTOR*numTables))
+        if(checked == (2*threshold*numTables))
             break;
     }
 

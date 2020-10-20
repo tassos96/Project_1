@@ -8,8 +8,6 @@
 #include "../Clustering/Silhouette.h"
 #include "../Clustering/Config.h"
 
-#define SAMPLE_PRCNT 10
-
 using namespace std;
 using namespace std::chrono;
 
@@ -26,7 +24,7 @@ int main(int argc, char const *argv[]) {
 
     //Ask from user the path of config file
     if (clusterCmdVariables->configFileName.empty()) {
-        cout << "Insert path of dataset file: ";
+        cout << "Insert path of cluster config file: ";
         cin >> clusterCmdVariables->configFileName;
         cout << endl;
     }
@@ -36,21 +34,27 @@ int main(int argc, char const *argv[]) {
     if(conf->numClusters < 1)
         throw runtime_error("Num of clusters must be > 0\n Please check "+ clusterCmdVariables->configFileName);
 
+    int clust_threshold, w_smpl_prcnt, w_factor, approx_threshold;
+    readParams(w_smpl_prcnt,w_factor, true,&approx_threshold,true,&clust_threshold);
+
     //Calculate W
-    double W = calcW(inputFile.getImages(),SAMPLE_PRCNT, inputFile.getImageNum());
+    double W = calcW(inputFile.getImages(),w_smpl_prcnt, inputFile.getImageNum());
 
     //Construct structure based on given method
     Lsh *lsh = nullptr;
     HyperCube *hpcb = nullptr;
 
     string method = clusterCmdVariables->method;
+    if(method != "LSH" && method != "Hypercube" && method != "Classic")
+        throw runtime_error("Wrong assignment method given!");
+
     if(method == "LSH") {
         lsh = new Lsh(conf->numHashTables, inputFile.getImageNum(), inputFile.getImages(),
-            inputFile.getDimensions(), W, conf->numHashFunctions);
+            inputFile.getDimensions(), w_factor*W, conf->numHashFunctions);
     }
     else if (method == "Hypercube") {
         hpcb = new HyperCube(inputFile.getDimensions(),
-                            W,
+                            w_factor*W,
                             pow(2, 32 / conf->cubeDim),
                             conf->cubeDim,
                             inputFile.getImageNum(),
@@ -64,7 +68,8 @@ int main(int argc, char const *argv[]) {
     //Run cluster algorithm
     vector<Cluster *> * clusters = clustering(method,*inputFile.getImages(),
                                               inputFile.getImages(), conf->numClusters,
-                                              conf->imgsThresh, conf->probes, lsh, hpcb);
+                                              conf->imgsThresh, conf->probes, lsh, hpcb,
+                                              approx_threshold, clust_threshold);
 
     //stop timer
     high_resolution_clock::time_point stopTimer = high_resolution_clock::now();

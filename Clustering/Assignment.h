@@ -16,6 +16,8 @@ void reverseAssign(const vector<Cluster *> & clusters,
                    int & totalChanges,
                    HyperCube* hpcb,
                    int checkThrshld,
-                   int maxProbes);
+                   int maxProbes,
+                   int srchThresh,
+                   int clustThresh);
 
 #endif //PROJECT_TASK1_ASSIGNMENT_H

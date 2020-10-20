@@ -32,4 +32,8 @@ void getVerticesToCheck(vector<string> &vec,
                         string &currentVertex,
                         int maxDistance);
 
+void readParams(int & w_smpl_prcnt, int & w_factor,
+                bool readApproxThresh=false, int * approx_threshold= nullptr,
+                bool readClstThresh=false, int * clust_threshold= nullptr);
+
 #endif //PROJECT_TASK1_UTILS_H

@@ -13,7 +13,8 @@
 
 vector<tuple<int,Image*>> aproxRangeSrch(vector<unsigned char> * queryImage,
                                         Lsh* structure,
-                                        double radius);
+                                        double radius,
+                                        int threshold);
 
 vector<tuple<int, Image*>> aproxRangeSrch(vector<unsigned char> * queryImage,
                                           HyperCube* structure,

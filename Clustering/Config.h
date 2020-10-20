@@ -3,7 +3,6 @@
 
 #include <string>
 #include <fstream>
-#include <sstream>
 
 #define HASH_TABLES_DEF 3
 #define HASH_FUNCTIONS_DEF 4
@@ -16,7 +15,7 @@ using namespace std;
 
 class Config {
 public:
-    int numClusters = 0;
+    int numClusters = 10;
     int numHashTables = HASH_TABLES_DEF ;
     int numHashFunctions = HASH_FUNCTIONS_DEF;
     int imgsThresh = IMGS_THRESH_DEF;

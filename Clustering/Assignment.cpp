@@ -86,7 +86,9 @@ void reverseAssign(const vector<Cluster *> & clusters,
                    int & totalChanges,
                    HyperCube* hpcb,
                    int checkThrshld,
-                   int maxProbes) {
+                   int maxProbes,
+                   int srchThresh,
+                   int clustThresh) {
     vector<vector<unsigned char> *> centroids;
     gatherCentroids(clusters,&centroids);
     int radius = minCentroidDist(&centroids);
@@ -94,7 +96,7 @@ void reverseAssign(const vector<Cluster *> & clusters,
         vector<searchResults> results;
         for (int i = 0; i < centroids.size(); ++i) {
             if(hpcb == nullptr)
-                results.push_back(aproxRangeSrch(centroids.at(i),lsh,radius));
+                results.push_back(aproxRangeSrch(centroids.at(i),lsh,radius,srchThresh));
             else
                 results.push_back(aproxRangeSrch(centroids.at(i),hpcb,checkThrshld,maxProbes,radius));
 
@@ -102,7 +104,7 @@ void reverseAssign(const vector<Cluster *> & clusters,
         }
         int changes = processResults(&results, clusters);
         totalChanges += changes;
-        if(changes == 0)
+        if(changes == clustThresh)
             break;
         radius*=2;
     }

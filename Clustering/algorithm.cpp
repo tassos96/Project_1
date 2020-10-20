@@ -7,7 +7,9 @@ vector<Cluster *> *clustering(const string & assignMethod,
                               int checkThrshld,
                               int maxProbes,
                               Lsh * lsh,
-                              HyperCube * hpbc) {
+                              HyperCube * hpbc,
+                              int srchThresh,
+                              int clustThresh) {
     int imgNum = imgs.size();
     vector<Image *> centroids = kMeansPPlus(&imgs, numClusters); // choose initial centroids
     vector<Cluster *> * clusters = makeClusters(&centroids, numClusters ); // create clusters
@@ -17,7 +19,8 @@ vector<Cluster *> *clustering(const string & assignMethod,
     while (iterations < imgNum) {
         int assignmentsPerformed = 0;
         if(assignMethod != "Classic") {
-            reverseAssign(*clusters, allImgs, lsh, assignmentsPerformed, hpbc, checkThrshld, maxProbes);
+            reverseAssign(*clusters, allImgs, lsh, assignmentsPerformed, hpbc, checkThrshld,
+                          maxProbes, srchThresh, clustThresh);
         }
 
         for (Cluster * clst: *clusters) {
@@ -28,7 +31,7 @@ vector<Cluster *> *clustering(const string & assignMethod,
             lloydAssign(*clusters, assignmentsPerformed);
         }
 
-        if(assignmentsPerformed == 0){ // convergence witnessed
+        if(assignmentsPerformed == clustThresh){ // convergence witnessed
             cout << "converged" << endl;
             break;
         }

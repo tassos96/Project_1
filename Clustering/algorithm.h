@@ -10,6 +10,8 @@ vector<Cluster *> *clustering(const string & assignMethod,
                               int checkThrshld,
                               int maxProbes,
                               Lsh * lsh,
-                              HyperCube * hpbc);
+                              HyperCube * hpbc,
+                              int srchThresh,
+                              int clustThresh);
 
 #endif //PROJECT_TASK1_ALGORITHM_H

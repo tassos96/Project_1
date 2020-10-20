@@ -8,8 +8,6 @@
 #include "../Algorithms/AproxNN.h"
 #include "../Algorithms/RangeSearch.h"
 
-#define SAMPLE_PRCNT 10
-
 
 using namespace std;
 using namespace std::chrono;
@@ -18,6 +16,9 @@ int main(int argc, char const * argv[]) {
 
     CubeCmdVariables *cubeCmdVariables = setCubeArguments(argc, argv);
     bool termination;
+
+    int w_smpl_prcnt, w_factor;
+    readParams(w_smpl_prcnt,w_factor);
 
     do{
         //Ask from user the path of dataset
@@ -29,10 +30,10 @@ int main(int argc, char const * argv[]) {
 
         Dataset inputFile(cubeCmdVariables->inputFileName);
         //Structures creation
-        double W = calcW(inputFile.getImages(),SAMPLE_PRCNT, inputFile.getImageNum());
+        double W = calcW(inputFile.getImages(),w_smpl_prcnt, inputFile.getImageNum());
         cout << "W: " << W << endl;
         HyperCube hyperCube(inputFile.getDimensions(),
-                            W,
+                            w_factor*W,
                             pow(2,32/cubeCmdVariables->cubeDim),
                             cubeCmdVariables->cubeDim,
                             inputFile.getImageNum(),

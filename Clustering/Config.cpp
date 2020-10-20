@@ -9,7 +9,6 @@ Config* extractConfInfo(string &filename) {
     string curLine;
 
     while(getline(inpFile, curLine)) {
-        stringstream tok(curLine);
         int idx = curLine.find(": ");
         if(curLine.substr(0, idx) == "number_of_clusters") {
             conf->numClusters = stoi(curLine.substr(idx+1));

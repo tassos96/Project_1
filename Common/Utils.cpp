@@ -86,3 +86,36 @@ void getVerticesToCheck(vector<string> &vec,
     for(int curDist = 0; curDist <= maxDistance; ++curDist)
         getNearbyVertices(vec, currentVertex, (int)currentVertex.length() - 1, curDist);
 }
+
+void readParams(int & w_smpl_prcnt, int & w_factor,
+                bool readApproxThresh, int * approx_threshold,
+                bool readClstThresh, int * clust_threshold) {
+    string fileName;
+    cout << "Insert path of parameters config file: ";
+    cin >> fileName;
+    cout << endl;
+    ifstream inpFile(fileName);
+
+    if(!inpFile.is_open())
+        throw runtime_error("File " + fileName + " cannot be opened.");
+
+    string curLine;
+
+    while(getline(inpFile, curLine)) {
+        int idx = curLine.find(": ");
+        if(curLine.substr(0, idx) == "w_smpl_prcnt") {
+            w_smpl_prcnt = stoi(curLine.substr(idx+1));
+        }
+        else if(curLine.substr(0, idx) == "w_factor") {
+            w_factor = stoi(curLine.substr(idx+1));
+        }
+        else if(readApproxThresh && curLine.substr(0, idx) == "approx_threshold") {
+            *approx_threshold = stoi(curLine.substr(idx+1));
+        }
+        else if(readClstThresh && curLine.substr(0, idx) == "clust_threshold") {
+            *clust_threshold = stoi(curLine.substr(idx+1));
+        }
+    }
+
+    inpFile.close();
+}

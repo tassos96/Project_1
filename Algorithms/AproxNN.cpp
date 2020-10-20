@@ -1,10 +1,9 @@
 #include "AproxNN.h"
 
-#define CHECKED_FACTOR 50
-
 tuple<vector<tuple<int,Image*>>, microseconds> aproxKNN(Image* queryImage,
                                                         Lsh* structure,
-                                                        int numNeighbors) {
+                                                        int numNeighbors,
+                                                        int threshold) {
     PriorityQueue<PriorityFurther> queue;
 
     //start timer
@@ -24,10 +23,10 @@ tuple<vector<tuple<int,Image*>>, microseconds> aproxKNN(Image* queryImage,
                 continue;
             buckImgs->at(j)->markImage();
             queue.tryInsert(queryImage,buckImgs->at(j),numNeighbors);
-            if(++checked == (CHECKED_FACTOR*numTables))
+            if(++checked == (threshold*numTables))
                 break;
         }
-        if(checked == (CHECKED_FACTOR*numTables))
+        if(checked == (threshold*numTables))
             break;
     }
     //stop timer
