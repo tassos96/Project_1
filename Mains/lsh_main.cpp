@@ -99,16 +99,23 @@ int main(int argc, char const *argv[]) {
         cout << "1. Do another search." << endl;
         cout << "2. Terminate program." << endl;
         cout << "Insert your choice: ";
-        int choice;
-        cin >> choice;
-        if(choice == 1) {
-            lshCmdVariables->inputFileName = "";
-            lshCmdVariables->queryFileName = "";
-            lshCmdVariables->outputFileName = "";
-            termination = false;
+        while(true){
+            int choice;
+            cin >> choice;
+            if (choice == 1) {
+                lshCmdVariables->inputFileName = "";
+                lshCmdVariables->queryFileName = "";
+                lshCmdVariables->outputFileName = "";
+                termination = false;
+                break;
+            } else if (choice == 2) {
+                termination = true;
+                break;
+            }
+            else {
+                cout << "Invalid choice, reenter: ";
+            }
         }
-        else
-            termination = true;
     } while (!termination);
 
     delete lshCmdVariables;     //Free allocated memory
