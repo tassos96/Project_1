@@ -40,11 +40,18 @@ int main(int argc, char const *argv[]) {
     //Calculate W
     double W = calcW(inputFile.getImages(),w_smpl_prcnt, inputFile.getImageNum());
 
+    cout << "W: " << w_factor*W << endl;
+
     //Construct structure based on given method
     Lsh *lsh = nullptr;
     HyperCube *hpcb = nullptr;
 
-    string method = clusterCmdVariables->method;
+    string &method = clusterCmdVariables->method;
+    if (method.empty()) {
+        cout << "Insert method of cluster assignment(Classic or LSH or Hypercube): ";
+        cin >> method;
+        cout << endl;
+    }
     if(method != "LSH" && method != "Hypercube" && method != "Classic")
         throw runtime_error("Wrong assignment method given!");
 
@@ -78,9 +85,20 @@ int main(int argc, char const *argv[]) {
     //Calc duration
     string durResult = to_string(timerDuration.count() / 1e6) + "s";
 
+    cout << "Calculating Silhouette" << endl;
+
     //Calculate silhouette
     vector<double> silhouetteRes = silhouette(*clusters);
 
+    cout << "Finished calculating Silhouette" << endl;
+
+
+    string &outputFile = clusterCmdVariables->outputFileName;
+    if (outputFile.empty()) {
+        cout << "Insert path of output file: ";
+        cin >> outputFile;
+        cout << endl;
+    }
     //Print cluster results
     printClstrRslts(clusterCmdVariables->outputFileName, clusterCmdVariables->method,
                     clusters, durResult, &silhouetteRes,

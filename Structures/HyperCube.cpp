@@ -71,6 +71,7 @@ Bucket * HyperCube::getVertexByIdx(const string &idx) {
 void HyperCube::splitIntoVertices(int imgNum, vector<Image *> * imgs) {
     for (int i = 0; i < imgNum; ++i) {
         string vertex = this->getVertexIdx(imgs->at(i)->getPixels());
+//        cout << "Adding to bucket " << vertex << endl;
         try {
             this->vertices.at(vertex)->insertImage(imgs->at(i));
         }

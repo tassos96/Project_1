@@ -104,7 +104,7 @@ void reverseAssign(const vector<Cluster *> & clusters,
         }
         int changes = processResults(&results, clusters);
         totalChanges += changes;
-        if(changes == clustThresh)
+        if(changes <= clustThresh)
             break;
         radius*=2;
     }

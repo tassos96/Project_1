@@ -18,9 +18,6 @@ int main(int argc, char const *argv[]) {
     LshCmdVariables *lshCmdVariables = setLshArguments(argc, argv);
     bool termination;
 
-    int w_smpl_prcnt, w_factor, approx_threshold;
-    readParams(w_smpl_prcnt, w_factor, true, &approx_threshold);
-
     do {
         //Ask from user the path of dataset
         if (lshCmdVariables->inputFileName.empty()) {
@@ -30,9 +27,12 @@ int main(int argc, char const *argv[]) {
         }
 
         Dataset inputFile(lshCmdVariables->inputFileName);
+
+        int w_smpl_prcnt, w_factor, approx_threshold;
+        readParams(w_smpl_prcnt, w_factor, true, &approx_threshold);
         //Structures creation here
         double W = calcW(inputFile.getImages(),w_smpl_prcnt, inputFile.getImageNum());
-        cout << "W: " << W << endl;
+        cout << "W: " << W*w_factor << endl;
         Lsh lsh(lshCmdVariables->lshTables, inputFile.getImageNum(), inputFile.getImages(),
                 inputFile.getDimensions(), w_factor*W, lshCmdVariables->numHashFuncts);
 

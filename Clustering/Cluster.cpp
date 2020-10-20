@@ -113,18 +113,21 @@ void printClstrRslts(string &outFilename, string &method, vector<Cluster *> * cl
     outputFile << endl;
 
     //Print Clusters size and centroid pixels
+    int sum=0;
     for(int i = 0; i < clusters->size(); ++i)
     {
-        string clust = "CLUSTER-" + to_string(i) + " {" +
-                       to_string(clusters->at(i)->getClusterImgs()->size()) + ", ";
+        sum += clusters->at(i)->getClusterImgs()->size();
+        string clust = "CLUSTER-" + to_string(i) + " { size: " +
+                       to_string(clusters->at(i)->getClusterImgs()->size()) + ", centroid: <";
         for(int px = 0; px < clusters->at(i)->getCentroid()->size(); ++px)
         {
             clust += to_string(clusters->at(i)->getCentroid()->at(px)) + ", ";
         }
         clust = clust.substr(0, clust.size()-2);
-        clust += "}";
+        clust += "> }";
         outputFile << clust << endl;
     }
+    cout << "Total images in clusters: " << sum << endl;
     outputFile << endl;
 
     outputFile << "clustering_time: " << dur << endl << endl;
@@ -135,21 +138,23 @@ void printClstrRslts(string &outFilename, string &method, vector<Cluster *> * cl
         silhouetteRet += to_string(silhouetteRes->at(i)) + ", ";
     }
     silhouetteRet = silhouetteRet.substr(0, silhouetteRet.size()-2);
-    silhouetteRet += "]";
+    silhouetteRet += "(s_total)]";
     outputFile << silhouetteRet << endl;
     outputFile << endl;
 
     if(complete) {
         for(int i = 0; i < clusters->size(); ++i) {
-            string cmplt = "CLUSTER-" + to_string(i) + " {";
-            for(int px = 0; px < clusters->at(i)->getCentroid()->size(); ++px) {
+            string cmplt = "CLUSTER-" + to_string(i) + " { centroid: <";
+            for(int px = 0; px < clusters->at(i)->getCentroid()->size(); ++px) { // gather all pixels for each dimension
                 cmplt += to_string(clusters->at(i)->getCentroid()->at(px)) + ", ";
             }
-            for (pair<const int,Image *> & pair: *clusters->at(i)->getClusterImgs()) { // gather all pixels for each dimension
+            cmplt = cmplt.substr(0, cmplt.size() - 2);
+            cmplt += "> , IMAGE IDs: ";
+            for (pair<const int,Image *> & pair: *clusters->at(i)->getClusterImgs()) { //gather all images ids
                 cmplt += to_string(pair.first) + ", ";
             }
             cmplt = cmplt.substr(0, cmplt.size() - 2);
-            cmplt += "}";
+            cmplt += " }";
             outputFile << cmplt << endl;
         }
         outputFile << endl;

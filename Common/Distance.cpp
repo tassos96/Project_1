@@ -12,7 +12,6 @@ int manhattanDistance(vector<unsigned char> * firstImagePixels, vector<unsigned 
 
 double calcW(vector<Image *> * imgs, double samplePrcnt, int imgNum) {
     int numIndexes = (samplePrcnt / 100.0) * imgNum;
-    cout << "Sample size " << numIndexes << endl;
     vector<int> idx(imgNum); // vector with all image ids.
     iota(idx.begin(), idx.end(), 0); // ids.
     unsigned seed = chrono::system_clock::now().time_since_epoch().count();
@@ -33,6 +32,11 @@ double calcW(vector<Image *> * imgs, double samplePrcnt, int imgNum) {
         }
         dstnc += minDistance;
     }
+
+    if(dstnc == 0 || numIndexes == 0) {
+        throw runtime_error("W is 0, check sample percentage parameter in \"parameters.conf\" file");
+    }
+
     return dstnc / numIndexes;
 }
 

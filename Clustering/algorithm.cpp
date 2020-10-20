@@ -31,8 +31,8 @@ vector<Cluster *> *clustering(const string & assignMethod,
             lloydAssign(*clusters, assignmentsPerformed);
         }
 
-        if(assignmentsPerformed == clustThresh){ // convergence witnessed
-            cout << "converged" << endl;
+        if(assignmentsPerformed <= clustThresh){ // convergence witnessed
+            cout << "Converged" << endl;
             break;
         }
 

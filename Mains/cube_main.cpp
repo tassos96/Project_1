@@ -17,9 +17,6 @@ int main(int argc, char const * argv[]) {
     CubeCmdVariables *cubeCmdVariables = setCubeArguments(argc, argv);
     bool termination;
 
-    int w_smpl_prcnt, w_factor;
-    readParams(w_smpl_prcnt,w_factor);
-
     do{
         //Ask from user the path of dataset
         if (cubeCmdVariables->inputFileName.empty()) {
@@ -29,9 +26,12 @@ int main(int argc, char const * argv[]) {
         }
 
         Dataset inputFile(cubeCmdVariables->inputFileName);
+
+        int w_smpl_prcnt, w_factor;
+        readParams(w_smpl_prcnt,w_factor);
         //Structures creation
         double W = calcW(inputFile.getImages(),w_smpl_prcnt, inputFile.getImageNum());
-        cout << "W: " << W << endl;
+        cout << "W: " << W*w_factor << endl;
         HyperCube hyperCube(inputFile.getDimensions(),
                             w_factor*W,
                             pow(2,32/cubeCmdVariables->cubeDim),
