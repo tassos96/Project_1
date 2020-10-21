@@ -10,6 +10,14 @@ int manhattanDistance(vector<unsigned char> * firstImagePixels, vector<unsigned 
     return distance; // return distance of images
 }
 
+std::size_t hash_value(const tuple<int,int>& tpl)
+{
+    std::size_t seed = 0;
+    hash_combine( seed, get<0>(tpl) );
+    hash_combine( seed, get<1>(tpl) );
+    return seed;
+}
+
 double calcW(vector<Image *> * imgs, double samplePrcnt, int imgNum) {
     int numIndexes = (samplePrcnt / 100.0) * imgNum;
     vector<int> idx(imgNum); // vector with all image ids.
@@ -18,14 +26,24 @@ double calcW(vector<Image *> * imgs, double samplePrcnt, int imgNum) {
     default_random_engine generator(seed);
     shuffle(idx.begin(),idx.end(),generator);
     double dstnc = 0.0;
+    unordered_map<string,int> prevDstncs; // keep calculations
     for (int i = 0; i < numIndexes; ++i) {
         /* calculate nearest neighbour from sample */
         int minDistance = numeric_limits<int>::max();
         for (int j = 0; j < numIndexes; ++j) {
+            int currentDistance;
             if(i == j)
                 continue;
-            int currentDistance = manhattanDistance(imgs->at(idx.at(i))->getPixels(),
-                                                    imgs->at(idx.at(j))->getPixels());
+            else if(j < i) {
+                string str = to_string(j)+","+to_string(i);
+                currentDistance = prevDstncs.at(str);
+            }
+            else {
+                currentDistance = manhattanDistance(imgs->at(idx.at(i))->getPixels(),
+                                                        imgs->at(idx.at(j))->getPixels());
+                prevDstncs.insert(make_pair(to_string(i)+","+to_string(j),currentDistance));
+            }
+
             if(currentDistance < minDistance) {
                 minDistance = currentDistance;
             }
