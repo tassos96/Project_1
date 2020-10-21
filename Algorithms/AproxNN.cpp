@@ -21,11 +21,10 @@ tuple<vector<tuple<int,Image*>>, microseconds> aproxKNN(Image* queryImage,
         vector<Image *> *buckImgs = buckPtr->getImages();
         vector<unsigned int> *g_hash_results = buckPtr->getHashReslts();
         for (int j = 0; j < buckImgs->size(); ++j) {
-            if(buckImgs->at(j)->isMarked())
+            // images have different hash values before mod or the image has been checked in a previous LSH table
+            if(buckImgs->at(j)->isMarked() || g_hash_results->at(j) != hashRes)
                 continue;
             buckImgs->at(j)->markImage();
-            if(g_hash_results->at(j) != hashRes) // images have different hash values before mod
-                continue;
             queue.tryInsert(queryImage,buckImgs->at(j),numNeighbors);
             if(++checked == (threshold*numTables))
                 break;
