@@ -40,7 +40,7 @@ private:
 public:
     AmplifiedHash(int, double, int, int);
     virtual ~AmplifiedHash();
-    int hashResult(vector<unsigned char> *);
+    tuple<int,unsigned int> hashResult(vector<unsigned char> *);
 };
 
 #endif //PROJECT_TASK1_HASHFUNCS_H

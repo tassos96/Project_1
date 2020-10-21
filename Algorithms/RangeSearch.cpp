@@ -12,16 +12,19 @@ vector<tuple<int,Image*>> aproxRangeSrch(vector<unsigned char> * queryImage,
     int checked = 0;
     for (int i = 0; i < numTables; ++i) {
         LshTable *tbl = structure->getHashTable(i);
-        tuple<int, Bucket *> bucketTpl = tbl->getBucket(queryImage);
+        tuple<unsigned int, Bucket *> bucketTpl = tbl->getBucket(queryImage);
         Bucket *buckPtr = get<1>(bucketTpl);
+        unsigned int hashRes = get<0>(bucketTpl);
         if (buckPtr == nullptr)
             continue;
         vector<Image *> *buckImgs = buckPtr->getImages();
+        vector<unsigned int> *g_hash_results = buckPtr->getHashReslts();
         for (int j = 0; j < buckImgs->size(); ++j) {
             if(buckImgs->at(j)->isMarked())
                 continue;
             buckImgs->at(j)->markImage();
-
+            if(g_hash_results->at(j) != hashRes) // images have different hash values before mod
+                continue;
             int newDist = manhattanDistance(queryImage, buckImgs->at(j)->getPixels());
             if(newDist <= radius)
                 queue.insert(buckImgs->at(j), newDist);

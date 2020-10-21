@@ -101,7 +101,7 @@ AmplifiedHash::~AmplifiedHash() {
     delete this->subhashes;
 }
 
-int AmplifiedHash::hashResult(vector<unsigned char> * img){
+tuple<int,unsigned int> AmplifiedHash::hashResult(vector<unsigned char> * img){
     unsigned int retVal = 0;
     for (int i = 0; i < this->numHashes; ++i) {
         /* get every subhash result */
@@ -110,5 +110,5 @@ int AmplifiedHash::hashResult(vector<unsigned char> * img){
         unsigned int shiftAm = (this->numHashes-1-i) * bitsPerHi;
         retVal |= (h_i << shiftAm);
     }
-    return (int)SimpleHash::mod(retVal,this->tableSize);
+    return make_tuple((int)SimpleHash::mod(retVal,this->tableSize),retVal);
 }

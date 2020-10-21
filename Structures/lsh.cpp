@@ -27,14 +27,16 @@ LshTable::~LshTable() {
     delete this->table;
 }
 
-tuple<int, Bucket* > LshTable::getBucket(vector<unsigned char> * image) {
-    int index = this->gHash.hashResult(image);
+tuple<unsigned int, Bucket* > LshTable::getBucket(vector<unsigned char> * image) {
+    tuple<int,unsigned int> tpl = this->gHash.hashResult(image);
+    int index = get<0>(tpl);
+    unsigned int hashRes = get<1>(tpl);
     try {
-        return make_tuple(index, this->table->at(index));
+        return make_tuple(hashRes, this->table->at(index));
     }
     catch (out_of_range &) {
         //in case bucket is empty return nullptr
-        return make_tuple(index, nullptr);
+        return make_tuple(hashRes, nullptr);
     }
 }
 
@@ -42,15 +44,19 @@ tuple<int, Bucket* > LshTable::getBucket(vector<unsigned char> * image) {
 void LshTable::splitIntoBuckets(int imgNum, vector<Image *> * imgs) {
     for (int i = 0; i < imgNum; ++i) {
         Image * imgPtr = imgs->at(i);
-        int index = this->gHash.hashResult(imgPtr->getPixels());
+        tuple<int,unsigned int> tpl = this->gHash.hashResult(imgPtr->getPixels());
+        int index = get<0>(tpl);
+        unsigned int hashRes = get<1>(tpl);
 //        cout << "Placing  image #" << i << " at bucket #" << index << endl;
         try {
             this->table->at(index)->insertImage(imgPtr);
+            this->table->at(index)->insertHashRes(hashRes);
         }
         catch (out_of_range &) {
             pair<int, Bucket *> newPair(index, new Bucket());
             this->table->insert(newPair);
             this->table->at(index)->insertImage(imgPtr);
+            this->table->at(index)->insertHashRes(hashRes);
         }
     }
 }
