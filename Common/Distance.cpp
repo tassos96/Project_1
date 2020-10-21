@@ -10,14 +10,6 @@ int manhattanDistance(vector<unsigned char> * firstImagePixels, vector<unsigned 
     return distance; // return distance of images
 }
 
-std::size_t hash_value(const tuple<int,int>& tpl)
-{
-    std::size_t seed = 0;
-    hash_combine( seed, get<0>(tpl) );
-    hash_combine( seed, get<1>(tpl) );
-    return seed;
-}
-
 double calcW(vector<Image *> * imgs, double samplePrcnt, int imgNum) {
     int numIndexes = (samplePrcnt / 100.0) * imgNum;
     vector<int> idx(imgNum); // vector with all image ids.
