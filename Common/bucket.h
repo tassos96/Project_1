@@ -4,9 +4,11 @@
 #include <vector>
 #include "image.h"
 
-class Bucket{
+class Bucket{ // implements the buckets/vertices of the lsh/hypercube structures
 private:
+    // Vector containing images of this bucket
     vector<Image *> *images;
+    // Vector containing the g hash function result before modulo operation was applied
     vector<unsigned int> *g_hash_results;
 public:
     Bucket();

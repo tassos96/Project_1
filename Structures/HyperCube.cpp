@@ -2,10 +2,11 @@
 
 F::F(int imgDimension, double h_W, int h_div):h(imgDimension, h_W, h_div) {}
 
+// f mapping function of hypercube
 char F::flipTheCoin(vector<unsigned char> *pixels){
-    int hashReslt = this->h.hashResult(pixels);
+    int hashReslt = this->h.hashResult(pixels); // hash the image
     try {
-        return this->coinFlips.at(hashReslt);
+        return this->coinFlips.at(hashReslt); //first check whether f value for current hash result has been calculated
     }
     catch (out_of_range &) {
         unsigned seed = system_clock::now().time_since_epoch().count();
@@ -13,7 +14,7 @@ char F::flipTheCoin(vector<unsigned char> *pixels){
         uniform_int_distribution<int> distribution(0, 1);
         int coinSide = distribution(generator);
         char choice = coinSide == 0 ? '0' : '1';
-        this->coinFlips.insert(pair<int, char>(hashReslt,choice));
+        this->coinFlips.insert(pair<int, char>(hashReslt,choice)); // keep the result for future calculations
         return this->coinFlips.at(hashReslt);
     }
 }
@@ -37,33 +38,23 @@ HyperCube::~HyperCube(){
     for (int i = 0; i < this->cubeDimension; ++i)
         delete this->projectors.at(i);
 
-    for (pair<string, Bucket *> element : this->vertices)
+    for (const pair<const string, Bucket *> &element : this->vertices)
         delete element.second;
 }
 
 string HyperCube::getVertexIdx(vector<unsigned char> * img) {
     string toRet;
-    for (int i = 0; i < this->cubeDimension; ++i)
+    for (int i = 0; i < this->cubeDimension; ++i) // concatenate projections
         toRet += this->projectors.at(i)->flipTheCoin(img);
 
     return toRet;
-}
-
-Bucket * HyperCube::getVertexByImg(Image * img) {
-    string idx = getVertexIdx(img->getPixels());
-    try {
-        return this->vertices.at(idx);
-    }
-    catch (out_of_range &) {
-        return nullptr;
-    }
 }
 
 Bucket * HyperCube::getVertexByIdx(const string &idx) {
     try {
         return this->vertices.at(idx);
     }
-    catch (out_of_range &) {
+    catch (out_of_range &) { // vertex is empty
         return nullptr;
     }
 }
@@ -71,11 +62,10 @@ Bucket * HyperCube::getVertexByIdx(const string &idx) {
 void HyperCube::splitIntoVertices(int imgNum, vector<Image *> * imgs) {
     for (int i = 0; i < imgNum; ++i) {
         string vertex = this->getVertexIdx(imgs->at(i)->getPixels());
-//        cout << "Adding to bucket " << vertex << endl;
-        try {
+        try { // vertex not empty
             this->vertices.at(vertex)->insertImage(imgs->at(i));
         }
-        catch (out_of_range &) {
+        catch (out_of_range &) { // vertex needs to be created
             this->vertices.insert(pair<string, Bucket *>(vertex,new Bucket));
             this->vertices.at(vertex)->insertImage(imgs->at(i));
         }

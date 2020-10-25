@@ -1,5 +1,6 @@
 #include "Config.h"
 
+//Read cluster parameters from cluster.conf file
 Config* extractConfInfo(string &filename) {
     Config* conf = new Config();
     ifstream inpFile(filename);

@@ -15,42 +15,43 @@ SimpleHash::~SimpleHash() {
 }
 
 
-void SimpleHash::randShifts() {
+void SimpleHash::randShifts() { // create a disturbance for each image vector's element
     for (int i = 0; i < this->dimension; ++i) {
         this->shifts->push_back(generateDcml());
     }
 }
 
-double SimpleHash::generateDcml() const{
+double SimpleHash::generateDcml() const{ // return a random single disturbance
     unsigned seed = system_clock::now().time_since_epoch().count();
     default_random_engine generator(seed);
     uniform_real_distribution<double> distribution(0.0, this->gridW);
     return distribution(generator);
 }
 
-int SimpleHash::mod(int divident,int divisor) {
+int SimpleHash::mod(int divident,int divisor) { //optimal modulo operation
     if(divident >= 0) {
         return divident & (divisor - 1);
     }
     return divident % divisor + divisor;
 }
 
+//optimal modulo operation ,avoids overflow when last bit is used
 int SimpleHash::mod(unsigned int divident,int divisor) {
     return divident & (divisor - 1);
 }
 
+//optimal modular exponentiation algorithm
 int SimpleHash::modularExp(unsigned int base, unsigned int exp, int div) {
     unsigned int factor = 1;
     unsigned int prevRes;
-    for (unsigned int i = 1; i <= exp; i*=2) {
+    for (unsigned int i = 1; i <= exp; i*=2) { // calculate mod for every term that sums up to exponent
         unsigned int nextRes;
         if(i == 1)
             nextRes = SimpleHash::mod(base,div);
-        else {
+        else { // take advantage of previous calculation
             unsigned int t = pow(SimpleHash::mod(prevRes,div),2);
             nextRes = SimpleHash::mod(t,div);
         }
-
 
         if((i & exp) != 0)
             factor *= nextRes;

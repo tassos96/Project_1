@@ -12,7 +12,7 @@ LshTable::LshTable(int imgNum,
                                          numHashes){
     this->tableSize = imgNum / TABLE_SIZE_DIV;
     this->table = new unordered_map<int,Bucket *>;
-    this->splitIntoBuckets(imgNum, imgs);
+    this->splitIntoBuckets(imgNum, imgs);   //assign images to corresponding bucket
 }
 
 LshTable::~LshTable() {
@@ -40,19 +40,17 @@ tuple<unsigned int, Bucket* > LshTable::getBucket(vector<unsigned char> * image)
     }
 }
 
-
 void LshTable::splitIntoBuckets(int imgNum, vector<Image *> * imgs) {
-    for (int i = 0; i < imgNum; ++i) {
+    for (int i = 0; i < imgNum; ++i) {  //iterate through all images to be inserted
         Image * imgPtr = imgs->at(i);
-        tuple<int,unsigned int> tpl = this->gHash.hashResult(imgPtr->getPixels());
+        tuple<int,unsigned int> tpl = this->gHash.hashResult(imgPtr->getPixels());  //hash the image
         int index = get<0>(tpl);
-        unsigned int hashRes = get<1>(tpl);
-//        cout << "Placing  image #" << i << " at bucket #" << index << endl;
-        try {
+        unsigned int hashRes = get<1>(tpl); // keep the original hash value for the approximate algorithms
+        try { // bucket not empty
             this->table->at(index)->insertImage(imgPtr);
             this->table->at(index)->insertHashRes(hashRes);
         }
-        catch (out_of_range &) {
+        catch (out_of_range &) { // create the bucket
             pair<int, Bucket *> newPair(index, new Bucket());
             this->table->insert(newPair);
             this->table->at(index)->insertImage(imgPtr);
@@ -90,6 +88,7 @@ void Lsh::buildTables(int imgNum,
     }
 }
 
+// get a single lsh table
 LshTable* Lsh::getHashTable(int index) {
     return this->tables->at(index);
 }

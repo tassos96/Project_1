@@ -105,7 +105,7 @@ int main(int argc, char const *argv[]) {
                     clusterCmdVariables->complete);
 
     //Free allocated memory
-    for (Cluster * clst: *clusters) {
+    for (Cluster* const &clst: *clusters) {
         delete clst;
     }
     delete clusters;

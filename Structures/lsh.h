@@ -12,8 +12,8 @@ using namespace std;
 class LshTable {
 private:
     int tableSize;
-    AmplifiedHash gHash;
-    unordered_map<int, Bucket *> *table;
+    AmplifiedHash gHash;    //Hash function of the current table
+    unordered_map<int, Bucket *> *table; //Pointers to buckets of lsh table
     void splitIntoBuckets(int, vector<Image *> *);
 public:
     LshTable(int, vector<Image *> *, int, double, int );
@@ -23,8 +23,8 @@ public:
 
 class Lsh {
 private:
-    int numTables;
-    vector<LshTable *> *tables;
+    int numTables;  //Number of lsh tables
+    vector<LshTable *> *tables; //Pointers to lsh tables
     void buildTables(int, vector<Image *> *, int, double, int);
 public:
     Lsh(int,int, vector<Image *> *, int, double, int);

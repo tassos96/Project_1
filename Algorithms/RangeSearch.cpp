@@ -10,12 +10,13 @@ vector<tuple<int,Image*>> aproxRangeSrch(vector<unsigned char> * queryImage,
     int numTables = structure->getNumTables();
 
     int checked = 0;
-    for (int i = 0; i < numTables; ++i) {
+    for (int i = 0; i < numTables; ++i) { // iterate through lsh tables
         LshTable *tbl = structure->getHashTable(i);
+        // hash the image and get the corresponding bucket
         tuple<unsigned int, Bucket *> bucketTpl = tbl->getBucket(queryImage);
         Bucket *buckPtr = get<1>(bucketTpl);
-        unsigned int hashRes = get<0>(bucketTpl);
-        if (buckPtr == nullptr)
+        unsigned int hashRes = get<0>(bucketTpl); // hash result before modulo operation was applied by g function
+        if (buckPtr == nullptr) // bucket is empty
             continue;
         vector<Image *> *buckImgs = buckPtr->getImages();
         vector<unsigned int> *g_hash_results = buckPtr->getHashReslts();
@@ -57,17 +58,17 @@ vector<tuple<int, Image*>> aproxRangeSrch(vector<unsigned char> * queryImage,
     for(int i = 0; i < maxProbes; ++i) {   //start probing vertices
         if(i >= verticesToCheck.size()) // no vertices left to check
             break;
-        string curVrtx = verticesToCheck.at(i);
+        string curVrtx = verticesToCheck.at(i); // get next vertex of lowest hamming distance
         Bucket * bucketPtr = structure->getVertexByIdx(curVrtx);
-        if(bucketPtr == nullptr)
+        if(bucketPtr == nullptr) // vertex/bucket is empty
             continue;
         vector<Image *> *buckImgs = bucketPtr->getImages();
-        for(int j = 0; j < buckImgs->size(); ++j) {
+        for(int j = 0; j < buckImgs->size(); ++j) { // iterate through all images of current vertex
             int newDist = manhattanDistance(queryImage, buckImgs->at(j)->getPixels());
             if(newDist <= radius)
                 queue.insert(buckImgs->at(j), newDist);
 
-            if(++checked == checkThrshld)
+            if(++checked == checkThrshld) // M threshold reached, stop algorithm
                 break;
         }
         if(checked == checkThrshld)

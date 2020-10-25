@@ -2,6 +2,8 @@
 
 using namespace std;
 
+//Functions that read command line arguments
+
 LshCmdVariables* setLshArguments(int argc, char const *argv[])
 {
     LshCmdVariables* lshCmdVariables = new LshCmdVariables;

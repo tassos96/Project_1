@@ -1,5 +1,6 @@
 #include "Utils.h"
 
+// output range search results
 void printRangeNrstImages(vector<tuple<int,Image*>> &apprRangeSrchImages, ofstream& outputFile) {
     vector<tuple<int,Image*>> &vec = apprRangeSrchImages;
     outputFile << "R-near neighbors: " << endl;
@@ -13,6 +14,7 @@ string distanceOutput(bool isLsh) {
     return isLsh ? "distanceLSH: " : "distanceHypercube: ";
 }
 
+// output approximate nearest neighbour and exactNN results
 void printResults(tuple<vector<tuple<int,Image*>>, microseconds> &apprNearestImages,
                   tuple<vector<tuple<int,Image*>>, microseconds> &exactNearestImages,
                   vector<tuple<int,Image*>> &apprRangeSrchImages,
@@ -66,20 +68,21 @@ void getNearbyVertices(vector<string> &vec,
                        string currentVertex,
                        int i,
                        int changesLeft) {
-    if(changesLeft == 0) {
+    if(changesLeft == 0) { // hamming distance reached
         vec.push_back(currentVertex);
         return;
     }
-    if(i < 0)
+    if(i < 0) // no more bits to flip
         return;
     //flip current bit
     currentVertex[i] = currentVertex[i] == '0' ? '1' : '0';
     getNearbyVertices(vec, currentVertex, i - 1, changesLeft - 1);
-    //or dont flip it (flip it again to undo)
+    //undo flip
     currentVertex[i] = currentVertex[i] == '0' ? '1' : '0';
     getNearbyVertices(vec, currentVertex, i - 1, changesLeft);
 }
 
+// get neighbour vertices in ascending hamming order
 void getVerticesToCheck(vector<string> &vec,
                         string &currentVertex,
                         int maxDistance) {
@@ -87,6 +90,7 @@ void getVerticesToCheck(vector<string> &vec,
         getNearbyVertices(vec, currentVertex, (int)currentVertex.length() - 1, curDist);
 }
 
+// read parameter values from custom made config file to avoid recompilation
 void readParams(int & w_smpl_prcnt, int & w_factor,
                 bool readApproxThresh, int * approx_threshold,
                 bool readClstThresh, int * clust_threshold) {

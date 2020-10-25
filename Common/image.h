@@ -7,10 +7,10 @@
 
 using namespace std;
 
-class Image {
+class Image {   //contains a single image
 private:
-    int id;
-    bool marked;
+    int id; //image unique id based on file position
+    bool marked;    //Lsh flag that is true when image was found in previous lsh tables
     bool assignedToCluster;
     vector<unsigned char> *pixels;
 

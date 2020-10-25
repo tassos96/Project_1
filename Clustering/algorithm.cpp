@@ -23,7 +23,7 @@ vector<Cluster *> *clustering(const string & assignMethod,
                           maxProbes, srchThresh, clustThresh);
         }
 
-        for (Cluster * clst: *clusters) {
+        for (Cluster* const &clst: *clusters) { //Images changed cluster, update centroid
             clst->updateCentroid();
         }
 

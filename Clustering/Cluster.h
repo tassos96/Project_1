@@ -7,10 +7,10 @@
 
 class Cluster {
 private:
-    vector<unsigned char> *centroid;
-    Image * firstCentroidPtr;
-    bool centrIsInDataset;
-    unordered_map<int,Image *> * imgs_in_cluster;
+    vector<unsigned char> *centroid; //Pixels of centroid
+    Image * firstCentroidPtr; //keep pointer to first image centroid
+    bool centrIsInDataset; // true if centroid is an image
+    unordered_map<int,Image *> * imgs_in_cluster; // images inside the cluster
 public:
     Cluster(Image *);
     ~Cluster();

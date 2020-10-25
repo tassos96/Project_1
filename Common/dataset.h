@@ -9,12 +9,13 @@
 
 using namespace std;
 
-class Dataset {
+class Dataset { //Class that contains all images read from a single file
 private:
+    // dimensions of images
     int rows;
     int columns;
     int imgNum;
-    vector<Image *> * data;
+    vector<Image *> * data; // vector that contains the images
     void readData(string &);
 
 public:

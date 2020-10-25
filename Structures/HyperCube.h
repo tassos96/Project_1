@@ -8,10 +8,10 @@
 
 using namespace std;
 
-class F {
+class F { // implements f mapping function of hypercube
 private:
     SimpleHash h;
-    unordered_map<int, char> coinFlips;
+    unordered_map<int, char> coinFlips; // keep previous results
 public:
     F(int,double,int);
 
@@ -21,7 +21,7 @@ public:
 
 class HyperCube {
 private:
-    vector<F *> projectors;
+    vector<F *> projectors; // all mapping functions of the hypercube
     int cubeDimension;
     unordered_map<string, Bucket *> vertices;
 
@@ -30,7 +30,6 @@ public:
     HyperCube(int, double, int, int, int, vector<Image *> *);
     virtual ~HyperCube();
     string getVertexIdx(vector<unsigned char> *);
-    Bucket * getVertexByImg(Image *);
     Bucket * getVertexByIdx(const string &);
 };
 

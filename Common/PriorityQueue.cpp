@@ -1,5 +1,6 @@
 #include "PriorityQueue.h"
 
+//insert new image into queue only if top element has a longer distance
 template<class comp>
 void PriorityQueue<comp>::tryInsert(Image *queryImg, Image *newImg, int numNeighbors) {
     int newDist = manhattanDistance(queryImg->getPixels(), newImg->getPixels());

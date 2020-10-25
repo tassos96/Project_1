@@ -7,7 +7,7 @@ vector<unsigned char> *getMedian(unordered_map<int,Image *> * imgs, int dimensio
     for (int i = 0; i < dimension; ++i) {
         vector<unsigned char> dim_i_pixels;
         dim_i_pixels.reserve(imgs->size());
-        for (pair<const int,Image *> & pair: *imgs) { // gather all pixels for each dimension
+        for (const pair<const int,Image *> & pair: *imgs) { // gather all pixels for each dimension
             dim_i_pixels.push_back(pair.second->getPixels()->at(i));
         }
         // sort in order to find the median
@@ -17,16 +17,6 @@ vector<unsigned char> *getMedian(unordered_map<int,Image *> * imgs, int dimensio
     }
 
     return toRet;
-}
-
-double minDistance(Image * img, vector<Image *> *centroids) {
-    double minDistance = numeric_limits<double>::infinity();
-    for (Image * centroid : *centroids) {
-        int newDist = manhattanDistance(img->getPixels(), centroid->getPixels());
-        if(minDistance > newDist)
-            minDistance = newDist;
-    }
-    return minDistance;
 }
 
 int closestClusterIdx(Image * img, vector<vector<unsigned char> *> *centroids) {
@@ -57,11 +47,22 @@ int minCentroidDist(vector<vector<unsigned char> *> *centroids) {
     return minDistance/2;
 }
 
+/* Functions used for kmeans++ initialization */
+
+double minDistance(Image * img, vector<Image *> *centroids) {
+    double minDistance = numeric_limits<double>::infinity();
+    for (Image* const &centroid : *centroids) {
+        int newDist = manhattanDistance(img->getPixels(), centroid->getPixels());
+        if(minDistance > newDist)
+            minDistance = newDist;
+    }
+    return minDistance;
+}
 
 vector<double> calcMinDistances(vector<Image *> *imgs, vector<Image *> *centroids) {
     vector<double> toRet;
     toRet.push_back(0.0); // P(0) = 0
-    for(Image * img: *imgs) {
+    for(Image* const &img: *imgs) {
         toRet.push_back(minDistance(img,centroids));
     }
     return toRet;
@@ -76,9 +77,9 @@ void normalizeDistances(vector<double> * distances) {
 
 vector<double> getPropabilities(vector<Image *> *centroids, vector<Image *> *imgs) {
     vector<double> toRet = calcMinDistances(imgs, centroids);
-    normalizeDistances(&toRet);
+    normalizeDistances(&toRet); //normalize all D(i)'s
     for (int i = 1; i < toRet.size(); ++i) {
-        toRet.at(i) = pow(toRet.at(i),2) + toRet.at(i-1);
+        toRet.at(i) = pow(toRet.at(i),2) + toRet.at(i-1);   //make use of previous calculations
     }
     return toRet;
 }
@@ -106,30 +107,26 @@ int binSearch(const vector<double> &probs, int start, int end, const double &val
         return midl;
 }
 
-
 vector<Image *> kMeansPPlus(vector<Image *> *imgs, int numOfCentroids) {
     unsigned seed = system_clock::now().time_since_epoch().count();
     default_random_engine generator(seed);
     uniform_int_distribution<int> distribution(0, imgs->size()-1);
 
-    int index = distribution(generator);
+    int index = distribution(generator); //Pick a random image for the first centroid
 
     vector<Image *> centroids;
     centroids.push_back(imgs->at(index));
-    imgs->erase(imgs->begin() + index);
+    imgs->erase(imgs->begin() + index); //Keep non centroid images
     double minDoub = numeric_limits<double>::min();
-    for(int i = 1; i < numOfCentroids; ++i) {
-        vector<double> probs = getPropabilities(&centroids, imgs);
+    for(int i = 1; i < numOfCentroids; ++i) { //Repeat until all initial centroids are found
+        vector<double> probs = getPropabilities(&centroids, imgs); //Get vector of P(r)’s
 
         uniform_real_distribution<double> dist(0 + minDoub, probs.at(probs.size() - 1) + minDoub);
         double rand_num = dist(generator);
 
-//        std::vector<double>::iterator up;
-//        up= std::upper_bound (probs.begin(), probs.end(), rand_num);
-//        index = std::distance(probs.begin(), up);
+        //get r for which random number is in range of (P(r-1),P(r)]
         index = binSearch(probs,0, probs.size()-1, rand_num);
-//        if(index == probs.size())
-//            index -= 1;
+
         centroids.push_back(imgs->at(index));
         imgs->erase(imgs->begin() + index);
     }

@@ -4,7 +4,6 @@ Dataset::Dataset(string &fileName) {
     this->data = new vector<Image *>;
 
     this->readData(fileName);
-
 }
 
 Dataset::~Dataset(){
@@ -12,7 +11,6 @@ Dataset::~Dataset(){
         delete this->data->at(i);
     }
     delete this->data; /* delete ptr to vector */
-
 }
 
 void Dataset::readData(string &fileName) {
@@ -38,7 +36,7 @@ void Dataset::readData(string &fileName) {
     cout << "Number of rows:" << this->rows << endl;
     cout << "Number of columns:" << this->columns << endl;
 
-
+    // create image objects by reading the pixels
     for (int i = 0; i < this->imgNum; ++i) {
         Image * newImg = new Image(i);
         for (int j = 0; j < this->rows*this->columns; ++j) {

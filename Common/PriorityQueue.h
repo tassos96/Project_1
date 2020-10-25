@@ -8,14 +8,14 @@
 
 using namespace std;
 
-class PriorityFurther {
+class PriorityFurther { // used for nearest neighbour
 public:
     bool operator() (tuple<int, Image *> &t1, tuple<int, Image *> &t2) {
         return get<0>(t1) < get<0>(t2);
     }
 };
 
-class PriorityCloser {
+class PriorityCloser { // used for range search
 public:
     bool operator() (tuple<int, Image *> &t1, tuple<int, Image *> &t2) {
         return get<0>(t1) > get<0>(t2);

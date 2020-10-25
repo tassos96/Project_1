@@ -15,6 +15,7 @@ void gatherCentroids(const vector<Cluster *> & clusters, vector<vector<unsigned 
         vec->push_back(clusters.at(i)->getCentroid());
 }
 
+//Get index of current cluster of the image
 int getImgCluster(const vector<Cluster *> & clusters, Image * img) {
     int toRet = -1;
     for (int i = 0; i < clusters.size(); ++i) {
@@ -150,7 +151,7 @@ void printClstrRslts(string &outFilename, string &method, vector<Cluster *> * cl
             }
             cmplt = cmplt.substr(0, cmplt.size() - 2);
             cmplt += "> , IMAGE IDs: ";
-            for (pair<const int,Image *> & pair: *clusters->at(i)->getClusterImgs()) { //gather all images ids
+            for (const pair<const int,Image *> & pair: *clusters->at(i)->getClusterImgs()) { //gather all images ids
                 cmplt += to_string(pair.first) + ", ";
             }
             cmplt = cmplt.substr(0, cmplt.size() - 2);
