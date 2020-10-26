@@ -109,13 +109,14 @@ int main(int argc, char const *argv[]) {
         delete clst;
     }
     delete clusters;
-    delete clusterCmdVariables;
     delete conf;
 
     if(method == "LSH")
         delete lsh;
     else if(method == "Hypercube")
         delete hpcb;
+
+    delete clusterCmdVariables;
 
     return 0;
 }
