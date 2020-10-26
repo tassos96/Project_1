@@ -2,7 +2,7 @@ vpath %.h ./Common ./Algorithms ./Clustering/ ./Structures
 vpath %.cpp ./Common ./Algorithms ./Clustering/ ./Structures ./Mains .
 
 CC =			g++
-FLAGS = 		-c
+FLAGS = 		-c -std=c++11
 OBJS_CLSTRNG =	algorithm.o Assignment.o Cluster.o Config.o Silhouette.o UtilsCluster.o
 OBJS_CMMN =		bucket.o CmdArgumentsReader.o dataset.o Distance.o hashFuncs.o image.o PriorityQueue.o Utils.o
 OBJS_STRCT =	HyperCube.o lsh.o
