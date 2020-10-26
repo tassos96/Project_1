@@ -56,16 +56,20 @@ int main(int argc, char const *argv[]) {
         throw runtime_error("Wrong assignment method given!");
 
     if(method == "LSH") {
+        cout << "Building Lsh Structure... " << endl;
         lsh = new Lsh(conf->numHashTables, inputFile.getImageNum(), inputFile.getImages(),
             inputFile.getDimensions(), w_factor*W, conf->numHashFunctions);
+        cout << "Done" << endl;
     }
     else if (method == "Hypercube") {
+        cout << "Building Hypercube Structure... " << endl;
         hpcb = new HyperCube(inputFile.getDimensions(),
                             w_factor*W,
                             pow(2, 32 / conf->cubeDim),
                             conf->cubeDim,
                             inputFile.getImageNum(),
                             inputFile.getImages());
+        cout << "Done" << endl;
     }
 
     //Start clustering algorithm
@@ -85,12 +89,12 @@ int main(int argc, char const *argv[]) {
     //Calc duration
     string durResult = to_string(timerDuration.count() / 1e6) + "s";
 
-    cout << "Calculating Silhouette" << endl;
+    cout << "Calculating Silhouette..." << endl;
 
     //Calculate silhouette
     vector<double> silhouetteRes = silhouette(*clusters);
 
-    cout << "Finished calculating Silhouette" << endl;
+    cout << "Done" << endl;
 
 
     string &outputFile = clusterCmdVariables->outputFileName;

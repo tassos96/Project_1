@@ -11,7 +11,9 @@ vector<Cluster *> *clustering(const string & assignMethod,
                               int srchThresh,
                               int clustThresh) {
     int imgNum = imgs.size();
+    cout << "Initial Centroids calculation... " << endl;
     vector<Image *> centroids = kMeansPPlus(&imgs, numClusters); // choose initial centroids
+    cout << "Done" << endl;
     vector<Cluster *> * clusters = makeClusters(&centroids, numClusters ); // create clusters
     if(assignMethod == "Classic")
         lloydAssign(*clusters, &imgs); // initial assignment of images to clusters

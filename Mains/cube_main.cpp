@@ -32,12 +32,14 @@ int main(int argc, char const * argv[]) {
         //Structures creation
         double W = calcW(inputFile.getImages(),w_smpl_prcnt, inputFile.getImageNum());
 //        cout << "W: " << W*w_factor << endl;
+        cout << "Building Hypercube..." << endl;
         HyperCube hyperCube(inputFile.getDimensions(),
                             w_factor*W,
                             pow(2,32/cubeCmdVariables->cubeDim),
                             cubeCmdVariables->cubeDim,
                             inputFile.getImageNum(),
                             inputFile.getImages());
+        cout << "Done" << endl;
 
         //Ask from user the path of query file
         if (cubeCmdVariables->queryFileName.empty()) {

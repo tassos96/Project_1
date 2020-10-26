@@ -119,7 +119,7 @@ void reverseAssign(const vector<Cluster *> & clusters,
     // lloyd's assignment for all images that weren't located by range search
     for (int i = 0; i < allImgs->size(); ++i) {
         Image *imgPtr = allImgs->at(i);
-        if (imgPtr->isAssignedToClst())
+        if (imgIsCentroid(clusters, imgPtr) || imgPtr->isAssignedToClst())
             continue;
 
         int closestClust = closestClusterIdx(imgPtr, &centroids);

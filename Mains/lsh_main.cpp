@@ -33,9 +33,10 @@ int main(int argc, char const *argv[]) {
         //Structures creation here
         double W = calcW(inputFile.getImages(),w_smpl_prcnt, inputFile.getImageNum());
 //        cout << "W: " << W*w_factor << endl;
+        cout << "Building Lsh Structure..." << endl;
         Lsh lsh(lshCmdVariables->lshTables, inputFile.getImageNum(), inputFile.getImages(),
                 inputFile.getDimensions(), w_factor*W, lshCmdVariables->numHashFuncts);
-
+        cout << "Done" << endl;
         //Ask from user the path of query file
         if (lshCmdVariables->queryFileName.empty()) {
             cout << "Insert path of query file: ";
