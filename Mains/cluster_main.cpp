@@ -40,7 +40,7 @@ int main(int argc, char const *argv[]) {
     //Calculate W
     double W = calcW(inputFile.getImages(),w_smpl_prcnt, inputFile.getImageNum());
 
-    cout << "W: " << w_factor*W << endl;
+//    cout << "W: " << w_factor*W << endl;
 
     //Construct structure based on given method
     Lsh *lsh = nullptr;

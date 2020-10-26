@@ -114,10 +114,8 @@ void printClstrRslts(string &outFilename, string &method, vector<Cluster *> * cl
     outputFile << endl;
 
     //Print Clusters size and centroid pixels
-    int sum=0;
     for(int i = 0; i < clusters->size(); ++i)
     {
-        sum += clusters->at(i)->getClusterImgs()->size();
         string clust = "CLUSTER-" + to_string(i) + " { size: " +
                        to_string(clusters->at(i)->getClusterImgs()->size()) + ", centroid: <";
         for(int px = 0; px < clusters->at(i)->getCentroid()->size(); ++px)
@@ -128,7 +126,6 @@ void printClstrRslts(string &outFilename, string &method, vector<Cluster *> * cl
         clust += "> }";
         outputFile << clust << endl;
     }
-    cout << "Total images in clusters: " << sum << endl;
     outputFile << endl;
 
     outputFile << "clustering_time: " << dur << endl << endl;

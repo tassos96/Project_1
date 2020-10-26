@@ -31,7 +31,7 @@ int main(int argc, char const * argv[]) {
         readParams(w_smpl_prcnt,w_factor);
         //Structures creation
         double W = calcW(inputFile.getImages(),w_smpl_prcnt, inputFile.getImageNum());
-        cout << "W: " << W*w_factor << endl;
+//        cout << "W: " << W*w_factor << endl;
         HyperCube hyperCube(inputFile.getDimensions(),
                             w_factor*W,
                             pow(2,32/cubeCmdVariables->cubeDim),

@@ -32,7 +32,6 @@ vector<Cluster *> *clustering(const string & assignMethod,
         }
 
         if(assignmentsPerformed <= clustThresh){ // convergence witnessed
-            cout << "Converged" << endl;
             break;
         }
 
