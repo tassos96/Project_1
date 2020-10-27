@@ -34,8 +34,11 @@ int main(int argc, char const *argv[]) {
     if(conf->numClusters < 1)
         throw runtime_error("Num of clusters must be > 0\n Please check "+ clusterCmdVariables->configFileName);
 
-    int clust_threshold, w_smpl_prcnt, w_factor, approx_threshold;
-    readParams(w_smpl_prcnt,w_factor, true,&approx_threshold,true,&clust_threshold);
+    int clust_threshold, w_smpl_prcnt, w_factor, approx_threshold, clust_iters;
+    readParams(w_smpl_prcnt,w_factor,
+               true,&approx_threshold,
+               true,&clust_threshold,
+               true, &clust_iters);
 
     //Calculate W
     double W = calcW(inputFile.getImages(),w_smpl_prcnt, inputFile.getImageNum());
@@ -80,7 +83,7 @@ int main(int argc, char const *argv[]) {
     vector<Cluster *> * clusters = clustering(method,*inputFile.getImages(),
                                               inputFile.getImages(), conf->numClusters,
                                               conf->imgsThresh, conf->probes, lsh, hpcb,
-                                              approx_threshold, clust_threshold);
+                                              approx_threshold, clust_threshold, clust_iters);
 
     //stop timer
     high_resolution_clock::time_point stopTimer = high_resolution_clock::now();

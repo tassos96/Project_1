@@ -9,7 +9,8 @@ vector<Cluster *> *clustering(const string & assignMethod,
                               Lsh * lsh,
                               HyperCube * hpbc,
                               int srchThresh,
-                              int clustThresh) {
+                              int clustThresh,
+                              int clustIters) {
     int imgNum = imgs.size();
     cout << "Initial Centroids calculation... " << endl;
     vector<Image *> centroids = kMeansPPlus(&imgs, numClusters); // choose initial centroids
@@ -18,7 +19,7 @@ vector<Cluster *> *clustering(const string & assignMethod,
     if(assignMethod == "Classic")
         lloydAssign(*clusters, &imgs); // initial assignment of images to clusters
     int iterations = 0;
-    while (iterations < imgNum) {
+    while (iterations < imgNum || iterations < clustIters) {
         int assignmentsPerformed = 0;
         if(assignMethod != "Classic") {
             reverseAssign(*clusters, allImgs, lsh, assignmentsPerformed, hpbc, checkThrshld,

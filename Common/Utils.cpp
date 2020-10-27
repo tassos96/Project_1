@@ -93,7 +93,8 @@ void getVerticesToCheck(vector<string> &vec,
 // read parameter values from custom made config file to avoid recompilation
 void readParams(int & w_smpl_prcnt, int & w_factor,
                 bool readApproxThresh, int * approx_threshold,
-                bool readClstThresh, int * clust_threshold) {
+                bool readClstThresh, int * clust_threshold,
+                bool readClstThreshIters, int * clust_iters) {
     string fileName;
     cout << "Insert path of parameters config file: ";
     cin >> fileName;
@@ -118,6 +119,9 @@ void readParams(int & w_smpl_prcnt, int & w_factor,
         }
         else if(readClstThresh && curLine.substr(0, idx) == "clust_threshold") {
             *clust_threshold = stoi(curLine.substr(idx+1));
+        }
+        else if(readClstThreshIters && curLine.substr(0, idx) == "clust_threshold_iters") {
+            *clust_iters = stoi(curLine.substr(idx+1));
         }
     }
 

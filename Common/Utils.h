@@ -34,6 +34,7 @@ void getVerticesToCheck(vector<string> &vec,
 
 void readParams(int & w_smpl_prcnt, int & w_factor,
                 bool readApproxThresh=false, int * approx_threshold= nullptr,
-                bool readClstThresh=false, int * clust_threshold= nullptr);
+                bool readClstThresh=false, int * clust_threshold= nullptr,
+                bool readClstThreshIters=false, int * clust_iters= nullptr);
 
 #endif //PROJECT_TASK1_UTILS_H

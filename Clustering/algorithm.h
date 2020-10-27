@@ -12,6 +12,7 @@ vector<Cluster *> *clustering(const string & assignMethod,
                               Lsh * lsh,
                               HyperCube * hpbc,
                               int srchThresh,
-                              int clustThresh);
+                              int clustThresh,
+                              int clustIters);
 
 #endif //PROJECT_TASK1_ALGORITHM_H
