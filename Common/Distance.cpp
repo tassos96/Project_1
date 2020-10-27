@@ -45,7 +45,7 @@ double calcW(vector<Image *> * imgs, double samplePrcnt, int imgNum) {
         dstnc += minDistance;
     }
 
-    if(dstnc == 0 || numIndexes == 0) {
+    if(dstnc == 0 || numIndexes <= 1) {
         throw runtime_error("W is 0, check sample percentage parameter in \"parameters.conf\" file");
     }
 
